@@ -2,7 +2,7 @@
 
 ---
 
-Temporary readme for CS50w final project, will be updated once the project is near finish/finished.
+Temporary readme for CS50w final project, will be updated once the project is near finish/finished. Project name subject to change.
 
 ### MUST:
 - Have a "Distinctiveness and Complexity" header section that explain and satisfies the requirements for being more complex and distinctive compared to the previous projects in the course.
