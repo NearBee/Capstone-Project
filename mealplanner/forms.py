@@ -1,5 +1,5 @@
 from django import forms
-from django.forms import TextInput, EmailInput
+from django.forms import TextInput, EmailInput, PasswordInput
 
 from .models import User
 
@@ -11,6 +11,7 @@ class user_creation_form(forms.ModelForm):
             "username",
             "email",
             "password",
+            "passwordconfirm",
         )
         widgets = {
             "username": TextInput(
@@ -23,7 +24,12 @@ class user_creation_form(forms.ModelForm):
                     "class": "form-control my-2",
                 }
             ),
-            "password": TextInput(
+            "password": PasswordInput(
+                attrs={
+                    "class": "form-control my-2",
+                }
+            ),
+            "passwordconfirm": PasswordInput(
                 attrs={
                     "class": "form-control my-2",
                 }
@@ -44,7 +50,7 @@ class user_login_form(forms.ModelForm):
                     "class": "form-control",
                 }
             ),
-            "password": TextInput(
+            "password": PasswordInput(
                 attrs={
                     "class": "form-control",
                 }
