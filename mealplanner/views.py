@@ -10,7 +10,11 @@ from .models import User
 
 
 def index(request):
-    return render(request, "index.html", {"user_registration_form": user_creation_form})
+    return render(
+        request,
+        "index.html",
+        {"user_creation_form": user_creation_form, "user_login_form": user_login_form},
+    )
 
 
 def register(request):
@@ -30,3 +34,8 @@ def register(request):
             return render(
                 request, "index.html", {"message": "Successfully created account!"}
             )
+        else:
+            return render(request, "index.html", {"message": ""})
+
+    else:
+        return render(request, "index.html", {"message": ""})
