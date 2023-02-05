@@ -10,7 +10,7 @@ class User(AbstractUser):
     username = models.CharField(blank=False, unique=True, max_length=25)
     email = models.EmailField(blank=False, unique=True)
     password = models.CharField(blank=False, max_length=128)
-    passwordconfirm = models.CharField(blank=False, max_length=128)
+    password_confirmation = models.CharField(blank=False, max_length=128)
 
     def __str__(self):
         return self.username
