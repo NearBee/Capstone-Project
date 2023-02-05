@@ -24,23 +24,33 @@ def register(request):
         form = user_creation_form(request.POST)
 
         # Get two passwords for confirmation
-        password2 = form["passwordconfirm"]
-        if form["password"] != password2:
-            return render(request, "index.html", {"message": "Passwords must match."})
+        password2 = form["password_confirmation"].value()
+        if form["password"].value() != password2:
+            # TODO: Should redirect to a register page
+            return redirect("index")
+
+        # POSSIBLE solution for register
+        # return render(request, "register.html")
 
         if form.is_valid():
-            username = form["username"]
-            email = form["email"]
-            password = form["password"]
+            username = form["username"].value()
+            email = form["email"].value()
+            password = form["password"].value()
             User.objects.create_user(username, email, password)
-            return render(
-                request, "index.html", {"message": "Successfully created account!"}
-            )
+            return redirect("index")
         else:
-            return render(request, "index.html", {"message": ""})
+            # TODO: Should redirect to a register page
+            return redirect("index")
+
+    # POSSIBLE solution for register
+    # return render(request, "register.html", {"user_creation_form": user_creation_form})
 
     else:
-        return render(request, "index.html", {"message": ""})
+        # TODO: Should redirect to a register page
+        return redirect("index")
+
+    # POSSIBLE solution for register
+    # return render(request, "register.html", {"user_creation_form": user_creation_form})
 
 
 def login_view(request):
@@ -48,19 +58,29 @@ def login_view(request):
         form = user_login_form(request.POST)
 
         # Attempt to sign user in
-        email = form["email"]
-        password = form["password"]
-        user = authenticate(request, email=email, password=password)
+        username = form["username"].value()
+        password = form["password"].value()
+        user = authenticate(request, username=username, password=password)
 
         # Check if authentication successful
         if user is not None:
             login(request, user)
-            return HttpResponseRedirect(reverse("index"))
+            return redirect("index")
         else:
-            return render(request, "index.html", {"message": "Successfully logged in!"})
+            # Need more a clear error message for user not existing
+            # TODO: Should redirect to a full page for logging in
+            message = "User does not exist"
+            # return redirect("index")
+
+            # POSSIBLE solution for failed login
+            return render(request, "login.html", {"user_login_form": user_login_form})
 
     else:
-        return render(request, "index.html", {"message": ""})
+        print("Not Post")
+        # return redirect("index")
+
+        # POSSIBLE solution for failed login
+        return render(request, "login.html", {"user_login_form": user_login_form})
 
 
 def logout_view(request):
