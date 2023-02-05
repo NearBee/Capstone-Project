@@ -50,19 +50,20 @@
         <div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="Profile" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
-                    <div class="modal-header justify-content-end text-white bg-danger bg-gradient">
-                        <h1 class="modal-title fs-5 col-6 me-2 ps-2" id="loginModalLabel">{{ user.username }}</h1>
+                    <div class="modal-header justify-content-between text-white bg-danger bg-gradient">
+                        <h1 class="modal-title fs-5 col-auto me-2 ps-2" id="loginModalLabel">{{ user.username }}</h1>
                         <button type="button" class="col-auto ms-0 btn-close" data-bs-dismiss="modal"
                             aria-label="Close"></button>
                     </div>
                     <div class="modal-body bg-body-secondary">
-                        {# TODO: probably put an overflow profile picture going into header (like halfway through
-                        circle) #}
+                        {# TODO: probably put an overflow profile picture going into header #}
+                        {# (like halfway through circle) #}
                         {# then put some basic information? #}
-                        <div class="row justify-content-center mt-2">
+                        <div class="row justify-content-end mt-2">
                             <div class="col-auto">
-                                <button type="button" class="btn btn-danger-subtle rounded-pill px-5 bg-gradient"
-                                    data-bs-toggle="modal" data-bs-target="#profileModal">Want to logout?</button>
+                                <a href="{% url 'logout' %}"
+                                    class="nav-link bg-danger bg-gradient text-white border rounded-pill py-1 px-5">Logout
+                                </a>
                             </div>
                         </div>
                     </div>
