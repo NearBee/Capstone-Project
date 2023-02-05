@@ -11,7 +11,7 @@ class user_creation_form(forms.ModelForm):
             "username",
             "email",
             "password",
-            "passwordconfirm",
+            "password_confirmation",
         )
         widgets = {
             "username": TextInput(
@@ -29,7 +29,7 @@ class user_creation_form(forms.ModelForm):
                     "class": "form-control my-2",
                 }
             ),
-            "passwordconfirm": PasswordInput(
+            "password_confirmation": PasswordInput(
                 attrs={
                     "class": "form-control my-2",
                 }
@@ -41,18 +41,18 @@ class user_login_form(forms.ModelForm):
     class Meta:
         model = User
         fields = (
-            "email",
+            "username",
             "password",
         )
         widgets = {
-            "email": EmailInput(
+            "username": TextInput(
                 attrs={
-                    "class": "form-control",
+                    "class": "form-control my-2",
                 }
             ),
             "password": PasswordInput(
                 attrs={
-                    "class": "form-control",
+                    "class": "form-control my-2",
                 }
             ),
         }
