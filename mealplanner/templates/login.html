@@ -3,18 +3,37 @@
 
 {% block title %}Login{% endblock %}
 
-<!-- <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="Login" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header justify-content-end text-white bg-danger bg-gradient">
-                <h1 class="modal-title fw-light fs-5 col-6 me-2 ps-2" id="loginModalLabel">Login</h1>
-                <button type="button" class="col-auto ms-0 btn-close" data-bs-dismiss="modal"
-                    aria-label="Close"></button>
+{% block body %}
+<div class="container fluid vh-auto">
+    <div
+        class="position-absolute top-50 start-50 translate-middle border border-2 rounded w-50 shadow bg-light formWrapper">
+        <div class="row justify-content-center py-5">
+            <div class="col-auto">
+                <h1 class="fw-light fs-2 col-6 me-2 ps-2" id="loginPageLabel">Login</h1>
             </div>
-            <div class="modal-body bg-body-secondary">
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-9">
                 <form action="{% url 'login' %}" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
-                    {{ user_login_form }}
+                    {% for field in user_login_form %}
+                    <div class="fieldWrapper">
+                        {{ field.errors }}
+                        <div class="row justify-content-start">
+                            <div class="col-auto">
+                                <label
+                                    class="border border-bottom-0 rounded-top px-2 shadow-sm bg-body-secondary bg-gradient">
+                                    {{ field.label }}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                {{ field }}
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
                     <div class="row justify-content-center mt-3">
                         <div class="col-auto">
                             <button type="submit" class="btn btn-primary rounded-pill px-5 bg-gradient">Login</button>
@@ -22,42 +41,11 @@
                     </div>
                     <div class="row justify-content-center mt-2">
                         <div class="col-auto">
-                            <button type="button" class="btn btn-link" data-bs-toggle="modal"
-                                data-bs-target="#registerModal">Don't have an
-                                account?</button>
+                            <a href="{% url 'register' %}" class="btn btn-link pb-5">Don't have an account?</a>
                         </div>
                     </div>
                 </form>
             </div>
-        </div>
-    </div>
-</div> -->
-
-{% block body %}
-<div class="container fluid vh-auto pt-5 mt-5">
-    <div class="row justify-content-center pt-5">
-        <div class="col-auto">
-            <h1 class="fw-light fs-2 col-6 me-2 ps-2" id="loginModalLabel">Login</h1>
-        </div>
-    </div>
-    <div class="row justify-content-center">
-        <div class="col-7">
-            <form action="{% url 'login' %}" method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-                {{ user_login_form }}
-                <div class="row justify-content-center mt-3">
-                    <div class="col-auto">
-                        <button type="submit" class="btn btn-primary rounded-pill px-5 bg-gradient">Login</button>
-                    </div>
-                </div>
-                <div class="row justify-content-center mt-2">
-                    <div class="col-auto">
-                        <button type="button" class="btn btn-link" data-bs-toggle="modal"
-                            data-bs-target="#registerModal">Don't have an
-                            account?</button>
-                    </div>
-                </div>
-            </form>
         </div>
     </div>
 </div>
