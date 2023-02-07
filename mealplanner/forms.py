@@ -4,7 +4,7 @@ from django.forms import TextInput, EmailInput, PasswordInput
 from .models import User
 
 
-class user_creation_form(forms.ModelForm):
+class user_registration_form(forms.ModelForm):
     class Meta:
         model = User
         fields = (
@@ -16,24 +16,30 @@ class user_creation_form(forms.ModelForm):
         widgets = {
             "username": TextInput(
                 attrs={
-                    "class": "form-control my-2",
+                    "class": "form-control mb-4 shadow-sm forminputBox",
                 }
             ),
             "email": EmailInput(
                 attrs={
-                    "class": "form-control my-2",
+                    "class": "form-control mb-4 shadow-sm forminputBox",
                 }
             ),
             "password": PasswordInput(
                 attrs={
-                    "class": "form-control my-2",
+                    "class": "form-control mb-4 shadow-sm forminputBox",
                 }
             ),
             "password_confirmation": PasswordInput(
                 attrs={
-                    "class": "form-control my-2",
+                    "class": "form-control mb-4 shadow-sm forminputBox",
                 }
             ),
+        }
+        labels = {
+            "username": "Username",
+            "email": "Email",
+            "password": "Password",
+            "password_confirmation": "Confirm Password",
         }
 
 
@@ -47,12 +53,16 @@ class user_login_form(forms.ModelForm):
         widgets = {
             "username": TextInput(
                 attrs={
-                    "class": "form-control my-2",
+                    "class": "form-control mb-4 shadow-sm forminputBox",
                 }
             ),
             "password": PasswordInput(
                 attrs={
-                    "class": "form-control my-2",
+                    "class": "form-control mb-4 shadow-sm forminputBox",
                 }
             ),
+        }
+        labels = {
+            "username": "Username",
+            "password": "Password",
         }
