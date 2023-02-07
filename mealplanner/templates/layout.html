@@ -80,10 +80,27 @@
                         <button type="button" class="col-auto ms-0 btn-close" data-bs-dismiss="modal"
                             aria-label="Close"></button>
                     </div>
-                    <div class="modal-body bg-body-secondary">
+                    <div class="modal-body bg-body-light">
                         <form action="{% url 'login' %}" method="post" enctype="multipart/form-data">
                             {% csrf_token %}
-                            {{ user_login_form }}
+                            {% for field in user_login_form %}
+                            <div class="fieldWrapper">
+                                {{ field.errors }}
+                                <div class="row justify-content-start">
+                                    <div class="col-auto">
+                                        <label
+                                            class="border border-bottom-0 rounded-top px-2 shadow-sm bg-body-secondary bg-gradient">
+                                            {{ field.label }}
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        {{ field }}
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
                             <div class="row justify-content-center mt-3">
                                 <div class="col-auto">
                                     <button type="submit"
@@ -113,10 +130,27 @@
                         <button type="button" class="col-auto ms-0 btn-close" data-bs-dismiss="modal"
                             aria-label="Close"></button>
                     </div>
-                    <div class="modal-body bg-body-secondary">
+                    <div class="modal-body bg-body-light">
                         <form class="mb-3" action="{% url 'register' %}" method="post" enctype="multipart/form-data">
                             {% csrf_token %}
-                            {{ user_creation_form }}
+                            {% for field in user_registration_form %}
+                            <div class="fieldWrapper">
+                                {{ field.errors }}
+                                <div class="row justify-content-start">
+                                    <div class="col-auto">
+                                        <label
+                                            class="border border-bottom-0 rounded-top px-2 shadow-sm bg-body-secondary bg-gradient">
+                                            {{ field.label }}
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        {{ field }}
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
                             <div class="row justify-content-center mt-3">
                                 <div class="col-auto">
                                     <button type="submit"
