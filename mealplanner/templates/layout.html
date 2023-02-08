@@ -59,6 +59,24 @@
                         {# TODO: probably put an overflow profile picture going into header #}
                         {# (like halfway through circle) #}
                         {# then put some basic information? #}
+                        <div class="row justify-content-between">
+                            <div class="col-auto">
+                                {{ user }}
+                            </div>
+                            <div class="col-6">
+                                {{ user.email }}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-auto">
+                                {{ user.created_at }}
+                                {# TODO: Add number of meals "this week" here from planner model #}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-auto">
+                            </div>
+                        </div>
                         <div class="row justify-content-end mt-2">
                             <div class="col-auto">
                                 <a href="{% url 'logout' %}"
