@@ -5,16 +5,27 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 
 from .forms import user_registration_form, user_login_form
-from .models import User
+from .models import (
+    User,
+    Pantry,
+    Recipe,
+    Ingredients,
+    Planner,
+    PlannerDay,
+    Favorite,
+    DaysOfWeek,
+)
 
 
 def index(request):
+    user = User.objects.get(username=request.user)
     return render(
         request,
         "index.html",
         {
             "user_registration_form": user_registration_form,
             "user_login_form": user_login_form,
+            "user": user,
         },
     )
 
