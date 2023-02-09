@@ -18,14 +18,12 @@ from .models import (
 
 
 def index(request):
-    user = User.objects.get(username=request.user)
     return render(
         request,
         "index.html",
         {
             "user_registration_form": user_registration_form,
             "user_login_form": user_login_form,
-            "user": user,
         },
     )
 
@@ -35,7 +33,7 @@ def register(request):
         form = user_registration_form(request.POST)
 
         # Get two passwords for confirmation
-        password2 = form["password_confirmation"].value()
+        password2 = request.POST["password_confirmation"]
         if form["password"].value() != password2:
             return render(
                 request,
