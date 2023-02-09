@@ -11,7 +11,6 @@ class user_registration_form(forms.ModelForm):
             "username",
             "email",
             "password",
-            "password_confirmation",
         )
         widgets = {
             "username": TextInput(
@@ -29,17 +28,11 @@ class user_registration_form(forms.ModelForm):
                     "class": "form-control mb-4 shadow-sm forminputBox",
                 }
             ),
-            "password_confirmation": PasswordInput(
-                attrs={
-                    "class": "form-control mb-4 shadow-sm forminputBox",
-                }
-            ),
         }
         labels = {
             "username": "Username",
             "email": "Email",
             "password": "Password",
-            "password_confirmation": "Confirm Password",
         }
 
 
