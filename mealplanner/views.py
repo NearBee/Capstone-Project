@@ -84,3 +84,8 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse("index"))
+
+
+def recipes_view(request):
+    recipes = Recipe.objects.all()
+    return render(request, "recipes.html", {"recipes": recipes})
