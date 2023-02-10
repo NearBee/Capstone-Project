@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+{% load static %}
+
+{% block title %}Recipes{% endblock %}
+
+{% block body %}
+<div class="container-fluid pt-2">
+    {% for recipe in recipes %}
+    <div class="row">
+        <div class="col-auto pt-2">
+            {{ recipe.id }}.
+        </div>
+        <div class="dropdown col-11">
+            <div class="col-auto pt-2">
+                <button class="btn btn-outline-danger bg-gradient dropdown-toggle" data-bs-toggle="dropdown"
+                    data-bs-auto-close="outside" aria-expanded="false">{{ recipe.recipe_name }}</button>
+                <ul class="dropdown-menu p-4">
+                    <div class="col-12">
+                        <p class="fs-5 fst-italic">Cooking Steps:</p>
+                        <p class="fw-light ps-2">{{ recipe.formatted_instructions|safe }}</p>
+                    </div>
+                    <hr class="dropdown-divider">
+                    <div class="col-auto">
+                        {{ recipe.formatted_nutrition|safe }}
+                    </div>
+                    {% if recipe.dietary_preference != "None" %}
+                    <div class="col-auto">
+                        {{ recipe.dietary_preference }}
+                    </div>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endblock %}
