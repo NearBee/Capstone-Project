@@ -11,7 +11,6 @@ class User(AbstractUser):
     username = models.CharField(blank=False, unique=True, max_length=25)
     email = models.EmailField(blank=False, unique=True)
     password = models.CharField(blank=False, max_length=128)
-    password_confirmation = models.CharField(blank=False, max_length=128)
 
     def __str__(self):
         return self.username
@@ -19,7 +18,27 @@ class User(AbstractUser):
 
 class Pantry(models.Model):
     ingredient_name = models.CharField(max_length=100)
-    # TODO: look at calculating ingredients rather than storing in pantry
+    unit_of_measurement = models.CharField(
+        choices=[
+            ("Millilitres", "millilitres"),
+            ("Litres", "litres"),
+            ("Grams", "grams"),
+            ("Kilograms", "kilograms"),
+            ("Teaspoon", "teaspoon"),
+            ("Tablespoon", "tablespoon"),
+            ("Cup", "cup"),
+            ("Ounce", "ounce"),
+            ("Pint", "pint"),
+            ("Pound", "pound"),
+        ],
+        max_length=128,
+        blank=True,
+    )
+    # TODO: Maybe this could be a list of ingredients required for all recipes
+    # Rather than having a "pantry" of sorts this could be the shopping list
+
+    def __str__(self):
+        return self.ingredient_name
 
 
 class Recipe(models.Model):
@@ -28,6 +47,17 @@ class Recipe(models.Model):
     recipe_instructions = models.TextField()
     nutritional_values = models.TextField()
     dietary_preference = models.CharField(max_length=100)
+
+    # TODO: Add a Textfield for Ingredients that could be parsed for a shopping list
+
+    def __str__(self):
+        return self.recipe_name
+
+    def formatted_instructions(self):
+        return self.recipe_instructions.replace("\n", "<br>")
+
+    def formatted_nutrition(self):
+        return self.nutritional_values.replace("\n", "<br>")
 
 
 class Ingredients(models.Model):
