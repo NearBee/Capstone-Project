@@ -4,7 +4,43 @@
 {% block title %}Recipes{% endblock %}
 
 {% block body %}
-<div class="container-fluid pt-2">
+
+{# Filter group #}
+<div class="row justify-content-center w-100 my-3">
+    <div class="col-auto">
+        <div class="button-group filter-button-group">
+            <button data-filter="">No Preference</button>
+            <button data-filter=".vegetarian">Vegetarian</button>
+            <button data-filter=".vegan">Vegan</button>
+            <button data-filter=".pescetarian">Pescetarian</button>
+            <button data-filter=".dairy-free">Dairy-Free</button>
+            <button data-filter=".gluten-free">Gluten-Free</button>
+        </div>
+    </div>
+</div>
+
+{# Isotope grid layout #}
+<div class="grid">
+    {% for recipe in recipes %}
+    <div class="grid-item">
+        <div class="grid-item-content">
+            <p>{{ recipe.recipe_name }}</p>
+            <div class="row content-row" style="display: none;">
+                <div class="col-auto">
+                    {{ recipe.recipe_instructions }}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
+
+{% block script %}
+<script src="{% static 'script.js' %}"></script>
+{% endblock %}
+
+<!-- <div class="container-fluid pt-2">
     {% for recipe in recipes %}
     <div class="row">
         <div class="col-auto pt-2">
@@ -33,4 +69,4 @@
         </div>
         {% endfor %}
     </div>
-    {% endblock %}
+</div> -->
