@@ -20,53 +20,45 @@
 </div>
 
 {# Isotope grid layout #}
-<div class="grid">
-    {% for recipe in recipes %}
-    <div class="grid-item">
-        <div class="grid-item-content">
-            <p>{{ recipe.recipe_name }}</p>
-            <div class="row content-row" style="display: none;">
-                <div class="col-auto">
-                    {{ recipe.recipe_instructions }}
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="grid">
+            {% for recipe in recipes %}
+            <button type="button" class="grid-item mb-2" data-bs-toggle="modal"
+                data-bs-target="#gridItemModal{{ recipe.id }}">
+
+                <div class="row justify-content-center">
+                    <div class="col-auto align-items-center gridItemText">
+                        {{ recipe.recipe_name }}
+                    </div>
+                </div>
+
+            </button>
+
+            <div class="modal fade" id="gridItemModal{{ recipe.id }}" data-bs-backdrop="static" data-bs-keyword="false"
+                tabindex="-1" aria-labelledby="gridItemLabel{{ recipe.id }}" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="gridItemLabel{{ recipe.id }}">{{ recipe.recipe_name }}</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            {{ recipe.formatted_instructions|safe }}
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary">Add to Planner</button>
+                        </div>
+                    </div>
                 </div>
             </div>
+            {% endfor %}
         </div>
     </div>
-    {% endfor %}
 </div>
 {% endblock %}
 
 {% block script %}
 <script src="{% static 'script.js' %}"></script>
 {% endblock %}
-
-<!-- <div class="container-fluid pt-2">
-    {% for recipe in recipes %}
-    <div class="row">
-        <div class="col-auto pt-2">
-            {{ recipe.id }}.
-        </div>
-        <div class="dropdown col-11">
-            <div class="col-auto pt-2">
-                <button class="btn btn-outline-danger bg-gradient dropdown-toggle" data-bs-toggle="dropdown"
-                    data-bs-auto-close="outside" aria-expanded="false">{{ recipe.recipe_name }}</button>
-                <ul class="dropdown-menu p-4">
-                    <div class="col-12">
-                        <p class="fs-5 fst-italic">Cooking Steps:</p>
-                        <p class="fw-light ps-2">{{ recipe.formatted_instructions|safe }}</p>
-                    </div>
-                    <hr class="dropdown-divider">
-                    <div class="col-auto">
-                        {{ recipe.formatted_nutrition|safe }}
-                    </div>
-                    {% if recipe.dietary_preference != "None" %}
-                    <div class="col-auto">
-                        {{ recipe.dietary_preference }}
-                    </div>
-                    {% endif %}
-                </ul>
-            </div>
-        </div>
-        {% endfor %}
-    </div>
-</div> -->
