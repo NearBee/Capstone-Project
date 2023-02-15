@@ -3,57 +3,31 @@
 }
 
 .grid {
-    border: 1px solid #333;
-    max-width: 1200px;
+    max-width: 100%;
 }
 
 .grid-item {
     float: left;
-    /* width: 20%;
-    min-width: 150px;
-    max-width: 300px;
-    height: 20%;
-    min-height: 168px;
-    max-height: 168px;
-    border: solid black 2px; */
-}
-
-/* item is invisible, but used for layout */
-.grid-item,
-.grid-item-content {
-    width: 160px;
-    height: 120px;
-}
-
-/* .grid-item {
-    height: 60px;
-    border: none;
-    background: transparent;
-} */
-
-.grid-item-content {
-    width: 160px;
-    height: 120px;
-    background: #0D8;
-    border: 2px solid #333;
-    border-color: hsla(0, 0%, 0%, 0.7);
-    -webkit-transition: width 0.4s, height 0.4s;
-    -moz-transition: width 0.4s, height 0.4s;
-    -o-transition: width 0.4s, height 0.4s;
-    transition: width 0.4s, height 0.4s;
-}
-
-.grid-item:hover .grid-item-content {
-    background: #8CF;
-    cursor: pointer;
-}
-
-.grid-item.is-expanded,
-.grid-item.is-expanded .grid-item-content {
     width: 240px;
-    height: 160px;
+    height: 120px;
+    background-image: url(Food_placeholder.jpg);
+    background-size: 240px 180px;
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
-.grid-item.is-expanded {
-    z-index: 2;
+.gridItemText {
+    width: 238px;
+    height: 116px;
+    margin-top: -1px;
+    align-self: center;
 }
+
+.grid-item:hover,
+.gridItemText:hover {
+    background-color: rgba(182, 173, 176, 0.7);
+    cursor: pointer;
+    box-shadow: 3px 2px 2px;
+}
+
+/* Try to possibly blur background image instead on hover */
