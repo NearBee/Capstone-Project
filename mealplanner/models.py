@@ -16,54 +16,67 @@ class User(AbstractUser):
         return self.username
 
 
-class Pantry(models.Model):
-    ingredient_name = models.CharField(max_length=100)
+class Ingredient(models.Model):
+    MEASURES = [
+        ("Millilitres", "millilitres"),
+        ("Litres", "litres"),
+        ("Grams", "grams"),
+        ("Kilograms", "kilograms"),
+        ("Teaspoons", "teaspoon"),
+        ("Tablespoons", "tablespoon"),
+        ("Cups", "cup"),
+        ("Ounces", "ounce"),
+        ("Pints", "pint"),
+        ("Pounds", "pound"),
+        ("Quantity", "quantity"),
+    ]
+    name = models.CharField(max_length=100)
     unit_of_measurement = models.CharField(
-        choices=[
-            ("Millilitres", "millilitres"),
-            ("Litres", "litres"),
-            ("Grams", "grams"),
-            ("Kilograms", "kilograms"),
-            ("Teaspoon", "teaspoon"),
-            ("Tablespoon", "tablespoon"),
-            ("Cup", "cup"),
-            ("Ounce", "ounce"),
-            ("Pint", "pint"),
-            ("Pound", "pound"),
-        ],
+        choices=MEASURES,
         max_length=128,
         blank=True,
     )
-    # TODO: Maybe this could be a list of ingredients required for all recipes
-    # Rather than having a "pantry" of sorts this could be the shopping list
 
     def __str__(self):
-        return self.ingredient_name
+        return f"{self.name} ({self.unit_of_measurement})"
+
+
+class Diets(Enum):
+    Vegetarian = "Vegetarian"
+    Vegan = "Vegan"
+    Pescetarian = "Pescetarian"
+    DairyFree = "Dairy-Free"
+    GlutenFree = "Gluten-Free"
 
 
 class Recipe(models.Model):
-    recipe_name = models.CharField(max_length=100)
-    recipe_ingredients = models.ManyToManyField(Pantry, through="Ingredients")
-    recipe_instructions = models.TextField()
+    name = models.CharField(max_length=100)
+    ingredients = models.ManyToManyField(Ingredient, through="Ingredient_List")
+    instructions = models.TextField()
     nutritional_values = models.TextField()
-    dietary_preference = models.CharField(max_length=100)
+    dietary_preference = models.CharField(
+        choices=[(diet.name, diet.value) for diet in Diets], max_length=14
+    )
 
     # TODO: Add a Textfield for Ingredients that could be parsed for a shopping list
 
     def __str__(self):
-        return self.recipe_name
+        return self.name
 
     def formatted_instructions(self):
-        return self.recipe_instructions.replace("\n", "<br>")
+        return self.instructions.replace("\n", "<br>")
 
     def formatted_nutrition(self):
         return self.nutritional_values.replace("\n", "<br>")
 
 
-class Ingredients(models.Model):
+class Ingredient_List(models.Model):
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
-    pantry_item = models.ForeignKey(Pantry, on_delete=models.CASCADE)
+    ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
     quantity = models.CharField(max_length=100)
+
+    def __str__(self):
+        return f"{self.recipe} - {self.ingredient.name} {self.quantity} {self.ingredient.unit_of_measurement}"
 
 
 class DaysOfWeek(Enum):

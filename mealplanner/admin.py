@@ -1,9 +1,9 @@
 from django.contrib import admin
 from mealplanner.models import (
     User,
-    Pantry,
+    Ingredient,
     Recipe,
-    Ingredients,
+    Ingredient_List,
     Planner,
     PlannerDay,
     Favorite,
@@ -19,18 +19,18 @@ class UserAdmin(admin.ModelAdmin):
 admin.site.register(User, UserAdmin)
 
 
-class PantryAdmin(admin.ModelAdmin):
-    list_display = ("id", "ingredient_name")
+class IngredientAdmin(admin.ModelAdmin):
+    list_display = ("id", "name")
 
 
-admin.site.register(Pantry, PantryAdmin)
+admin.site.register(Ingredient, IngredientAdmin)
 
 
 class RecipeAdmin(admin.ModelAdmin):
     list_display = (
         "id",
-        "recipe_name",
-        "recipe_instructions",
+        "name",
+        "instructions",
         "nutritional_values",
         "dietary_preference",
     )
@@ -39,11 +39,11 @@ class RecipeAdmin(admin.ModelAdmin):
 admin.site.register(Recipe, RecipeAdmin)
 
 
-class IngredientsAdmin(admin.ModelAdmin):
-    list_display = ("id", "pantry_item", "recipe", "quantity")
+class Ingredient_ListAdmin(admin.ModelAdmin):
+    list_display = ("id", "recipe", "ingredient", "quantity")
 
 
-admin.site.register(Ingredients, IngredientsAdmin)
+admin.site.register(Ingredient_List, Ingredient_ListAdmin)
 
 
 class PlannerAdmin(admin.ModelAdmin):
