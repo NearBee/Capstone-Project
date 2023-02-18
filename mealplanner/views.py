@@ -7,9 +7,9 @@ from django.urls import reverse
 from .forms import user_registration_form, user_login_form
 from .models import (
     User,
-    Pantry,
+    Ingredient,
     Recipe,
-    Ingredients,
+    Ingredient_List,
     Planner,
     PlannerDay,
     Favorite,
@@ -88,4 +88,30 @@ def logout_view(request):
 
 def recipes_view(request):
     recipes = Recipe.objects.all()
-    return render(request, "recipes.html", {"recipes": recipes})
+    ingredients_dict = {}
+    for recipe in recipes:
+        il = recipe.ingredients.all()
+        for i in il:
+            print(i)
+        ingredients_dict[recipe] = {}
+        ingredient_lists = Ingredient_List.objects.filter(recipe=recipe)
+        for ingredient_list in ingredient_lists:
+            ingredient = ingredient_list.ingredient
+            quantity = ingredient_list.quantity
+            ingredients_dict[recipe][ingredient] = quantity
+
+    return render(
+        request,
+        "recipes.html",
+        {"recipes": recipes, "ingredients_dict": ingredients_dict},
+    )
+
+
+# def recipes_view(request):
+#     recipes = Recipe.objects.all()
+#     quantities = Ingredient_List.objects.all()
+#     return render(
+#         request,
+#         "recipes.html",
+#         {"recipes": recipes, "quantities": quantities},
+#     )
