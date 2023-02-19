@@ -11,6 +11,7 @@ class User(AbstractUser):
     username = models.CharField(blank=False, unique=True, max_length=25)
     email = models.EmailField(blank=False, unique=True)
     password = models.CharField(blank=False, max_length=128)
+    favorite_dishes = models.ManyToManyField("Recipe", related_name="Fav_dishes")
 
     def __str__(self):
         return self.username
@@ -58,8 +59,6 @@ class Recipe(models.Model):
         choices=[(diet.name, diet.value) for diet in Diets], max_length=14
     )
 
-    # TODO: Add a Textfield for Ingredients that could be parsed for a shopping list
-
     def __str__(self):
         return self.name
 
@@ -71,12 +70,16 @@ class Recipe(models.Model):
 
 
 class Ingredient_List(models.Model):
-    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
-    ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
-    quantity = models.CharField(max_length=100)
+    recipe = models.ForeignKey(
+        Recipe, related_name="ingredient_details", on_delete=models.CASCADE
+    )
+    ingredient = models.ForeignKey(
+        Ingredient, related_name="shopping_list", on_delete=models.CASCADE
+    )
+    quantity = models.FloatField()
 
     def __str__(self):
-        return f"{self.recipe} - {self.ingredient.name} {self.quantity} {self.ingredient.unit_of_measurement}"
+        return f"{self.quantity} {self.ingredient.unit_of_measurement} {self.ingredient.name}"
 
 
 class DaysOfWeek(Enum):
@@ -102,8 +105,3 @@ class PlannerDay(models.Model):
     day_of_week = models.CharField(
         choices=[(day.name, day.value) for day in DaysOfWeek], max_length=10
     )
-
-
-class Favorite(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    planner = models.ForeignKey(Planner, on_delete=models.CASCADE)
