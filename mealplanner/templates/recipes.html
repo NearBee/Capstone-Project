@@ -41,34 +41,43 @@
                 <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="gridItemLabel{{ recipe.id }}">{{ recipe.name }}</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <div class="row">
+                                <div class="col-auto pt-1">
+                                    <i class="bi-star favIcon" data-id="{{ recipe.id }}"></i>
+                                </div>
+                                <div class="col-auto">
+                                    <h1 class="modal-title fs-5 pb-1" id="gridItemLabel{{ recipe.id }}">
+                                        {{ recipe.name }}
+                                    </h1>
+                                </div>
+                                <div class="col-auto pt-2">
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                            </div>
                         </div>
                         <div class="modal-body">
                             {{ recipe.formatted_instructions|safe }}
+
                             <hr>
 
-                            {% for ingredient in recipe.ingredients.all %}
-                            {% with quantity=ingredients_dict|dictkey:recipe|dictkey:ingredient %}
-                            <div class="row">
-                                <div class="col-auto">
-                                    <div class="row justify-content-between">
-                                        <div class="col-auto">
-                                            <span>{{ quantity }}</span>
-                                        </div>
-                                        <div class="col-auto">
-                                            (<span class="fw-light">{{ ingredient.unit_of_measurement|lower }}</span>)
-                                        </div>
+                            <h1 class="fs-5 mb-3">Recipe Ingredients</h1>
+                            <ul>
+                                {% for ingredient in recipe.ingredient_details.all %}
+
+                                <div class="row">
+                                    <div class="col-auto">
+                                        <li style="list-style: circle;">{{ ingredient }}
+                                        </li>
                                     </div>
                                 </div>
-                                <div class="col-auto">
-                                    <b>{{ ingredient.name }}</b>
-                                </div>
-                            </div>
-                            {% endwith %}
-                            {% endfor %}
+
+                                {% endfor %}
+                            </ul>
 
                             <hr>
+
+                            <h1 class="fs-5 mb-3">Nutritional Information</h1>
                             <div class="row justify-content-start">
                                 <div class="col-auto">
                                     {{ recipe.formatted_nutrition|safe }}
