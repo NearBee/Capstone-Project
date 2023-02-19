@@ -12,7 +12,6 @@ from .models import (
     Ingredient_List,
     Planner,
     PlannerDay,
-    Favorite,
     DaysOfWeek,
 )
 
@@ -88,30 +87,9 @@ def logout_view(request):
 
 def recipes_view(request):
     recipes = Recipe.objects.all()
-    ingredients_dict = {}
-    for recipe in recipes:
-        il = recipe.ingredients.all()
-        for i in il:
-            print(i)
-        ingredients_dict[recipe] = {}
-        ingredient_lists = Ingredient_List.objects.filter(recipe=recipe)
-        for ingredient_list in ingredient_lists:
-            ingredient = ingredient_list.ingredient
-            quantity = ingredient_list.quantity
-            ingredients_dict[recipe][ingredient] = quantity
-
+    quantities = Ingredient_List.objects.all()
     return render(
         request,
         "recipes.html",
-        {"recipes": recipes, "ingredients_dict": ingredients_dict},
+        {"recipes": recipes, "quantities": quantities},
     )
-
-
-# def recipes_view(request):
-#     recipes = Recipe.objects.all()
-#     quantities = Ingredient_List.objects.all()
-#     return render(
-#         request,
-#         "recipes.html",
-#         {"recipes": recipes, "quantities": quantities},
-#     )
