@@ -6,7 +6,6 @@ from mealplanner.models import (
     Ingredient_List,
     Planner,
     PlannerDay,
-    Favorite,
 )
 
 # Register your models here.
@@ -58,10 +57,3 @@ class PlannerDayAdmin(admin.ModelAdmin):
 
 
 admin.site.register(PlannerDay, PlannerDayAdmin)
-
-
-class FavoriteAdmin(admin.ModelAdmin):
-    list_display = ("id", "user", "planner")
-
-
-admin.site.register(Favorite, FavoriteAdmin)
