@@ -14,12 +14,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     grid.addEventListener('click', function (event) {
         var target = event.target;
-        // only click on itemContent
-        // if (!target.classList.contains('grid-item-content')) {
-        //     return;
-        // }
-        // var itemElem = target.parentNode;
-        // itemElem.classList.toggle('is-expanded');
+
         iso.layout();
         let content = target.querySelector('.content-row');
         if (!content.style.display.includes('none')) {
