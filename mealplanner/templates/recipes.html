@@ -41,19 +41,23 @@
                 <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <div class="row">
-                                <div class="col-auto pt-1">
-                                    <i class="bi-star favIcon" data-id="{{ recipe.id }}"></i>
-                                </div>
-                                <div class="col-auto">
-                                    <h1 class="modal-title fs-5 pb-1" id="gridItemLabel{{ recipe.id }}">
-                                        {{ recipe.name }}
-                                    </h1>
-                                </div>
-                                <div class="col-auto pt-2">
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
-                                </div>
+                            <div class="col-auto me-2 mb-1 favStarBox">
+                                <div id="csrf" data-csrf="{{ csrf_token }}"></div>
+                                {% if recipe.name in user_favorites %}
+                                {# TODO: Fix checking the queryset for user's favorite dishes #}
+                                <i class="bi-star-fill favStar" data-id="{{ recipe.id }}"></i>
+                                {% else %}
+                                <i class="bi-star favStar" data-id="{{ recipe.id }}"></i>
+                                {% endif %}
+                            </div>
+                            <div class="col-auto">
+                                <h1 class="modal-title fs-5 pb-1" id="gridItemLabel{{ recipe.id }}">
+                                    {{ recipe.name }}
+                                </h1>
+                            </div>
+                            <div class="col-auto ms-auto">
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
                             </div>
                         </div>
                         <div class="modal-body">
