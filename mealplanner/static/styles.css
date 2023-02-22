@@ -30,4 +30,32 @@
     box-shadow: 3px 2px 2px;
 }
 
+.favStarBox {
+    -webkit-transition: transform .7s ease-in-out;
+    transition: transform .7s ease-in-out;
+}
+
+.favStarBox:hover {
+    cursor: pointer;
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+}
+
+.favStarBox:active {
+    scale: .8;
+}
+
+.favStar {
+    transition: color .7s ease-in-out;
+}
+
+.favStar:hover {
+    color: gold;
+}
+
+.bi-star-fill {
+    color: gold;
+    -webkit-text-stroke: 1px black;
+}
+
 /* Try to possibly blur background image instead on hover */
