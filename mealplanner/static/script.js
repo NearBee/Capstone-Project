@@ -25,6 +25,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
     });
 
+    var favoriteButton = document.getElementsByClassName('favStar');
+    for (let button of favoriteButton) {
+        button.addEventListener('click', function () {
+            let id = button.getAttribute('data-id');
+
+            favoriteRecipe(id);
+        })
+    }
+
     //TODO: Fix filter button with Javascript
 
     // filter items on button click
@@ -33,5 +42,30 @@ document.addEventListener('DOMContentLoaded', function () {
         var filterValue = filterButtonGroup.getAttribute('data-filter');
         grid.isotope({ filter: filterValue });
     });
-})
+});
 // Isotope JS+
+
+
+function favoriteRecipe(id) {
+    let csrf = document.querySelector("#csrf").dataset.csrf;
+
+    fetch(`/favorite/${id}`, {
+        method: 'POST',
+        body: JSON.stringify({
+            id: id
+        }),
+        headers: { "X-CSRFToken": csrf },
+        credentials: 'same-origin',
+    })
+        .catch(error => {
+            console.log(`${error}`);
+        })
+
+        .then((response => {
+            document.querySelector('.favStarBox').innerHTML = `<i class="bi-star-fill favStar" data-id="{{ recipe.id }}"></i>`
+        }))
+
+        .catch(error => {
+            console.log(`${error}`);
+        })
+}
