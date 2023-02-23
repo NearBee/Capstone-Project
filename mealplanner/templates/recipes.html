@@ -43,11 +43,10 @@
                         <div class="modal-header">
                             <div class="col-auto me-2 mb-1 favStarBox">
                                 <div id="csrf" data-csrf="{{ csrf_token }}"></div>
-                                {% if recipe.name in user_favorites %}
-                                {# TODO: Fix checking the queryset for user's favorite dishes #}
-                                <i class="bi-star-fill favStar" data-id="{{ recipe.id }}"></i>
+                                {% if recipe.name in favorite_dishes %}
+                                <i class="favStar bi-star-fill" data-id="{{ recipe.id }}"></i>
                                 {% else %}
-                                <i class="bi-star favStar" data-id="{{ recipe.id }}"></i>
+                                <i class="favStar bi-star" data-id="{{ recipe.id }}"></i>
                                 {% endif %}
                             </div>
                             <div class="col-auto">
