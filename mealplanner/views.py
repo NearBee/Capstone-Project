@@ -86,21 +86,30 @@ def logout_view(request):
 
 
 def recipes_view(request):
+    user = request.user
     recipes = Recipe.objects.all()
     quantities = Ingredient_List.objects.all()
-    user_favorites = request.user.favorite_dishes.all()
+    user_favorites = user.favorite_dishes.all()
+    favorite_dishes = [recipe.name for recipe in user_favorites]
+
     return render(
         request,
         "recipes.html",
         {
             "recipes": recipes,
             "quantities": quantities,
-            "user_favorites": user_favorites,
+            "favorite_dishes": favorite_dishes,
         },
     )
 
 
 def favorite_recipe(request, id):
     user = request.user
-    user.favorite_dishes.add(id)
+    dish = Recipe.objects.get(id=id)
+
+    if dish in user.favorite_dishes.all():
+        user.favorite_dishes.remove(id)
+    else:
+        user.favorite_dishes.add(id)
+
     return redirect("recipes")
