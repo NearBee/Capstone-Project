@@ -62,7 +62,14 @@ function favoriteRecipe(id) {
         })
 
         .then((response => {
-            document.querySelector('.favStarBox').innerHTML = `<i class="bi-star-fill favStar" data-id="{{ recipe.id }}"></i>`
+            let selectedBox = document.getElementById(`${id}`)
+            console.log(selectedBox);
+
+            if (selectedBox.classList.contains('fill')) {
+                selectedBox.classList.remove('-fill');
+            } else {
+                selectedBox.classList.add('-fill');
+            }
         }))
 
         .catch(error => {
