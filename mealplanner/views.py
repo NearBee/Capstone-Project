@@ -74,7 +74,11 @@ def login_view(request):
             return redirect("index")
         else:
             message = "User does not exist"
-            return render(request, "login.html", {"user_login_form": user_login_form})
+            return render(
+                request,
+                "login.html",
+                {"user_login_form": user_login_form, "message": message},
+            )
 
     else:
         return render(request, "login.html", {"user_login_form": user_login_form})
@@ -86,11 +90,22 @@ def logout_view(request):
 
 
 def recipes_view(request):
-    user = request.user
     recipes = Recipe.objects.all()
     quantities = Ingredient_List.objects.all()
-    user_favorites = user.favorite_dishes.all()
-    favorite_dishes = [recipe.name for recipe in user_favorites]
+    user = request.user
+    if user.is_authenticated:
+        user_favorites = user.favorite_dishes.all()
+        favorite_dishes = [recipe.name for recipe in user_favorites]
+
+        return render(
+            request,
+            "recipes.html",
+            {
+                "recipes": recipes,
+                "quantities": quantities,
+                "favorite_dishes": favorite_dishes,
+            },
+        )
 
     return render(
         request,
@@ -98,11 +113,11 @@ def recipes_view(request):
         {
             "recipes": recipes,
             "quantities": quantities,
-            "favorite_dishes": favorite_dishes,
         },
     )
 
 
+@login_required
 def favorite_recipe(request, id):
     user = request.user
     dish = Recipe.objects.get(id=id)
