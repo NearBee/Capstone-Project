@@ -5,6 +5,13 @@
 
 {% block body %}
 <div class="container fluid vh-auto">
+    {% if message %}
+    <div class="row justify-content-center">
+        <div class="col-auto">
+            {{ message }}
+        </div>
+    </div>
+    {% endif %}
     <div
         class="position-absolute top-50 start-50 translate-middle border border-2 rounded w-50 shadow bg-light formWrapper">
         <div class="row justify-content-center py-5">
