@@ -62,13 +62,13 @@ function favoriteRecipe(id) {
         })
 
         .then((response => {
-            let selectedBox = document.getElementById(`${id}`)
+            let selectedBox = document.querySelector(`#gridItemModal${id} > div > div > div.modal-header > div.col-auto.me-2.mb-1.favStarBox > i`)
             console.log(selectedBox);
 
-            if (selectedBox.classList.contains('fill')) {
-                selectedBox.classList.remove('-fill');
+            if (selectedBox.classList.contains('bi-star-fill')) {
+                selectedBox.classList.replace('bi-star-fill', 'bi-star');
             } else {
-                selectedBox.classList.add('-fill');
+                selectedBox.classList.replace('bi-star', 'bi-star-fill');
             }
         }))
 
