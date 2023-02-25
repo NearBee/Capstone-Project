@@ -42,7 +42,16 @@ document.addEventListener('DOMContentLoaded', function () {
         var filterValue = filterButtonGroup.getAttribute('data-filter');
         grid.isotope({ filter: filterValue });
     });
-});
+
+    // Form Errors
+
+    var form = document.getElementById('register-form');
+
+    if (Object.keys(errors).length > 0) {
+        form.classList.add('has-error');
+    }
+    console.log(form);
+})
 // Isotope JS+
 
 
