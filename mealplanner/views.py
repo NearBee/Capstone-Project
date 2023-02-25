@@ -34,10 +34,11 @@ def register(request):
         # Get two passwords for confirmation
         password2 = request.POST["password_confirmation"]
         if form["password"].value() != password2:
+            message = "Passwords do not match"
             return render(
                 request,
                 "register.html",
-                {"user_registration_form": user_registration_form},
+                {"user_registration_form": user_registration_form, "message": message},
             )
 
         if form.is_valid():
@@ -46,11 +47,13 @@ def register(request):
             password = form["password"].value()
             User.objects.create_user(username, email, password)
             return redirect("index")
+
         else:
+            message = "Sorry that username is unavailable"
             return render(
                 request,
                 "register.html",
-                {"user_registration_form": user_registration_form},
+                {"user_registration_form": user_registration_form, "message": message},
             )
 
     else:
@@ -73,7 +76,7 @@ def login_view(request):
             login(request, user)
             return redirect("index")
         else:
-            message = "User does not exist"
+            message = "Username/Password is incorrect"
             return render(
                 request,
                 "login.html",
