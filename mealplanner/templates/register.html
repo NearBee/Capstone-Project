@@ -5,6 +5,13 @@
 
 {% block body %}
 <div class="container fluid vh-auto">
+    {% if message %}
+    <div class="row justify-content-center mt-5">
+        <div class="col-auto mt-5">
+            <h2 class="fw-light fst-italic text-danger">{{ message }}</h2>
+        </div>
+    </div>
+    {% endif %}
     <div
         class="position-absolute top-50 start-50 translate-middle border border-2 rounded w-50 shadow bg-light formWrapper">
         <div class="row justify-content-center py-5">
@@ -34,6 +41,20 @@
                         </div>
                     </div>
                     {% endfor %}
+                    <div class="row justify-content-start">
+                        <div class="col-auto">
+                            <label
+                                class="border border-bottom-0 rounded-top px-2 shadow-sm bg-body-secondary bg-gradient">
+                                Password Confirmation
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <input type="password" name="password_confirmation"
+                                class="form-control mb-4 shadow-sm forminputBox" maxlength="128">
+                        </div>
+                    </div>
                     <div class="row justify-content-center mt-3">
                         <div class="col-auto">
                             <button type="submit" class="btn btn-primary rounded-pill px-5 bg-gradient">Complete
