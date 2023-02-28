@@ -107,6 +107,7 @@ def recipes_view(request):
                 "recipes": recipes,
                 "quantities": quantities,
                 "favorite_dishes": favorite_dishes,
+                "recipe_choices": favorite_dishes,
             },
         )
 
