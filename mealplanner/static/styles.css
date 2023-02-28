@@ -59,3 +59,16 @@
 }
 
 /* Try to possibly blur background image instead on hover */
+
+.planner {
+    background-color: blue;
+    height: 125px;
+    width: auto;
+}
+
+.plannerBoxes {
+    background-color: pink;
+    max-height: 100px;
+    min-height: 100px;
+    width: 150px;
+}
