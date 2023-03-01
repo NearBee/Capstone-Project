@@ -92,10 +92,24 @@ class DaysOfWeek(Enum):
     SATURDAY = "Saturday"
 
 
+class NumberOfDays(Enum):
+    One = 1
+    Two = 2
+    Three = 3
+    Four = 4
+    Five = 5
+    Six = 6
+    Seven = 7
+
+
 class Planner(models.Model):
 
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
-    days = models.ManyToManyField(Recipe, through="PlannerDay")
+    days = models.CharField(
+        choices=[(day.value, day.name) for day in NumberOfDays],
+        max_length=10,
+        default=1,
+    )
     is_private = models.BooleanField(default=False)
 
 
