@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 
-from .forms import user_registration_form, user_login_form
+from .forms import user_registration_form, user_login_form, planner_creation_form
 from .models import (
     User,
     Ingredient,
@@ -23,6 +23,7 @@ def index(request):
         {
             "user_registration_form": user_registration_form,
             "user_login_form": user_login_form,
+            "planner_form": planner_creation_form(),
         },
     )
 
@@ -132,3 +133,20 @@ def favorite_recipe(request, id):
         user.favorite_dishes.add(id)
 
     return redirect("recipes")
+
+
+@login_required(redirect_field_name="", login_url="login")
+def add_planner(request):
+    user = request.user
+    if request.method == "POST":
+        planner_form = planner_creation_form(request.POST)
+
+        if planner_form.is_valid():
+            # planner is saved
+            created_planner = planner_form.save(commit=False)
+            created_planner.owner = user
+            created_planner.save()
+            message = "Planner Created!"
+            return render(request, "recipes.html", {"message": message})
+
+    return render(request, "planner.html", {"planner_form": planner_creation_form()})
