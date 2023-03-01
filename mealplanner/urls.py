@@ -9,4 +9,5 @@ urlpatterns = [
     path("logout", views.logout_view, name="logout"),
     path("recipes", views.recipes_view, name="recipes"),
     path("favorite/<int:id>", views.favorite_recipe, name="fav_recipe"),
+    path("", views.add_planner, name="add_planner"),
 ]
