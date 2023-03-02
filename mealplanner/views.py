@@ -97,6 +97,7 @@ def recipes_view(request):
     recipes = Recipe.objects.all()
     quantities = Ingredient_List.objects.all()
     user = request.user
+    print(Planner.objects.all())
     if user.is_authenticated:
         user_favorites = user.favorite_dishes.all()
         favorite_dishes = [recipe.name for recipe in user_favorites]
@@ -140,13 +141,15 @@ def add_planner(request):
     user = request.user
     if request.method == "POST":
         planner_form = planner_creation_form(request.POST)
-
+        print(planner_form.errors)
         if planner_form.is_valid():
             # planner is saved
             created_planner = planner_form.save(commit=False)
             created_planner.owner = user
             created_planner.save()
+            print("planner saved")
             message = "Planner Created!"
             return render(request, "recipes.html", {"message": message})
 
-    return render(request, "planner.html", {"planner_form": planner_creation_form()})
+    print("planner didn't save")
+    return render(request, "index.html", {"planner_form": planner_creation_form()})
