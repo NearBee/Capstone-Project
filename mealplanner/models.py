@@ -93,13 +93,13 @@ class DaysOfWeek(Enum):
 
 
 class NumberOfDays(Enum):
-    One = 1
-    Two = 2
-    Three = 3
-    Four = 4
-    Five = 5
-    Six = 6
-    Seven = 7
+    One = "One"
+    Two = "Two"
+    Three = "Three"
+    Four = "Four"
+    Five = "Five"
+    Six = "Six"
+    Seven = "Seven"
 
 
 class Planner(models.Model):
