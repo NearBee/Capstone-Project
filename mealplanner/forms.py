@@ -75,5 +75,5 @@ class planner_creation_form(forms.ModelForm):
         }
         labels = {
             "days": "How many days?",
-            "is_private": "Will this be private?",
+            "is_private": "Will this plan be private?",
         }
