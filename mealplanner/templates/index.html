@@ -34,13 +34,28 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-3">
-                    <button class="button border rounded-pill px-5 py-2 text-white bg-success bg-gradient"
-                        value="Get a meal plan!">Get
-                        a meal plan!</button>
-                    <div class="plannerForm">
-                        {% include 'planner.html' %}
-                    </div>
+                <div class="col-3 border border-success">
+                    <form action="{% url 'add_planner' %}" method="post">
+                        {% csrf_token %}
+                        <div class="row justify-content-center">
+                            <input type="submit"
+                                class="button border rounded-pill px-5 py-2 text-white bg-success bg-gradient"
+                                value="Get a meal plan!"></input>
+                        </div>
+                        <div class="plannerForm">
+                            {% for field in planner_form %}
+                            {{field.errors}}
+                            <div class="row">
+                                <div class="col-auto my-2">
+                                    {{ field.label }}
+                                </div>
+                                <div class="col-auto my-2 mb-2">
+                                    {{ field }}
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
