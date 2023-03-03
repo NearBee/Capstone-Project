@@ -60,13 +60,13 @@
 
 /* Try to possibly blur background image instead on hover */
 
-.planner {
+.stockPlanner {
     background-color: blue;
     height: 125px;
     width: auto;
 }
 
-.plannerBoxes {
+.stockPlannerBoxes {
     background-color: pink;
     max-height: 100px;
     min-height: 100px;
