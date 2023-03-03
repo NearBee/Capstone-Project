@@ -8,6 +8,7 @@
 
 {# Planner section #}
 
+{% if planner %}
 <div class="planner container-fluid align-content-center my-3" style="display: grid;">
     <div class="row justify-content-center">
         {% for recipe in recipe_choices %}
@@ -17,6 +18,20 @@
         {% endfor %}
     </div>
 </div>
+{# TODO: Going to put a placeholder here soon for an "else" #}
+{% else %}
+<div class="stockPlanner container-fluid align-content-center my-3" style="display: grid;">
+    <div class="row justify-content-center">
+        {% for recipe in recipe_choices %}
+        <div class="col-2 stockPlannerBoxes border mx-2">
+            <a href="{% url 'index' %}">
+                <span>{{recipe}}</span>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
 
 {# Filter group #}
 <div class="row justify-content-center w-100 my-3">
