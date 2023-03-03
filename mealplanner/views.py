@@ -101,6 +101,19 @@ def recipes_view(request):
     if user.is_authenticated:
         user_favorites = user.favorite_dishes.all()
         favorite_dishes = [recipe.name for recipe in user_favorites]
+        planner = Planner.objects.filter(owner=user)
+        print(planner.get())
+        if user == Planner.objects.filter(owner=user):
+            return render(
+                request,
+                "recipes.html",
+                {
+                    "recipes": recipes,
+                    "quantities": quantities,
+                    "favorite_dishes": favorite_dishes,
+                    "planner": planner,
+                },
+            )
 
         return render(
             request,
@@ -149,7 +162,7 @@ def add_planner(request):
             created_planner.save()
             print("planner saved")
             message = "Planner Created!"
-            return render(request, "recipes.html", {"message": message})
+            return redirect("recipes")
 
     print("planner didn't save")
     return render(request, "index.html", {"planner_form": planner_creation_form()})
