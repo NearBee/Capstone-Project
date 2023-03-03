@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-from enum import Enum
+from enum import Enum, IntEnum
 
 # Create your models here.
 
@@ -92,25 +92,29 @@ class DaysOfWeek(Enum):
     SATURDAY = "Saturday"
 
 
-class NumberOfDays(Enum):
-    One = "One"
-    Two = "Two"
-    Three = "Three"
-    Four = "Four"
-    Five = "Five"
-    Six = "Six"
-    Seven = "Seven"
+class NumberOfDays(IntEnum):
+    One = 1
+    Two = 2
+    Three = 3
+    Four = 4
+    Five = 5
+    Six = 6
+    Seven = 7
 
 
 class Planner(models.Model):
 
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
-    days = models.CharField(
+    days = models.IntegerField(
         choices=[(day.value, day.name) for day in NumberOfDays],
-        max_length=10,
         default=1,
     )
     is_private = models.BooleanField(default=False)
+
+    def __str__(self):
+        return (
+            f"{self.owner} : Planner {self.pk} (Planner duration: {self.days} day(s))"
+        )
 
 
 class PlannerDay(models.Model):
