@@ -68,7 +68,10 @@ class planner_creation_form(forms.ModelForm):
             "days",
             "is_private",
         )
-        exclude = ("owner",)
+        exclude = (
+            "owner",
+            "chosen_list",
+        )
         widgets = {
             "days": Select(attrs={"class": "form-select form-select-sm"}),
             "is_private": CheckboxInput(attrs={"class": "form-check-input"}),
