@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
@@ -97,13 +97,13 @@ def recipes_view(request):
     recipes = Recipe.objects.all()
     quantities = Ingredient_List.objects.all()
     user = request.user
-    print(Planner.objects.all())
+
     if user.is_authenticated:
         user_favorites = user.favorite_dishes.all()
         favorite_dishes = [recipe.name for recipe in user_favorites]
-        planner = Planner.objects.filter(owner=user)
-        print(planner.get())
-        if user == Planner.objects.filter(owner=user):
+        planner = Planner.objects.filter(owner=user).latest("id")
+
+        if user == planner.owner:
             return render(
                 request,
                 "recipes.html",
@@ -122,7 +122,6 @@ def recipes_view(request):
                 "recipes": recipes,
                 "quantities": quantities,
                 "favorite_dishes": favorite_dishes,
-                "recipe_choices": favorite_dishes,
             },
         )
 
@@ -166,3 +165,25 @@ def add_planner(request):
 
     print("planner didn't save")
     return render(request, "index.html", {"planner_form": planner_creation_form()})
+
+
+@login_required(redirect_field_name="", login_url="login")
+def add_to_planner(request, id):
+    user = request.user
+
+    if user.is_authenticated:
+        planner = Planner.objects.filter(owner=user).latest("id")
+        recipe = get_object_or_404(Recipe, id=id)
+
+        if planner.not_saveable == False:
+            planner.chosen_list.add(recipe)
+
+            if planner.chosen_list.count == planner.days:
+                planner.not_saveable = True
+                planner.save(update_fields=["not_saveable"])
+
+            return redirect("recipes")
+
+        return redirect("index")
+
+    return redirect("login")
