@@ -12,5 +12,10 @@ urlpatterns = [
     path(
         "recipes/add_to_planner/<int:id>", views.add_to_planner, name="add_to_planner"
     ),
+    path(
+        "recipes/remove_from_planner/<int:id>)",
+        views.remove_from_planner,
+        name="remove_from_planner",
+    ),
     path("favorite/<int:id>", views.favorite_recipe, name="fav_recipe"),
 ]
