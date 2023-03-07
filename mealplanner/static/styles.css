@@ -66,9 +66,31 @@
     width: auto;
 }
 
-.stockPlannerBoxes {
-    background-color: pink;
+.stockPlannerBoxes,
+.plannerBoxes {
+    background-color: #bebebe;
     max-height: 100px;
     min-height: 100px;
     width: 150px;
+    border: 1px solid black;
+}
+
+.removeItem {
+    height: 18px;
+    width: 17px;
+}
+
+/* top-left top-right bottom-right bottom-left */
+.removeItem:hover {
+    width: 28px;
+    border-radius: 8px 2px 2px 8px;
+    text-align: center;
+}
+
+/* TODO: on hover do a width transform to the left and reveal "REMOVE?" */
+
+.bi::before,
+[class^="bi-x"]::before,
+[class*=" bi-x"]::before {
+    vertical-align: 0.875em;
 }
