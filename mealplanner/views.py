@@ -187,3 +187,19 @@ def add_to_planner(request, id):
         return redirect("index")
 
     return redirect("login")
+
+
+@login_required(redirect_field_name="", login_url="login")
+def remove_from_planner(request, id):
+    user = request.user
+
+    if user.is_authenticated:
+        planner = Planner.objects.filter(owner=user).latest("id")
+        recipe = Recipe.objects.filter(id=id)[0]
+
+        if recipe in planner.chosen_list.all():
+            planner.chosen_list.remove(recipe)
+
+        return redirect("recipes")
+
+    return redirect("login")
