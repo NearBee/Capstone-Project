@@ -11,7 +11,12 @@
 {% if planner %}
 <div class="planner container-fluid align-content-center my-3" style="display: grid;">
     <div class="row justify-content-center">
-        {% if planner.chosen_list == None %}
+        <div class="col-auto">
+            <h4>{{planner.name}}</h4>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        {% if planner.chosen_list.count == 0 %}
         <div class="col-auto">
             <h3 class="fw-light fst-italic">Add a recipe to the planner!</h3>
         </div>
