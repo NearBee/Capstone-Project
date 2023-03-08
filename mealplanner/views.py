@@ -17,6 +17,35 @@ from .models import (
 
 
 def index(request):
+    user = request.user
+
+    # TODO: create a new view for layout to add to an include
+    if not user.is_authenticated:
+        return render(
+            request,
+            "index.html",
+            {
+                "user_registration_form": user_registration_form,
+                "user_login_form": user_login_form,
+                "planner_form": planner_creation_form(),
+            },
+        )
+
+    owners_list = Planner.objects.filter(owner=user)
+    favorited_meals = user.favorite_dishes.all().count()
+    number_of_owned_plans = owners_list.count()
+
+    if not owners_list:
+        return render(
+            request,
+            "index.html",
+            {
+                "user_registration_form": user_registration_form,
+                "user_login_form": user_login_form,
+                "planner_form": planner_creation_form(),
+            },
+        )
+
     return render(
         request,
         "index.html",
@@ -24,6 +53,8 @@ def index(request):
             "user_registration_form": user_registration_form,
             "user_login_form": user_login_form,
             "planner_form": planner_creation_form(),
+            "number": number_of_owned_plans,
+            "favorite_meals": favorited_meals,
         },
     )
 
@@ -98,23 +129,21 @@ def recipes_view(request):
     quantities = Ingredient_List.objects.all()
     user = request.user
 
-    if user.is_authenticated:
-        user_favorites = user.favorite_dishes.all()
-        favorite_dishes = [recipe.name for recipe in user_favorites]
-        planner = Planner.objects.filter(owner=user).latest("id")
+    if not user.is_authenticated:
+        return render(
+            request,
+            "recipes.html",
+            {
+                "recipes": recipes,
+                "quantities": quantities,
+            },
+        )
 
-        if user == planner.owner:
-            return render(
-                request,
-                "recipes.html",
-                {
-                    "recipes": recipes,
-                    "quantities": quantities,
-                    "favorite_dishes": favorite_dishes,
-                    "planner": planner,
-                },
-            )
+    user_favorites = user.favorite_dishes.all()
+    favorite_dishes = [recipe.name for recipe in user_favorites]
+    planner = Planner.objects.filter(owner=user).latest("id")
 
+    if user != planner.owner:
         return render(
             request,
             "recipes.html",
@@ -131,6 +160,8 @@ def recipes_view(request):
         {
             "recipes": recipes,
             "quantities": quantities,
+            "favorite_dishes": favorite_dishes,
+            "planner": planner,
         },
     )
 
@@ -159,11 +190,9 @@ def add_planner(request):
             created_planner = planner_form.save(commit=False)
             created_planner.owner = user
             created_planner.save()
-            print("planner saved")
             message = "Planner Created!"
             return redirect("recipes")
 
-    print("planner didn't save")
     return render(request, "index.html", {"planner_form": planner_creation_form()})
 
 
@@ -171,35 +200,39 @@ def add_planner(request):
 def add_to_planner(request, id):
     user = request.user
 
-    if user.is_authenticated:
-        planner = Planner.objects.filter(owner=user).latest("id")
-        recipe = get_object_or_404(Recipe, id=id)
+    if not user.is_authenticated:
+        return redirect("login")
 
-        if planner.not_saveable == False:
-            planner.chosen_list.add(recipe)
+    planner = Planner.objects.filter(owner=user).latest("id")
+    recipe = get_object_or_404(Recipe, id=id)
 
-            if planner.chosen_list.count == planner.days:
-                planner.not_saveable = True
-                planner.save(update_fields=["not_saveable"])
+    if planner.not_saveable == True and planner.chosen_list.count() != planner.days:
+        planner.not_saveable = False
+        planner.save(update_fields=["not_saveable"])
+
+        return redirect("recipes")
+
+    if planner.not_saveable == False:
+        planner.chosen_list.add(recipe)
+
+        if planner.chosen_list.count() == planner.days:
+            planner.not_saveable = True
+            planner.save(update_fields=["not_saveable"])
 
             return redirect("recipes")
-
-        return redirect("index")
-
-    return redirect("login")
 
 
 @login_required(redirect_field_name="", login_url="login")
 def remove_from_planner(request, id):
     user = request.user
 
-    if user.is_authenticated:
-        planner = Planner.objects.filter(owner=user).latest("id")
-        recipe = Recipe.objects.filter(id=id)[0]
+    if not user.is_authenticated:
+        return redirect("login")
 
-        if recipe in planner.chosen_list.all():
-            planner.chosen_list.remove(recipe)
+    planner = Planner.objects.filter(owner=user).latest("id")
+    recipe = Recipe.objects.filter(id=id)[0]
 
-        return redirect("recipes")
+    if recipe in planner.chosen_list.all():
+        planner.chosen_list.remove(recipe)
 
-    return redirect("login")
+    return redirect("recipes")
