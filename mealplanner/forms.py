@@ -65,18 +65,22 @@ class planner_creation_form(forms.ModelForm):
     class Meta:
         model = Planner
         field = (
+            "name",
             "days",
             "is_private",
         )
         exclude = (
             "owner",
             "chosen_list",
+            "not_saveable",
         )
         widgets = {
+            "name": TextInput(attrs={"class": "form control"}),
             "days": Select(attrs={"class": "form-select form-select-sm"}),
             "is_private": CheckboxInput(attrs={"class": "form-check-input"}),
         }
         labels = {
+            "name": "Planner name:",
             "days": "How many days?",
             "is_private": "Will this plan be private?",
         }
