@@ -105,6 +105,9 @@ class NumberOfDays(IntEnum):
 class Planner(models.Model):
 
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    name = models.CharField(
+        default=f"No Name Planner", max_length=24, blank=True, null=True
+    )
     days = models.IntegerField(
         choices=[(day.value, day.name) for day in NumberOfDays],
         default=1,
