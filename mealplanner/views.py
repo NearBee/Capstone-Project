@@ -24,38 +24,11 @@ def index(request):
         return render(
             request,
             "index.html",
-            {
-                "user_registration_form": user_registration_form,
-                "user_login_form": user_login_form,
-                "planner_form": planner_creation_form(),
-            },
-        )
-
-    owners_list = Planner.objects.filter(owner=user)
-    favorited_meals = user.favorite_dishes.all().count()
-    number_of_owned_plans = owners_list.count()
-
-    if not owners_list:
-        return render(
-            request,
-            "index.html",
-            {
-                "user_registration_form": user_registration_form,
-                "user_login_form": user_login_form,
-                "planner_form": planner_creation_form(),
-            },
         )
 
     return render(
         request,
         "index.html",
-        {
-            "user_registration_form": user_registration_form,
-            "user_login_form": user_login_form,
-            "planner_form": planner_creation_form(),
-            "number": number_of_owned_plans,
-            "favorite_meals": favorited_meals,
-        },
     )
 
 
@@ -77,7 +50,8 @@ def register(request):
             username = form["username"].value()
             email = form["email"].value()
             password = form["password"].value()
-            User.objects.create_user(username, email, password)
+            user = User.objects.create_user(username, email, password)
+            login(request, user)
             return redirect("index")
 
         else:
@@ -220,6 +194,7 @@ def add_to_planner(request, id):
             planner.save(update_fields=["not_saveable"])
 
             return redirect("recipes")
+    return redirect("recipes")
 
 
 @login_required(redirect_field_name="", login_url="login")
@@ -236,3 +211,8 @@ def remove_from_planner(request, id):
         planner.chosen_list.remove(recipe)
 
     return redirect("recipes")
+
+
+@login_required(redirect_field_name="", login_url="login")
+def finalize_planner(request, id):
+    raise NotImplementedError

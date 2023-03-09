@@ -17,5 +17,10 @@ urlpatterns = [
         views.remove_from_planner,
         name="remove_from_planner",
     ),
+    path(
+        "recipes/finalize_planner/<int:id>)",
+        views.finalize_planner,
+        name="finalize_planner",
+    ),
     path("favorite/<int:id>", views.favorite_recipe, name="fav_recipe"),
 ]
