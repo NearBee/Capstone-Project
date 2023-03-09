@@ -18,7 +18,7 @@ urlpatterns = [
         name="remove_from_planner",
     ),
     path(
-        "recipes/finalize_planner/<int:id>)",
+        "finalize_planner/<int:id>",
         views.finalize_planner,
         name="finalize_planner",
     ),
