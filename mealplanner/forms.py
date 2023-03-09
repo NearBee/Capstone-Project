@@ -73,6 +73,7 @@ class planner_creation_form(forms.ModelForm):
             "owner",
             "chosen_list",
             "not_saveable",
+            "finished",
         )
         widgets = {
             "name": TextInput(attrs={"class": "form control"}),

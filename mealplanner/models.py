@@ -115,6 +115,7 @@ class Planner(models.Model):
     is_private = models.BooleanField(default=False)
     chosen_list = models.ManyToManyField(Recipe, related_name="chosen_dishes")
     not_saveable = models.BooleanField(default=False)
+    finished = models.BooleanField(default=False)
 
     def __str__(self):
         return (
