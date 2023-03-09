@@ -35,7 +35,14 @@
         {% endif %}
     </div>
 </div>
-{# TODO: Going to put a placeholder here soon for an "else" #}
+{% if planner.chosen_list.count == planner.days %}
+<div class="row justify-content-center">
+    <div class="col-6">
+        <button class="btn btn-success bg-gradient text-white w-100 finalizePlannerButton"
+            data-id="{{planner.id}}">Finalize Planner</button>
+    </div>
+</div>
+{% endif %}
 {% else %}
 <div class="stockPlanner container-fluid align-content-center my-3" style="display: grid;">
     <div class="row justify-content-center">
