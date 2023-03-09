@@ -34,6 +34,14 @@ document.addEventListener('DOMContentLoaded', function () {
         })
     }
 
+    // Find the button with the class "#finalizePlannerButton", then attach a click event to it
+    var finalizePlannerButton = document.querySelector('.finalizePlannerButton')
+    finalizePlannerButton.addEventListener('click', function () {
+        let id = finalizePlannerButton.getAttribute('data-id');
+
+        finalizePlanner(id);
+    })
+
     //TODO: Fix filter button with Javascript
 
     // filter items on button click
@@ -84,4 +92,25 @@ function favoriteRecipe(id) {
         .catch(error => {
             console.log(`${error}`);
         })
+}
+
+function finalizePlanner(id) {
+    let csrf = document.querySelector("#csrf").dataset.csrf;
+
+    fetch(`recipes/finalize_planner/${id}`, {
+        method: "POST",
+        body: JSON.stringify({
+            id: id
+        }),
+        headers: { "X-CSRFToken": csrf },
+        credentials: 'same-origin',
+    })
+
+        .catch(error => {
+            console.log(`${error}`);
+        })
+
+        .then((response => {
+            // TODO: Make changes to the html for the planner making it uneditable potentially
+        }))
 }
