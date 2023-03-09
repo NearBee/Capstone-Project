@@ -97,7 +97,7 @@ function favoriteRecipe(id) {
 function finalizePlanner(id) {
     let csrf = document.querySelector("#csrf").dataset.csrf;
 
-    fetch(`recipes/finalize_planner/${id}`, {
+    fetch(`/finalize_planner/${id}`, {
         method: "POST",
         body: JSON.stringify({
             id: id
@@ -111,6 +111,7 @@ function finalizePlanner(id) {
         })
 
         .then((response => {
+            console.log(id)
             // TODO: Make changes to the html for the planner making it uneditable potentially
         }))
 }
