@@ -215,4 +215,19 @@ def remove_from_planner(request, id):
 
 @login_required(redirect_field_name="", login_url="login")
 def finalize_planner(request, id):
-    raise NotImplementedError
+    user = request.user
+    if not user.is_authenticated:
+        return redirect("login")
+
+    if not request.method == "POST":
+        message = "Something seems to have gone wrong."
+        return redirect("recipes")
+
+    planner = Planner.objects.get(id=id)
+
+    planner.finished = True
+    planner.save(update_fields=["finished"])
+
+    # Return should actually go to a page that would show ALL
+    # finished/sharable planners
+    return redirect("recipes")
