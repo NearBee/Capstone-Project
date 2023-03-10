@@ -43,11 +43,11 @@ class Ingredient(models.Model):
 
 
 class Diets(Enum):
-    Vegetarian = "Vegetarian"
-    Vegan = "Vegan"
-    Pescetarian = "Pescetarian"
-    DairyFree = "Dairy-Free"
-    GlutenFree = "Gluten-Free"
+    vegetarian = "Vegetarian"
+    vegan = "Vegan"
+    pescetarian = "Pescetarian"
+    dairyfree = "Dairy-Free"
+    glutenfree = "Gluten-Free"
 
 
 class Recipe(models.Model):
