@@ -61,12 +61,12 @@
 <div class="row justify-content-center w-100 my-3">
     <div class="col-auto">
         <div class="button-group filter-button-group">
-            <button data-filter="">No Preference</button>
-            <button data-filter=".vegetarian">Vegetarian</button>
-            <button data-filter=".vegan">Vegan</button>
-            <button data-filter=".pescetarian">Pescetarian</button>
-            <button data-filter=".dairy-free">Dairy-Free</button>
-            <button data-filter=".gluten-free">Gluten-Free</button>
+            <button class="filter-item" data-filter="*">No Preference</button>
+            <button class="filter-item vegetarian" data-filter=".vegetarian">Vegetarian</button>
+            <button class="filter-item vegan" data-filter=".vegan">Vegan</button>
+            <button class="filter-item pescetarian" data-filter=".pescetarian">Pescetarian</button>
+            <button class="filter-item dairyfree" data-filter=".dairyfree">Dairy-Free</button>
+            <button class="filter-item glutenfree" data-filter=".glutenfree">Gluten-Free</button>
         </div>
     </div>
 </div>
@@ -76,7 +76,7 @@
     <div class="row justify-content-center">
         <div class="grid">
             {% for recipe in recipes %}
-            <button type="button" class="grid-item mb-2" data-bs-toggle="modal"
+            <button type="button" class="grid-item mb-2 {{ recipe.dietary_preference }}" data-bs-toggle="modal"
                 data-bs-target="#gridItemModal{{ recipe.id }}">
 
                 <div class="row justify-content-center">
