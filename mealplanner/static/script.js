@@ -46,10 +46,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // filter items on button click
     let filterButtonGroup = document.querySelector('.filter-button-group');
-    filterButtonGroup.addEventListener('click', 'button', function () {
-        var filterValue = filterButtonGroup.getAttribute('data-filter');
-        grid.isotope({ filter: filterValue });
+    filterButtonGroup.addEventListener('click', function (event) {
+        // only work with buttons
+        if (!matchesSelector(event.target, 'button')) {
+            return;
+        }
+        let filterValue = event.target.getAttribute('data-filter');
+        iso.arrange({ filter: filterValue });
+        console.log(filterValue);
     });
+
 
     // Form Errors
 
