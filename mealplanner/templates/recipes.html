@@ -7,19 +7,19 @@
 
 {# Planner section #}
 
-{% if planner %}
+{% if planner.finished == False %}
 <div class="planner container-fluid align-content-center my-3" style="display: grid;">
-    <div class="row justify-content-center">
-        <div class="col-auto">
-            <h4>{{planner.name}}</h4>
-        </div>
-    </div>
     <div class="row justify-content-center">
         {% if planner.chosen_list.count == 0 %}
         <div class="col-auto">
             <h3 class="fw-light fst-italic">Add a recipe to the planner!</h3>
         </div>
         {% else %}
+        <div class="row justify-content-center">
+            <div class="col-auto">
+                <h4>{{planner.name}}</h4>
+            </div>
+        </div>
         {% for choice in planner.chosen_list.all %}
         <div class="col-2 plannerBoxes border mx-2  shadow-sm position-relative" data-id="{{choice.id}}">
             <div class="col-auto">{{choice}}</div>
@@ -42,37 +42,51 @@
             data-id="{{planner.id}}">Finalize Planner</button>
     </div>
 </div>
+{% else %}
+<div class="row justify-content-center">
+    <div class="col-6">
+        <button class="btn btn-success bg-gradient text-white w-100 finalizePlannerButton" data-id="{{planner.id}}"
+            disabled>Finalize Planner</button>
+    </div>
+</div>
 {% endif %}
 {% else %}
 <div class="stockPlanner container-fluid align-content-center my-3" style="display: grid;">
+    <div class="stockPlannerImage"></div>
     <div class="row justify-content-center">
-        {% for recipe in recipe_choices %}
-        <div class="col-2 stockPlannerBoxes border mx-2">
-            <a href="{% url 'index' %}">
-                <span>{{recipe}}</span>
+        {# <!-- Maybe do a modal right here for creating a planner on the recipe page --> #}
+        <div class="col-6 stockPlannerBoxes border">
+            <a class="createPlannerLink text-white text-decoration-none fs-3 fw-light" href="{% url 'index' %}">
+                <span>Create a planner now!</span>
             </a>
         </div>
-        {% endfor %}
+
     </div>
 </div>
 {% endif %}
 
 {# Filter group #}
-<div class="row justify-content-center w-100 my-3">
-    <div class="col-auto">
-        <div class="button-group filter-button-group">
-            <button class="filter-item" data-filter="*">No Preference</button>
-            <button class="filter-item vegetarian" data-filter=".vegetarian">Vegetarian</button>
-            <button class="filter-item vegan" data-filter=".vegan">Vegan</button>
-            <button class="filter-item pescetarian" data-filter=".pescetarian">Pescetarian</button>
-            <button class="filter-item dairyfree" data-filter=".dairyfree">Dairy-Free</button>
-            <button class="filter-item glutenfree" data-filter=".glutenfree">Gluten-Free</button>
+<div class="container-fluid">
+    <div class="row justify-content-center my-3">
+        <div class="col-auto">
+            <div class="btn-group filter-button-group">
+                <button class="filter-item btn btn-sm btn-outline-secondary" data-filter="*">No Preference</button>
+                <button class="filter-item btn btn-sm btn-outline-secondary vegetarian"
+                    data-filter=".vegetarian">Vegetarian</button>
+                <button class="filter-item btn btn-sm btn-outline-secondary vegan" data-filter=".vegan">Vegan</button>
+                <button class="filter-item btn btn-sm btn-outline-secondary pescetarian"
+                    data-filter=".pescetarian">Pescetarian</button>
+                <button class="filter-item btn btn-sm btn-outline-secondary dairyfree"
+                    data-filter=".dairyfree">Dairy-Free</button>
+                <button class="filter-item btn btn-sm btn-outline-secondary glutenfree"
+                    data-filter=".glutenfree">Gluten-Free</button>
+            </div>
         </div>
     </div>
 </div>
 
 {# Isotope grid layout #}
-<div class="container-fluid">
+<div class="container fluid">
     <div class="row justify-content-center">
         <div class="grid">
             {% for recipe in recipes %}
