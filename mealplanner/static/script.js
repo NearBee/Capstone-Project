@@ -8,7 +8,8 @@ document.addEventListener('DOMContentLoaded', function () {
     var iso = new Isotope(grid, {
         itemSelector: '.grid-item',
         masonry: {
-            columnWidth: 42
+            columnWidth: 25,
+            fitWidth: true
         }
     });
 
@@ -33,17 +34,6 @@ document.addEventListener('DOMContentLoaded', function () {
             favoriteRecipe(id);
         })
     }
-
-    // Find the button with the class "#finalizePlannerButton", then attach a click event to it
-    var finalizePlannerButton = document.querySelector('.finalizePlannerButton')
-    finalizePlannerButton.addEventListener('click', function () {
-        let id = finalizePlannerButton.getAttribute('data-id');
-
-        finalizePlanner(id);
-    })
-
-    //TODO: Fix filter button with Javascript
-
     // filter items on button click
     let filterButtonGroup = document.querySelector('.filter-button-group');
     filterButtonGroup.addEventListener('click', function (event) {
@@ -55,6 +45,15 @@ document.addEventListener('DOMContentLoaded', function () {
         iso.arrange({ filter: filterValue });
         console.log(filterValue);
     });
+
+    // Find the button with the class "#finalizePlannerButton", then attach a click event to it
+    var finalizePlannerButton = document.querySelector('.finalizePlannerButton')
+    finalizePlannerButton.addEventListener('click', function () {
+        let id = finalizePlannerButton.getAttribute('data-id');
+
+        finalizePlanner(id);
+    });
+
 
 
     // Form Errors
