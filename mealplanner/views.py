@@ -231,3 +231,17 @@ def finalize_planner(request, id):
     # Return should actually go to a page that would show ALL
     # finished/sharable planners
     return redirect("recipes")
+
+
+def planner_page_view(request):
+    user = request.user
+    planners = Planner.objects.all().filter(finished=True)
+
+    if not user.is_authenticated:
+        return render(request, "planner_page.html", {"planners": planners})
+
+    return render(request, "planner_page.html", {"planners": planners})
+
+
+def calendar_view(request):
+    return render(request, "calendar.html")
