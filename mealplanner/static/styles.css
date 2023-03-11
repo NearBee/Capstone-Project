@@ -85,7 +85,7 @@
     border: 3px solid #f1f1f1;
     border-radius: 4px;
     position: absolute;
-    top: 15%;
+    top: 134px;
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 2;
@@ -121,4 +121,15 @@
 [class^="bi-x"]::before,
 [class*=" bi-x"]::before {
     vertical-align: 0.875em;
+}
+
+.plannerIcons {
+    height: 24px;
+    font-size: x-large;
+}
+
+.editRow:hover,
+.listRow:hover,
+.likeRow:hover {
+    cursor: pointer;
 }
