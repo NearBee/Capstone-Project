@@ -9,6 +9,7 @@ urlpatterns = [
     path("logout", views.logout_view, name="logout"),
     path("recipes", views.recipes_view, name="recipes"),
     path("recipes/add_planner", views.add_planner, name="add_planner"),
+    path("favorite/<int:id>", views.favorite_recipe, name="fav_recipe"),
     path(
         "recipes/add_to_planner/<int:id>", views.add_to_planner, name="add_to_planner"
     ),
@@ -22,5 +23,6 @@ urlpatterns = [
         views.finalize_planner,
         name="finalize_planner",
     ),
-    path("favorite/<int:id>", views.favorite_recipe, name="fav_recipe"),
+    path("planners", views.planner_page_view, name="planner_page"),
+    path("calendar", views.calendar_view, name="calendar"),
 ]
