@@ -26,8 +26,9 @@
                 </a>
                 <div class="navbar-nav justify-content-center">
                     <a class="nav-link active text-white" aria-current="page" href="{% url 'index' %}">Home</a>
-                    <a class="nav-link text-white" href="#">Calendar</a>
+                    <a class="nav-link text-white" href="{% url 'calendar' %}">Calendar</a>
                     <a class="nav-link text-white" href="{% url 'recipes' %}">Recipes</a>
+                    <a class="nav-link text-white" href="{% url 'planner_page' %}">Planners</a>
                 </div>
                 <div class="navbar-nav">
                     {% if user.is_authenticated %}
