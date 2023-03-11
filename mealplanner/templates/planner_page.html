@@ -1,0 +1,39 @@
+{% extends 'layout.html' %}
+
+{% block title %}Planners{% endblock %}
+
+{% block body %}
+<div class="container-fluid mt-3">
+    {% for planner in planners %}
+    <div class="row justify-content-center">
+        <div class="card my-2 w-75">
+            <div class="row">
+                <div class="col-md-2">
+                    {{planner.owner}}
+                </div>
+                <div class="col-md-9 border-end border-start border-primary">
+                    {{planner.days}}
+                </div>
+                <div class="col-md-1">
+                    <div class="row justify-content-center pb-4 pt-4 border-bottom editRow">
+                        <div class="d-flex col-auto align-items-center">
+                            <i class="bi bi-pencil-square plannerIcons"></i>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center py-4 listRow">
+                        <div class="d-flex col-auto align-items-center">
+                            <i class="bi bi-list-ol plannerIcons"></i>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center pt-4 pb-4 border-top likeRow">
+                        <div class="d-flex col-auto align-items-center">
+                            <i class="bi bi-hand-thumbs-up plannerIcons"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
