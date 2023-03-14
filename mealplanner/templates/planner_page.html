@@ -1,4 +1,5 @@
 {% extends 'layout.html' %}
+{% load static %}
 
 {% block title %}Planners{% endblock %}
 
@@ -11,23 +12,59 @@
                 <div class="col-md-2">
                     {{planner.owner}}
                 </div>
-                <div class="col-md-9 border-end border-start border-primary">
-                    {{planner.days}}
+                <div class="col-md-9 border-end border-start border-primary" style="display: grid;">
+                    <div class="row justify-content-center">
+                        <!-- Recipes Section -->
+                        {% for item in planner.chosen_list.all %}
+                        <div class="col-auto align-self-center">
+                            <div class="border plannerItemSquares" data-bs-html="true" data-bs-toggle="tooltip"
+                                data-bs-placement="bottom"
+                                data-bs-title='Meal: {{item.name}} <br> Dietary Preference: {{ item.get_dietary_preference_display }}'>
+                                {% if item.dietary_preference == 'pescetarian' %}
+                                <i
+                                    class="position-sticky top-100 start-100 fa-solid fa-fish-fins fa-lg border-start border-top px-1 py-1 dietaryIcons"></i>
+                                {% elif item.dietary_preference == 'vegan' %}
+                                <i
+                                    class="position-sticky top-100 start-100 fa-solid fa-seedling fa-lg border-start border-top px-1 py-1 dietaryIcons"></i>
+                                {% elif item.dietary_preference == 'vegetarian' %}
+                                <i
+                                    class="position-sticky top-100 start-100 fa-solid fa-leaf fa-lg border-start border-top px-1 py-1 dietaryIcons"></i>
+                                {% elif item.dietary_preference == 'dairyfree' %}
+                                <i
+                                    class="position-sticky top-100 start-100 fa-solid fa-cow fa-lg border-start border-top px-1 py-1 dietaryIcons"></i>
+                                <!-- <i
+                                    class="position-sticky top-100 start-100 fa-solid fa-ban fa-lg dietaryIconsCancel"></i> -->
+                                {% elif item.dietary_preference == 'glutenfree' %}
+                                <i
+                                    class="position-sticky top-100 start-100 fa-solid fa-wheat-awn fa-lg border-start border-top px-1 py-1 dietaryIcons"></i>
+                                <!-- <i
+                                    class="position-sticky top-100 start-100 fa-solid fa-ban fa-lg dietaryIconsCancel"></i> -->
+                                {% else %}
+                                <i
+                                    class="position-sticky top-100 start-100 fa-solid fa-drumstick-bite fa-lg border-start border-top px-1 py-1 dietaryIcons"></i>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
                 </div>
                 <div class="col-md-1">
                     <div class="row justify-content-center pb-4 pt-4 border-bottom editRow">
-                        <div class="d-flex col-auto align-items-center">
-                            <i class="bi bi-pencil-square plannerIcons"></i>
+                        <div class="d-flex col-auto align-items-center" data-bs-toggle="tooltip"
+                            data-bs-placement="right" data-bs-title="Make edits">
+                            <i class="fa-regular fa-pen-to-square plannerIcons"></i>
                         </div>
                     </div>
                     <div class="row justify-content-center py-4 listRow">
-                        <div class="d-flex col-auto align-items-center">
-                            <i class="bi bi-list-ol plannerIcons"></i>
+                        <div class="d-flex col-auto align-items-center" data-bs-toggle="tooltip"
+                            data-bs-placement="right" data-bs-title="Add to shopping list">
+                            <i class="fa-solid fa-cart-plus plannerIcons"></i>
                         </div>
                     </div>
                     <div class="row justify-content-center pt-4 pb-4 border-top likeRow">
-                        <div class="d-flex col-auto align-items-center">
-                            <i class="bi bi-hand-thumbs-up plannerIcons"></i>
+                        <div class="d-flex col-auto align-items-center" data-bs-toggle="tooltip"
+                            data-bs-placement="right" data-bs-title="Like this planner">
+                            <i class="fa-regular fa-thumbs-up plannerIcons"></i>
                         </div>
                     </div>
                 </div>
@@ -36,4 +73,8 @@
     </div>
     {% endfor %}
 </div>
+{% endblock %}
+
+{% block script %}
+<script src="{% static 'script.js' %}"></script>
 {% endblock %}
