@@ -133,3 +133,60 @@
 .likeRow:hover {
     cursor: pointer;
 }
+
+.plannerItemSquares {
+    height: 90px;
+    width: 90px;
+    background-image: url(Food_placeholder.jpg);
+    background-size: 120px 120px;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.dietaryIcons {
+    border-top-left-radius: 4px;
+    background-color: white;
+    /* opacity: .7; */
+}
+
+.dietaryIconsCancel {
+    color: red;
+    height: 28.57px;
+    width: 28.57px;
+    opacity: .55;
+}
+
+
+
+
+.fa-stack.small {
+    font-size: 15px;
+}
+
+/* Custom CSS for specific icons */
+
+.fa-fish-fins {
+    color: #92d6dc;
+}
+
+.fa-wheat-awn {
+    color: gold;
+}
+
+.fa-leaf {
+    color: forestgreen;
+}
+
+.fa-seedling {
+    color: #92f200;
+}
+
+.fa-drumstick-bite {
+    color: #cb9c1b;
+}
+
+.fa-cow {
+    color: brown;
+    height: 20.57px;
+    width: 20.57px;
+}
