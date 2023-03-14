@@ -4,6 +4,8 @@
 
 document.addEventListener('DOMContentLoaded', function () {
 
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+    const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
     var grid = document.querySelector('.grid');
     var iso = new Isotope(grid, {
         itemSelector: '.grid-item',
@@ -64,6 +66,7 @@ document.addEventListener('DOMContentLoaded', function () {
         form.classList.add('has-error');
     }
     console.log(form);
+
 })
 // Isotope JS+
 
