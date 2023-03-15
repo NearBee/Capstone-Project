@@ -116,6 +116,12 @@ class Planner(models.Model):
     chosen_list = models.ManyToManyField(Recipe, related_name="chosen_dishes")
     not_saveable = models.BooleanField(default=False)
     finished = models.BooleanField(default=False)
+    likes = models.ManyToManyField(
+        User,
+        related_name="user_likes",
+        blank=True,
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return (
