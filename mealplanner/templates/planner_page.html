@@ -10,7 +10,23 @@
         <div class="card my-2 w-75">
             <div class="row">
                 <div class="col-md-2">
-                    {{planner.owner}}
+                    <div class="row justify-content-center">
+                        <div class="col-auto my-2">
+                            {{planner.owner}}
+                        </div>
+                    </div>
+                    <div class="row justify-content-center border-bottom border-top">
+                        <div class="col-auto mt-2 mb-3">
+                            This is where the profile picture will go
+                        </div>
+                    </div>
+                    <div class="row justify-content-center mt-2">
+                        <div class="col-auto">
+                            <p class="plannerInfoFonts">Date Created: <b class="fw-lighter">
+                                    {{ planner.created_at|date:"D m/d/Y" }}</b>
+                            </p>
+                        </div>
+                    </div>
                 </div>
                 <div class="col-md-9 border-end border-start border-primary" style="display: grid;">
                     <div class="row justify-content-center">
@@ -32,13 +48,9 @@
                                 {% elif item.dietary_preference == 'dairyfree' %}
                                 <i
                                     class="position-sticky top-100 start-100 fa-solid fa-cow fa-lg border-start border-top px-1 py-1 dietaryIcons"></i>
-                                <!-- <i
-                                    class="position-sticky top-100 start-100 fa-solid fa-ban fa-lg dietaryIconsCancel"></i> -->
                                 {% elif item.dietary_preference == 'glutenfree' %}
                                 <i
                                     class="position-sticky top-100 start-100 fa-solid fa-wheat-awn fa-lg border-start border-top px-1 py-1 dietaryIcons"></i>
-                                <!-- <i
-                                    class="position-sticky top-100 start-100 fa-solid fa-ban fa-lg dietaryIconsCancel"></i> -->
                                 {% else %}
                                 <i
                                     class="position-sticky top-100 start-100 fa-solid fa-drumstick-bite fa-lg border-start border-top px-1 py-1 dietaryIcons"></i>
@@ -48,23 +60,27 @@
                         {% endfor %}
                     </div>
                 </div>
-                <div class="col-md-1">
+                <div class="col-md-1 buttonsCol">
                     <div class="row justify-content-center pb-4 pt-4 border-bottom editRow">
                         <div class="d-flex col-auto align-items-center" data-bs-toggle="tooltip"
                             data-bs-placement="right" data-bs-title="Make edits">
                             <i class="fa-regular fa-pen-to-square plannerIcons"></i>
                         </div>
                     </div>
-                    <div class="row justify-content-center py-4 listRow">
+                    <div class="row justify-content-center py-4 listRow" data-id="{{planner.id}}">
                         <div class="d-flex col-auto align-items-center" data-bs-toggle="tooltip"
                             data-bs-placement="right" data-bs-title="Add to shopping list">
                             <i class="fa-solid fa-cart-plus plannerIcons"></i>
                         </div>
                     </div>
-                    <div class="row justify-content-center pt-4 pb-4 border-top likeRow">
+                    <div class="row justify-content-center pt-4 pb-4 border-top likeRow" data-id="{{planner.id}}">
                         <div class="d-flex col-auto align-items-center" data-bs-toggle="tooltip"
                             data-bs-placement="right" data-bs-title="Like this planner">
-                            <i class="fa-regular fa-thumbs-up plannerIcons"></i>
+                            <div id="csrf" data-csrf="{{ csrf_token }}"></div>
+                            <span class="fa-layers fa-fw">
+                                <i class="fa-regular fa-thumbs-up plannerIcons"></i>
+                                <span class="fa-layers-counter likeButton{{planner.id}}">{{planner.likes.count}}</span>
+                            </span>
                         </div>
                     </div>
                 </div>
