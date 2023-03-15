@@ -24,5 +24,8 @@ urlpatterns = [
         name="finalize_planner",
     ),
     path("planners", views.planner_page_view, name="planner_page"),
+    path("like_planner/<int:id>", views.like_planner, name="like_planner"),
+    path("get_likes/<int:id>", views.get_likes, name="get_likes"),
+    path("add_to_cart/<int:id>", views.add_to_cart, name="add_to_cart"),
     path("calendar", views.calendar_view, name="calendar"),
 ]
