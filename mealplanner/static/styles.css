@@ -128,10 +128,38 @@
     font-size: x-large;
 }
 
+.editRow,
+.listRow,
+.likeRow {
+    background-color: #ffffff;
+}
+
+.editRow {
+    border-top-right-radius: 6px;
+}
+
+.likeRow {
+    border-bottom-right-radius: 6px;
+}
+
 .editRow:hover,
 .listRow:hover,
 .likeRow:hover {
     cursor: pointer;
+    background-color: #d9dada;
+}
+
+.editRow:active,
+.listRow:active,
+.likeRow:active {
+    transform: translateY(1px);
+    background-color: #adafaf;
+}
+
+.buttonsCol {
+    background-color: #adafaf;
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
 }
 
 .plannerItemSquares {
@@ -156,11 +184,20 @@
     opacity: .55;
 }
 
-
-
+.plannerInfoFonts {
+    font-size: small;
+}
 
 .fa-stack.small {
     font-size: 15px;
+}
+
+.fa-layers-counter {
+    background: red;
+    --fa-counter-padding: 3px;
+    --fa-counter-scale: .65;
+    --fa-right: -14px !important;
+    --fa-top: -11px;
 }
 
 /* Custom CSS for specific icons */
