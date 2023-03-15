@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 
 from .forms import user_registration_form, user_login_form, planner_creation_form
@@ -50,7 +50,7 @@ def register(request):
             username = form["username"].value()
             email = form["email"].value()
             password = form["password"].value()
-            user = User.objects.create_user(username, email, password)
+            user = User.objects.create_user(username, email, password)  # type: ignore
             login(request, user)
             return redirect("index")
 
@@ -241,6 +241,39 @@ def planner_page_view(request):
         return render(request, "planner_page.html", {"planners": planners})
 
     return render(request, "planner_page.html", {"planners": planners})
+
+
+@login_required(redirect_field_name="", login_url="login")
+def like_planner(request, id):
+    planner = Planner.objects.get(id=id)
+    if not request.user.is_authenticated:
+        return redirect("login")
+
+    if not request.method == "POST":
+        message = "Something went wrong"
+        return redirect("planner_page")
+
+    if not request.user in planner.likes.all():
+        planner.likes.add(request.user)
+    else:
+        planner.likes.remove(request.user)
+
+    return redirect("planner_page")
+
+
+def get_likes(request, id):
+    target_planner = Planner.objects.get(id=id)
+    return JsonResponse({"likes": target_planner.likes.count()})
+
+
+@login_required(redirect_field_name="", login_url="login")
+def add_to_cart(request, id):
+    planner = Planner.objects.get(id=id)
+    if not request.method == "POST":
+        message = "Something went wrong"
+        return redirect("planner_page")
+
+    return redirect("planner_page")
 
 
 def calendar_view(request):
