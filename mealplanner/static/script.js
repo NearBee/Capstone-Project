@@ -15,6 +15,37 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
+    // Finding favorite buttons on a recipe and attaching the favoriteRecipe function to them
+    var favoriteButton = document.getElementsByClassName('favStar');
+    for (let button of favoriteButton) {
+        button.addEventListener('click', function () {
+            let id = button.getAttribute('data-id');
+
+            favoriteRecipe(id);
+        });
+    }
+
+    // Finding like buttons on a planner and attaching the "likePlanner" function to them
+    var likeButtons = document.getElementsByClassName("likeRow")
+    for (let button of likeButtons) {
+        button.addEventListener('click', function () {
+            let id = button.getAttribute('data-id');
+
+            likePlanner(id);
+        });
+    }
+
+    // Finding add to cart buttons on a planner and attaching the "addToCart" function to them
+    var addToCartButtons = document.getElementsByClassName('listRow')
+    for (let button of addToCartButtons) {
+        button.addEventListener('click', function () {
+            let id = button.getAttribute('data-id');
+
+            addToCart(id);
+        })
+    }
+
+    // Allows for use of the recipes in the grid using isotope, also re-sorts them after each content load
     grid.addEventListener('click', function (event) {
         var target = event.target;
 
@@ -28,14 +59,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     });
 
-    var favoriteButton = document.getElementsByClassName('favStar');
-    for (let button of favoriteButton) {
-        button.addEventListener('click', function () {
-            let id = button.getAttribute('data-id');
-
-            favoriteRecipe(id);
-        })
-    }
     // filter items on button click
     let filterButtonGroup = document.querySelector('.filter-button-group');
     filterButtonGroup.addEventListener('click', function (event) {
@@ -121,5 +144,59 @@ function finalizePlanner(id) {
         .then((response => {
             console.log(id)
             // TODO: Make changes to the html for the planner making it uneditable potentially
+        }))
+}
+
+function likePlanner(id) {
+    let csrf = document.querySelector("#csrf").dataset.csrf;
+
+    fetch(`/like_planner/${id}`, {
+        method: "POST",
+        body: JSON.stringify({
+            id: id,
+        }),
+        headers: { "X-CSRFTOKEN": csrf },
+        credentials: 'same-origin',
+    })
+
+        .catch(error => {
+            console.log(`${error}`);
+        })
+
+        .then(() => {
+            fetch(`/get_likes/${id}`)
+                .then(response => response.json())
+                .then(data => {
+                    const likes = data.likes;
+                    document.querySelector(`.likeButton${id}`).innerHTML = `${likes}`;
+                })
+                .catch(error => {
+                    console.log(`${error}`);
+                })
+        })
+
+        .catch(error => {
+            console.log(`${error}`);
+        });
+}
+
+function addToCart(id) {
+    let csrf = document.querySelector("#csrf").dataset.csrf;
+
+    fetch(`/add_to_cart/${id}`, {
+        method: "POST",
+        body: JSON.stringify({
+            id: id,
+        }),
+        headers: { "X-CSRFTOKEN": csrf },
+        credentials: 'same-origin',
+    })
+        .catch(error => {
+            console.log(`${error}`);
+        })
+
+        .then((response => {
+            console.log(id)
+            //TODO: Do something with the cart button
         }))
 }
