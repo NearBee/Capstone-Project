@@ -46,38 +46,44 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Allows for use of the recipes in the grid using isotope, also re-sorts them after each content load
-    grid.addEventListener('click', function (event) {
-        var target = event.target;
+    if (grid) {
+        grid.addEventListener('click', function (event) {
+            var target = event.target;
 
-        iso.layout();
-        let content = target.querySelector('.content-row');
-        if (!content.style.display.includes('none')) {
-            content.style.display = 'none';
-        } else {
-            content.style.display = 'block';
-        }
+            iso.layout();
+            let content = target.querySelector('.content-row');
+            if (!content.style.display.includes('none')) {
+                content.style.display = 'none';
+            } else {
+                content.style.display = 'block';
+            }
 
-    });
+        });
+    }
 
     // filter items on button click
     let filterButtonGroup = document.querySelector('.filter-button-group');
-    filterButtonGroup.addEventListener('click', function (event) {
-        // only work with buttons
-        if (!matchesSelector(event.target, 'button')) {
-            return;
-        }
-        let filterValue = event.target.getAttribute('data-filter');
-        iso.arrange({ filter: filterValue });
-        console.log(filterValue);
-    });
+    if (filterButtonGroup) {
+        filterButtonGroup.addEventListener('click', function (event) {
+            // only work with buttons
+            if (!matchesSelector(event.target, 'button')) {
+                return;
+            }
+            let filterValue = event.target.getAttribute('data-filter');
+            iso.arrange({ filter: filterValue });
+            console.log(filterValue);
+        });
+    }
 
     // Find the button with the class "#finalizePlannerButton", then attach a click event to it
     var finalizePlannerButton = document.querySelector('.finalizePlannerButton')
-    finalizePlannerButton.addEventListener('click', function () {
-        let id = finalizePlannerButton.getAttribute('data-id');
+    if (finalizePlannerButton) {
+        finalizePlannerButton.addEventListener('click', function () {
+            let id = finalizePlannerButton.getAttribute('data-id');
 
-        finalizePlanner(id);
-    });
+            finalizePlanner(id);
+        });
+    }
 
 
 
@@ -85,10 +91,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
     var form = document.getElementById('register-form');
 
-    if (Object.keys(errors).length > 0) {
-        form.classList.add('has-error');
+    if (form) {
+        if (Object.keys(errors).length > 0) {
+            form.classList.add('has-error');
+        }
+        console.log(form);
     }
-    console.log(form);
 
 })
 // Isotope JS+
@@ -191,12 +199,11 @@ function addToCart(id) {
         headers: { "X-CSRFTOKEN": csrf },
         credentials: 'same-origin',
     })
+        .then((response) => response.json())
+        .then((result) => { console.log(result) })
         .catch(error => {
             console.log(`${error}`);
-        })
+        });
 
-        .then((response => {
-            console.log(id)
-            //TODO: Do something with the cart button
-        }))
+    // TODO: Do something with the result
 }
