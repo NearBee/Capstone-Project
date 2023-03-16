@@ -220,8 +220,7 @@ def finalize_planner(request, id):
         return redirect("login")
 
     if not request.method == "POST":
-        message = "Something seems to have gone wrong."
-        return redirect("recipes")
+        return JsonResponse({"error": "Something went wrong"}, status=404)
 
     planner = Planner.objects.get(id=id)
 
@@ -230,7 +229,7 @@ def finalize_planner(request, id):
 
     # Return should actually go to a page that would show ALL
     # finished/sharable planners
-    return redirect("recipes")
+    return JsonResponse({"message": "Planner liked!"}, status=200)
 
 
 def planner_page_view(request):
@@ -250,15 +249,14 @@ def like_planner(request, id):
         return redirect("login")
 
     if not request.method == "POST":
-        message = "Something went wrong"
-        return redirect("planner_page")
+        return JsonResponse({"error": "Something went wrong"}, status=404)
 
-    if not request.user in planner.likes.all():
-        planner.likes.add(request.user)
-    else:
+    if request.user in planner.likes.all():
         planner.likes.remove(request.user)
+    else:
+        planner.likes.add(request.user)
 
-    return redirect("planner_page")
+    return JsonResponse({"message": "Planner liked!"}, status=200)
 
 
 def get_likes(request, id):
@@ -269,11 +267,41 @@ def get_likes(request, id):
 @login_required(redirect_field_name="", login_url="login")
 def add_to_cart(request, id):
     planner = Planner.objects.get(id=id)
-    if not request.method == "POST":
-        message = "Something went wrong"
-        return redirect("planner_page")
+    shopping_list = {}
 
-    return redirect("planner_page")
+    if not request.method == "POST":
+        return JsonResponse({"error": "Something went wrong"}, status=404)
+
+    for recipe in planner.chosen_list.all():
+        for ingredient in recipe.ingredient_details.filter(recipe=recipe):
+            name = ingredient.ingredient.name
+            quantity = ingredient.quantity
+            unit_of_measurement = ingredient.ingredient.unit_of_measurement
+
+            if name in shopping_list:
+                # The item is already on the Shopping List
+                shopping_list[name][0] += quantity
+
+            # The item is not already in the shopping list
+            shopping_list[name] = [
+                quantity,
+                unit_of_measurement,
+            ]
+
+    # Example to use for templating in django
+    for item, details in shopping_list.items():
+        quanity, units = details
+        print(f"{item}: {quanity:g} {units}")
+
+    print(shopping_list.items())
+
+    return JsonResponse(
+        {
+            "message": f"Planner: {planner.name} ingredients added to cart!",
+            "shopping_list": shopping_list,
+        },
+        status=200,
+    )
 
 
 def calendar_view(request):
