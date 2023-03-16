@@ -30,6 +30,7 @@ class Ingredient(models.Model):
         ("Pints", "pint"),
         ("Pounds", "pound"),
         ("Quantity", "quantity"),
+        ("Each", "each"),
     ]
     name = models.CharField(max_length=100)
     unit_of_measurement = models.CharField(
