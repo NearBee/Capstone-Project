@@ -289,11 +289,9 @@ def add_to_cart(request, id):
             ]
 
     # Example to use for templating in django
-    for item, details in shopping_list.items():
-        quanity, units = details
-        print(f"{item}: {quanity:g} {units}")
-
-    print(shopping_list.items())
+    # for item, details in shopping_list.items():
+    #     quanity, units = details
+    #     print(f"{item}: {quanity:g} {units}")
 
     return JsonResponse(
         {
