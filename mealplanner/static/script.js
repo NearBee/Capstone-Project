@@ -45,6 +45,19 @@ document.addEventListener('DOMContentLoaded', function () {
         })
     }
 
+    // nifty little animation for button click
+    var clickableButtons = document.getElementsByClassName('plannerButton');
+    for (var button of clickableButtons) {
+        console.log("setting button");
+        button.addEventListener('click', function () {
+            this.classList.add("pulse");
+            var target = this;
+            setTimeout(function () {
+                target.classList.remove("pulse");
+            }, 800);
+        });
+    }
+
     // Allows for use of the recipes in the grid using isotope, also re-sorts them after each content load
     if (grid) {
         grid.addEventListener('click', function (event) {
@@ -200,10 +213,38 @@ function addToCart(id) {
         credentials: 'same-origin',
     })
         .then((response) => response.json())
-        .then((result) => { console.log(result) })
+        .then((result) => {
+            console.log(result.shopping_list)
+            let newFormat = "";
+
+
+            // Get shopping modal
+            var modal = document.getElementById("shoppingModal")
+
+            // Set the modal content to the JSON result
+            var modalBody = modal.querySelector('.modal-body');
+
+            for (let [name, [quantity, unit]] of Object.entries(result.shopping_list)) {
+                newFormat += `
+                <div class="row justify-content-between lh-1">
+                    <div class="col-8">
+                        <div>${name} : </div>
+                    </div>
+                    <div class="col-4">
+                        <div>${quantity} ${unit}</div>
+                    </div>
+                </div>
+                <hr>`
+            }
+
+            modalBody.innerHTML = newFormat;
+
+        })
         .catch(error => {
             console.log(`${error}`);
         });
 
     // TODO: Do something with the result
 }
+
+document.querySelector("#shoppingModal > div > div > div.modal-body.bg-body-light")
