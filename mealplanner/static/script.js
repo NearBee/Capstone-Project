@@ -84,7 +84,6 @@ document.addEventListener('DOMContentLoaded', function () {
             }
             let filterValue = event.target.getAttribute('data-filter');
             iso.arrange({ filter: filterValue });
-            console.log(filterValue);
         });
     }
 
@@ -163,7 +162,6 @@ function finalizePlanner(id) {
         })
 
         .then((response => {
-            console.log(id)
             // TODO: Make changes to the html for the planner making it uneditable potentially
         }))
 }
@@ -246,5 +244,3 @@ function addToCart(id) {
 
     // TODO: Do something with the result
 }
-
-document.querySelector("#shoppingModal > div > div > div.modal-body.bg-body-light")
