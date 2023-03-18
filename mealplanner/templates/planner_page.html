@@ -62,12 +62,14 @@
                 </div>
                 <div class="col-md-1 buttonsCol">
 
-                    <div class="row justify-content-center pb-4 pt-4 border-bottom editRow plannerButton">
-                        <div class="d-flex col-auto align-items-center" data-bs-toggle="tooltip"
-                            data-bs-placement="right" data-bs-title="Make edits">
-                            <i class="fa-regular fa-pen-to-square plannerIcons"></i>
+                    <a href="{% url 'edit_planner' planner.id %}" class="editLink">
+                        <div class="row justify-content-center pb-4 pt-4 border-bottom editRow plannerButton">
+                            <div class="d-flex col-auto align-items-center" data-bs-toggle="tooltip"
+                                data-bs-placement="right" data-bs-title="Make edits">
+                                <i class="fa-regular fa-pen-to-square plannerIcons"></i>
+                            </div>
                         </div>
-                    </div>
+                    </a>
 
                     <span data-bs-toggle="modal" data-bs-target="#shoppingModal">
                         <div class="row justify-content-center py-4 listRow plannerButton" data-id="{{planner.id}}">
