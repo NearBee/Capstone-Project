@@ -147,7 +147,7 @@
 
     70% {
         -moz-box-shadow: 0 0 0 30px rgba(255, 79, 93, 0);
-        box-shadow: 0 0 0 -30px rgba(255, 79, 93, 0);
+        box-shadow: 0 0 0 8px rgba(255, 79, 93, 0);
     }
 
     100% {
@@ -258,4 +258,8 @@
     color: brown;
     height: 20.57px;
     width: 20.57px;
+}
+
+.editLink {
+    color: #212529;
 }
