@@ -3,6 +3,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse
+import datetime
 
 from .forms import user_registration_form, user_login_form, planner_creation_form
 from .models import (
@@ -164,7 +165,6 @@ def add_planner(request):
             created_planner = planner_form.save(commit=False)
             created_planner.owner = user
             created_planner.save()
-            message = "Planner Created!"
             return redirect("recipes")
 
     return render(request, "index.html", {"planner_form": planner_creation_form()})
@@ -288,11 +288,6 @@ def add_to_cart(request, id):
                 unit_of_measurement,
             ]
 
-    # Example to use for templating in django
-    # for item, details in shopping_list.items():
-    #     quanity, units = details
-    #     print(f"{item}: {quanity:g} {units}")
-
     return JsonResponse(
         {
             "message": f"Planner: {planner.name} ingredients added to cart!",
@@ -300,6 +295,31 @@ def add_to_cart(request, id):
         },
         status=200,
     )
+
+
+@login_required(redirect_field_name="", login_url="login")
+def edit_planner(request, id):
+    user = request.user
+    planner = Planner.objects.get(id=id)
+    old_planner_dishes = planner.chosen_list.all()
+
+    if not user.is_authenticated:
+        return redirect("login")
+
+    if not user == planner.owner:
+        planner.pk = None
+        planner.owner = User.objects.get(id=user.id)
+        planner.not_saveable = False
+        planner.finished = False
+        planner.save()
+        planner.chosen_list.set(old_planner_dishes)
+
+    planner.not_saveable = False
+    planner.finished = False
+    planner.save()
+    planner.chosen_list.set(old_planner_dishes)
+
+    return redirect("recipes")
 
 
 def calendar_view(request):
