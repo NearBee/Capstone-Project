@@ -125,9 +125,7 @@ class Planner(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return (
-            f"{self.owner} : Planner {self.pk} (Planner duration: {self.days} day(s))"
-        )
+        return f"{self.owner} : {self.name} (Planner duration: {self.days} day(s))"
 
 
 class PlannerDay(models.Model):
