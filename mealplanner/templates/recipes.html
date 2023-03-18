@@ -37,15 +37,17 @@
 {% if planner.chosen_list.count == planner.days %}
 <div class="row justify-content-center">
     <div class="col-6">
-        <div id="csrf" data-csrf="{{ csrf_token }}"></div>
-        <button class="btn btn-success bg-gradient text-white w-100 finalizePlannerButton"
-            data-id="{{planner.id}}">Finalize Planner</button>
+        <a href="{% url 'planner_page' %}">
+            <div id="csrf" data-csrf="{{ csrf_token }}"></div>
+            <button class="btn btn-success bg-gradient text-white w-100 finalizePlannerButton"
+                data-id="{{planner.id}}">Finalize Planner</button>
+        </a>
     </div>
 </div>
 {% else %}
 <div class="row justify-content-center">
     <div class="col-6">
-        <button class="btn btn-success bg-gradient text-white w-100 finalizePlannerButton" data-id="{{planner.id}}"
+        <i class="btn btn-success bg-gradient text-white w-100 finalizePlannerButton" data-id="{{planner.id}}"
             disabled>Finalize Planner</button>
     </div>
 </div>
