@@ -10,7 +10,7 @@
     float: left;
     width: 240px;
     height: 120px;
-    background-image: url(Food_placeholder.jpg);
+    background-image: url(/images/Food_placeholder.jpg);
     background-size: 240px 180px;
     background-repeat: no-repeat;
     background-position: center;
@@ -68,7 +68,7 @@
 .stockPlannerImage {
     height: 125px;
     width: auto;
-    background-image: url(cafe_background.jpg);
+    background-image: url(/images/cafe_background.jpg);
     background-size: cover;
     filter: blur(2px);
     -webkit-filter: blur(4xp);
@@ -193,7 +193,7 @@
 .plannerItemSquares {
     height: 90px;
     width: 90px;
-    background-image: url(Food_placeholder.jpg);
+    background-image: url(images/Food_placeholder.jpg);
     background-size: 120px 120px;
     background-repeat: no-repeat;
     background-position: center;
@@ -262,4 +262,14 @@
 
 .editLink {
     color: #212529;
+}
+
+.fa-user-pen {
+    color: #6F2229;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.fa-user-pen:hover {
+    color: #381115;
 }
