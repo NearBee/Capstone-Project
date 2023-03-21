@@ -1,4 +1,3 @@
-# TODO: create a context processor for information that needs to be displayed across multiple pages
 from .forms import user_registration_form, user_login_form, planner_creation_form
 from .models import Planner
 

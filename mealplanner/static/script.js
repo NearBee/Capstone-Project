@@ -295,5 +295,4 @@ function addToCart(id) {
             console.log(`${error}`);
         });
 
-    // TODO: Do something with the result
 }

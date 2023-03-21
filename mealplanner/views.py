@@ -20,7 +20,6 @@ from .models import (
 def index(request):
     user = request.user
 
-    # TODO: create a new view for layout to add to an include
     if not user.is_authenticated:
         return render(
             request,
