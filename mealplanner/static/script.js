@@ -15,6 +15,15 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
+    var editProfileButton = document.querySelector('.editWrapper');
+    if (editProfileButton) {
+        editProfileButton.addEventListener('click', function () {
+            let username = editProfileButton.getAttribute('data-user');
+
+            editProfile(username);
+        })
+    }
+
     // Finding favorite buttons on a recipe and attaching the favoriteRecipe function to them
     var favoriteButton = document.getElementsByClassName('favStar');
     for (let button of favoriteButton) {
@@ -113,6 +122,50 @@ document.addEventListener('DOMContentLoaded', function () {
 })
 // Isotope JS+
 
+function editProfile(username) {
+    // Get all components that need to be switched out
+    let profileHeader = document.querySelector('.profileHeader');
+    let profilePicture = document.querySelector('.profilePictureCol');
+    let profileUsername = document.querySelector('.usernameCol');
+    let profileEmail = document.querySelector('.emailCol');
+    let logoutButtons = document.querySelector('.logoutCol');
+    let confirmButtons = document.querySelector('.confirmationCol');
+
+    // Make new changes to HTML
+    profileHeader.innerHTML = "Profile Edit";
+    profilePicture.innerHTML = "<input type='file' class='form-control'>";
+    profileUsername.innerHTML = "<input type='text' class='form-control' placeholder='New Username'>"
+    profileEmail.innerHTML = "<input type='text' class='form-control' placeholder='New Email'>"
+
+    // Hide logout button / Show confirmation buttons
+    logoutButtons.style.display = 'none';
+    confirmButtons.style.display = 'flex';
+
+}
+
+function submitEdit(username) {
+    let csrf = document.querySelector("#csrf").dataset.csrf;
+
+    fetch(`/edit_profile/${username}`, {
+        method: "POST",
+        body: JSON.stringify({
+            username: username,
+        }),
+        headers: { "X-CSRFTOKEN": csrf },
+        credentials: 'same-origin',
+    })
+        .then((response) => response.json())
+        .then((result) => {
+            console.log(result);
+            // TODO: Access elements of profile modal for editing
+            // Elements to touch: "Profile Information">"Profile Pic">"Username">"Email"
+
+        })
+        .catch(error => {
+            console.log(`${error}`);
+        })
+}
+
 
 function favoriteRecipe(id) {
     let csrf = document.querySelector("#csrf").dataset.csrf;
@@ -162,7 +215,7 @@ function finalizePlanner(id) {
         })
 
         .then((response => {
-            // TODO: Make changes to the html for the planner making it uneditable potentially
+            // TODO: Might do something more here but for the time being it works
         }))
 }
 
