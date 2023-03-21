@@ -1,5 +1,7 @@
 from django.urls import path
+from django.conf.urls.static import static
 
+from mealhelper import settings
 from . import views
 
 urlpatterns = [
@@ -7,6 +9,7 @@ urlpatterns = [
     path("register", views.register, name="register"),
     path("login", views.login_view, name="login"),
     path("logout", views.logout_view, name="logout"),
+    path("edit_profile/<str:username>", views.edit_profile, name="edit_profile"),
     path("recipes", views.recipes_view, name="recipes"),
     path("recipes/add_planner", views.add_planner, name="add_planner"),
     path("favorite/<int:id>", views.favorite_recipe, name="fav_recipe"),
@@ -29,4 +32,4 @@ urlpatterns = [
     path("add_to_cart/<int:id>", views.add_to_cart, name="add_to_cart"),
     path("edit_planner/<int:id>", views.edit_planner, name="edit_planner"),
     path("calendar", views.calendar_view, name="calendar"),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
