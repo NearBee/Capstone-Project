@@ -12,6 +12,7 @@ class User(AbstractUser):
     email = models.EmailField(blank=False, unique=True)
     password = models.CharField(blank=False, max_length=128)
     favorite_dishes = models.ManyToManyField("Recipe", related_name="Fav_dishes")
+    profile_picture = models.ImageField(default="headshot_placeholder.png")
 
     def __str__(self):
         return self.username
@@ -59,6 +60,7 @@ class Recipe(models.Model):
     dietary_preference = models.CharField(
         choices=[(diet.name, diet.value) for diet in Diets], max_length=14
     )
+    recipe_photo = models.ImageField(default="Food_placeholder.jpg")
 
     def __str__(self):
         return self.name
