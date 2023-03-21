@@ -10,24 +10,46 @@
     float: left;
     width: 240px;
     height: 120px;
+    z-index: 1;
+    position: relative;
+}
+
+.backgroundStuff {
+    position: absolute;
+    width: 240px;
+    height: 120px;
+    z-index: -1;
+    top: -2px;
+    left: -2px;
     background-image: url(/images/Food_placeholder.jpg);
     background-size: 240px 180px;
     background-repeat: no-repeat;
     background-position: center;
 }
 
-.gridItemText {
-    width: 238px;
-    height: 116px;
-    margin-top: -1px;
-    align-self: center;
+.backgroundStuff {
+    opacity: 1;
+    transition: filter 0.3s ease-out;
 }
 
-.grid-item:hover,
-.gridItemText:hover {
+.recipeBoxText {
+    position: relative;
+    top: 0px;
+    opacity: 0;
     background-color: rgba(182, 173, 176, 0.7);
-    cursor: pointer;
     box-shadow: 3px 2px 2px;
+    transition: opacity 0.3s ease-out;
+}
+
+.grid-item:hover .recipeBoxText {
+    z-index: 10;
+    opacity: 1;
+}
+
+.grid-item:hover>.backgroundStuff {
+    cursor: pointer;
+    opacity: .8;
+    filter: blur(1px);
 }
 
 .favStarBox {
@@ -282,4 +304,14 @@
 
 .fa-user-pen:hover {
     color: #381115;
+}
+
+/* Effects using CSS on classnames */
+
+.hidden {
+    display: none;
+}
+
+.disabled {
+    opacity: .9;
 }
