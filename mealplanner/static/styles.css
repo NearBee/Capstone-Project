@@ -232,6 +232,16 @@
     --fa-top: -11px;
 }
 
+
+.confirmEdit:hover {
+    background-color: #22724d !important;
+}
+
+.cancelEdit:hover,
+.logoutButton:hover {
+    background-color: #cd2333 !important;
+}
+
 /* Custom CSS for specific icons */
 
 .fa-fish-fins {
