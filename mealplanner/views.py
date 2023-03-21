@@ -99,6 +99,17 @@ def logout_view(request):
     return HttpResponseRedirect(reverse("index"))
 
 
+@login_required(redirect_field_name="", login_url="login")
+def edit_profile(request, username):
+    user = request.user
+    # TODO: finish edit_profile view
+
+    if not user.is_authenticated:
+        return redirect("login")
+
+    return JsonResponse({"username": username}, status=200)
+
+
 def recipes_view(request):
     recipes = Recipe.objects.all()
     quantities = Ingredient_List.objects.all()
@@ -116,9 +127,8 @@ def recipes_view(request):
 
     user_favorites = user.favorite_dishes.all()
     favorite_dishes = [recipe.name for recipe in user_favorites]
-    planner = Planner.objects.filter(owner=user).latest("id")
 
-    if user != planner.owner:
+    if Planner.objects.filter(owner=user).count() == 0:
         return render(
             request,
             "recipes.html",
@@ -128,6 +138,8 @@ def recipes_view(request):
                 "favorite_dishes": favorite_dishes,
             },
         )
+
+    planner = Planner.objects.filter(owner=user).latest("id")
 
     return render(
         request,
