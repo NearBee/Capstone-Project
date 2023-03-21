@@ -18,7 +18,9 @@
     https://cdn.jsdelivr.net/npm/isotope-layout@3.0.6/dist/isotope.pkgd.min.js
     "></script>
     <script src="https://kit.fontawesome.com/a725c21a49.js" crossorigin="anonymous"></script>
-    {% block script %}{% endblock %}
+    {% block script %}
+    <script src="{% static 'script.js' %}"></script>
+    {% endblock %}
 </head>
 
 <body style="height: 100vh;">
@@ -60,61 +62,82 @@
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header justify-content-between text-white bg-danger bg-gradient">
-                        <h1 class="modal-title fs-5 col-auto me-2 ps-2" id="loginModalLabel">Profile</h1>
+                        <h1 class="modal-title fs-5 col-auto me-2 ps-2 profileHeader" id="loginModalLabel">Profile
+                            information</h1>
+                        <span class="editWrapper ms-auto" data-user="{{ user }}">
+                            <div id="csrf" data-csrf="{{ csrf_token }}"></div>
+                            <i class="fa-solid fa-user-pen ms-auto"></i>
+                        </span>
                         <button type="button" class="col-auto ms-0 btn-close" data-bs-dismiss="modal"
                             aria-label="Close"></button>
                     </div>
                     <div class="modal-body bg-body-secondary py-5">
                         <div class="container-fluid w-75">
-                            {# TODO: probably put an overflow profile picture going into header #}
-                            {# (like halfway through circle) #}
-                            {# then put some basic information? #}
-                            <div class="row justify-content-between my-3">
-                                <div class="col-auto">
+                            <div class="row justify-content-center">
+                                <div class="col-auto profilePictureCol">
+                                    {{ user.profile_picture }}
+                                </div>
+                            </div>
+                            <div class="row justify-content-between my-4">
+                                <div class="col-auto align-self-center">
                                     Username:
                                 </div>
-                                <div class="col-auto">
-                                    <p class="fw-light">{{ user }}</p>
+                                <div class="col-auto align-self-center usernameCol">
+                                    <span class="fw-light">{{ user }}</span>
                                 </div>
                             </div>
-                            <div class="row justify-content-between my-3">
-                                <div class="col-auto">
+                            <div class="row justify-content-between my-4">
+                                <div class="col-auto align-self-center">
                                     Email:
                                 </div>
-                                <div class="col-auto">
-                                    <p class="fw-light">{{ user.email }}</p>
+                                <div class="col-auto emailCol">
+                                    <span class="fw-light align-self-center">{{ user.email }}</span>
                                 </div>
                             </div>
-                            <div class="row justify-content-between my-3">
+                            <div class="row justify-content-between my-4">
                                 <div class="col-auto">
                                     Date Joined:
                                 </div>
                                 <div class="col-auto">
-                                    <p class="fw-light">{{ user.date_joined }}</p>
+                                    <span class="fw-light">{{ user.date_joined }}</span>
                                     {# TODO: Add number of meals "this week" here from planner model #}
                                 </div>
                             </div>
-                            <div class="row justify-content-between my-3">
+                            <div class="row justify-content-between my-4">
                                 <div class="col-auto">
                                     Amount of Planners created:
                                 </div>
                                 <div class="col-auto">
-                                    <p class="fw-light">{{ number_of_plans }}</p>
+                                    <span class="fw-light">{{ number_of_plans }}</span>
                                 </div>
                             </div>
-                            <div class="row justify-content-between my-3">
+                            <div class="row justify-content-between my-4">
                                 <div class="col-auto">
                                     Number of recipes favorited:
                                 </div>
                                 <div class="col-auto">
-                                    <p class="fw-light">{{ favorite_meals }}</p>
+                                    <span class="fw-light">{{ favorite_meals }}</span>
                                 </div>
                             </div>
-                            <div class="row justify-content-end mt-2">
+                            <div class="row justify-content-end mt-2 logoutCol">
                                 <div class="col-auto">
                                     <a href="{% url 'logout' %}"
                                         class="nav-link bg-danger bg-gradient text-white border rounded-pill mt-4 py-1 px-5">Logout
                                     </a>
+                                </div>
+                            </div>
+                            <div class="row justify-content-between mt-2 confirmationCol" style="display: none;">
+                                <div class="col-auto">
+                                    <a href="{% url 'edit_profile' user.username %}"
+                                        class="nav-link bg-success bg-gradient text-white border rounded-pill mt-4 py-1 px-4">Confirm
+                                        Edit</a>
+                                    {# TODO: Add hover to button CSS #}
+                                </div>
+                                <div class="col-auto">
+                                    <a href="{% url 'edit_profile' user.username %}"
+                                        class="nav-link bg-danger bg-gradient text-white border rounded-pill mt-4 py-1 px-3">Cancel
+                                        Changes</a>
+                                    {# TODO: Add hover to button CSS #}
                                 </div>
                             </div>
                         </div>
@@ -122,120 +145,121 @@
                 </div>
             </div>
         </div>
-        {% else %}
-        {# Sign-in modal #}
-        <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="Login" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header justify-content-end text-white bg-danger bg-gradient">
-                        <h1 class="modal-title fw-light fs-5 col-6 me-2 ps-2" id="loginModalLabel">Login</h1>
-                        <button type="button" class="col-auto ms-0 btn-close" data-bs-dismiss="modal"
-                            aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body bg-body-light">
-                        <form action="{% url 'login' %}" method="post" enctype="multipart/form-data">
-                            {% csrf_token %}
-                            {% for field in user_login_form %}
-                            <div class="fieldWrapper">
-                                {{ field.errors }}
-                                <div class="row justify-content-start">
-                                    <div class="col-auto">
-                                        <label
-                                            class="border border-bottom-0 rounded-top px-2 shadow-sm bg-body-secondary bg-gradient">
-                                            {{ field.label }}
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-12">
-                                        {{ field }}
-                                    </div>
-                                </div>
-                            </div>
-                            {% endfor %}
-                            <div class="row justify-content-center mt-3">
-                                <div class="col-auto">
-                                    <button type="submit"
-                                        class="btn btn-primary rounded-pill px-5 bg-gradient">Login</button>
-                                </div>
-                            </div>
-                            <div class="row justify-content-center mt-2">
-                                <div class="col-auto">
-                                    <button type="button" class="btn btn-link" data-bs-toggle="modal"
-                                        data-bs-target="#registerModal">Don't have an
-                                        account?</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
+    </div>
+    {% else %}
+    {# Sign-in modal #}
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="Login" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header justify-content-end text-white bg-danger bg-gradient">
+                    <h1 class="modal-title fw-light fs-5 col-6 me-2 ps-2" id="loginModalLabel">Login</h1>
+                    <button type="button" class="col-auto ms-0 btn-close" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
                 </div>
-            </div>
-        </div>
-        {# End Sign-in modal #}
-
-        {# Registration modal #}
-        <div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="Register" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header justify-content-end text-white bg-danger bg-gradient">
-                        <h1 class="modal-title fw-light fs-5 col-6 me-3 ps-1" id="registerModalLabel">Register</h1>
-                        <button type="button" class="col-auto ms-0 btn-close" data-bs-dismiss="modal"
-                            aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body bg-body-light">
-                        <form class="mb-3" action="{% url 'register' %}" method="post" enctype="multipart/form-data">
-                            {% csrf_token %}
-                            {% for field in user_registration_form %}
-                            <div class="fieldWrapper">
-                                {{ field.errors }}
-                                <div class="row justify-content-start">
-                                    <div class="col-auto">
-                                        <label
-                                            class="border border-bottom-0 rounded-top px-2 shadow-sm bg-body-secondary bg-gradient">
-                                            {{ field.label }}
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-12">
-                                        {{ field }}
-                                    </div>
-                                </div>
-                            </div>
-                            {% endfor %}
+                <div class="modal-body bg-body-light">
+                    <form action="{% url 'login' %}" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {% for field in user_login_form %}
+                        <div class="fieldWrapper">
+                            {{ field.errors }}
                             <div class="row justify-content-start">
                                 <div class="col-auto">
                                     <label
                                         class="border border-bottom-0 rounded-top px-2 shadow-sm bg-body-secondary bg-gradient">
-                                        Password Confirmation
+                                        {{ field.label }}
                                     </label>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-12">
-                                    <input type="password" name="password_confirmation"
-                                        class="form-control mb-4 shadow-sm forminputBox" maxlength="128">
+                                    {{ field }}
                                 </div>
                             </div>
-                            <div class="row justify-content-center mt-3">
-                                <div class="col-auto">
-                                    <button type="submit"
-                                        class="btn btn-primary rounded-pill px-5 bg-gradient">Register</button>
-                                </div>
+                        </div>
+                        {% endfor %}
+                        <div class="row justify-content-center mt-3">
+                            <div class="col-auto">
+                                <button type="submit"
+                                    class="btn btn-primary rounded-pill px-5 bg-gradient">Login</button>
                             </div>
-                            <div class="row justify-content-center mt-2">
-                                <div class="col-auto">
-                                    <button type="button" class="btn btn-link" data-bs-toggle="modal"
-                                        data-bs-target="#loginModal">Already have an account?</button>
-                                </div>
+                        </div>
+                        <div class="row justify-content-center mt-2">
+                            <div class="col-auto">
+                                <button type="button" class="btn btn-link" data-bs-toggle="modal"
+                                    data-bs-target="#registerModal">Don't have an
+                                    account?</button>
                             </div>
-                        </form>
-                    </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
-        {# End Registration modal #}
-        {% endif %}
+    </div>
+    {# End Sign-in modal #}
+
+    {# Registration modal #}
+    <div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="Register" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header justify-content-end text-white bg-danger bg-gradient">
+                    <h1 class="modal-title fw-light fs-5 col-6 me-3 ps-1" id="registerModalLabel">Register</h1>
+                    <button type="button" class="col-auto ms-0 btn-close" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body bg-body-light">
+                    <form class="mb-3" action="{% url 'register' %}" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {% for field in user_registration_form %}
+                        <div class="fieldWrapper">
+                            {{ field.errors }}
+                            <div class="row justify-content-start">
+                                <div class="col-auto">
+                                    <label
+                                        class="border border-bottom-0 rounded-top px-2 shadow-sm bg-body-secondary bg-gradient">
+                                        {{ field.label }}
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    {{ field }}
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        <div class="row justify-content-start">
+                            <div class="col-auto">
+                                <label
+                                    class="border border-bottom-0 rounded-top px-2 shadow-sm bg-body-secondary bg-gradient">
+                                    Password Confirmation
+                                </label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <input type="password" name="password_confirmation"
+                                    class="form-control mb-4 shadow-sm forminputBox" maxlength="128">
+                            </div>
+                        </div>
+                        <div class="row justify-content-center mt-3">
+                            <div class="col-auto">
+                                <button type="submit"
+                                    class="btn btn-primary rounded-pill px-5 bg-gradient">Register</button>
+                            </div>
+                        </div>
+                        <div class="row justify-content-center mt-2">
+                            <div class="col-auto">
+                                <button type="button" class="btn btn-link" data-bs-toggle="modal"
+                                    data-bs-target="#loginModal">Already have an account?</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    {# End Registration modal #}
+    {% endif %}
 
     </div>
 </body>
