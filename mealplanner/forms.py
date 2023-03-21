@@ -1,5 +1,12 @@
 from django import forms
-from django.forms import TextInput, EmailInput, PasswordInput, Select, CheckboxInput
+from django.forms import (
+    TextInput,
+    EmailInput,
+    PasswordInput,
+    Select,
+    CheckboxInput,
+    ClearableFileInput,
+)
 
 from .models import User, Planner
 
@@ -12,6 +19,7 @@ class user_registration_form(forms.ModelForm):
             "email",
             "password",
         )
+        exclude = ("profile_picture",)
         widgets = {
             "username": TextInput(
                 attrs={
