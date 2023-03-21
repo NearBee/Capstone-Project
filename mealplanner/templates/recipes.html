@@ -94,10 +94,10 @@
             {% for recipe in recipes %}
             <button type="button" class="grid-item mb-2 {{ recipe.dietary_preference }}" data-bs-toggle="modal"
                 data-bs-target="#gridItemModal{{ recipe.id }}">
-
+                <div class="backgroundStuff"></div>
                 <div class="row justify-content-center">
-                    <div class="col-auto align-items-center gridItemText">
-                        {{ recipe.name }}
+                    <div class="col-auto gridItemText">
+                        <span class="recipeBoxText">{{ recipe.name }}</span>
                     </div>
                 </div>
 
@@ -159,8 +159,7 @@
                         <div class="modal-footer">
                             {% if user.is_authenticated %}
                             {% csrf_token %}
-                            <a type="submit" href="{% url 'add_to_planner' recipe.pk %}"
-                                class="btn btn-primary addButton">Add to Planner</a>
+                            <button class="btn btn-primary addButton">Add to Planner</button>
                             {% else %}
                             <button type="button" class="btn btn-primary disabledAddButton" disabled>Add to
                                 Planner</button>
