@@ -121,22 +121,20 @@
                             <div class="row justify-content-end mt-2 logoutCol">
                                 <div class="col-auto">
                                     <a href="{% url 'logout' %}"
-                                        class="nav-link bg-danger bg-gradient text-white border rounded-pill mt-4 py-1 px-5">Logout
+                                        class="nav-link bg-danger bg-gradient text-white border rounded-pill mt-4 py-1 px-5 logoutButton">Logout
                                     </a>
                                 </div>
                             </div>
                             <div class="row justify-content-between mt-2 confirmationCol" style="display: none;">
                                 <div class="col-auto">
                                     <a href="{% url 'edit_profile' user.username %}"
-                                        class="nav-link bg-success bg-gradient text-white border rounded-pill mt-4 py-1 px-4">Confirm
+                                        class="nav-link bg-success bg-gradient text-white border rounded-pill mt-4 py-1 px-4 confirmEdit">Confirm
                                         Edit</a>
-                                    {# TODO: Add hover to button CSS #}
                                 </div>
                                 <div class="col-auto">
                                     <a href="{% url 'edit_profile' user.username %}"
-                                        class="nav-link bg-danger bg-gradient text-white border rounded-pill mt-4 py-1 px-3">Cancel
+                                        class="nav-link bg-danger bg-gradient text-white border rounded-pill mt-4 py-1 px-3 cancelEdit">Cancel
                                         Changes</a>
-                                    {# TODO: Add hover to button CSS #}
                                 </div>
                             </div>
                         </div>
