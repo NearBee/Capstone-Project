@@ -16,6 +16,9 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
+MEDIA_URL = "/images/"
+MEDIA_ROOT = BASE_DIR / "mealplanner/images/"
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
@@ -25,7 +28,9 @@ SECRET_KEY = "django-insecure-0@ky41wjppv=8d*08$nu75lyo3&f6h%7p$(-4-(i9%t_okwc^n
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = []  # ngrok.io potentially going to be used here
+
+CSRF_TRUSTED_ORIGINS = []  # https:// ngrok.io potentially going to be used here
 
 
 # Application definition
