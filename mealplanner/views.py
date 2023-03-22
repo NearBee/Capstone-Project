@@ -106,22 +106,26 @@ def logout_view(request):
 
 @login_required(redirect_field_name="", login_url="login")
 def edit_profile(request, id):
-    print(request.method)
     user = request.user
-    form = user_edit_form(request.POST, instance=user)
 
-    # if not request.method == "POST":
-    #     print("Wasn't a post")
-    #     return JsonResponse({"id": id, "message": "Wasn't a Post"}, status=400)
+    if not request.method == "POST":
+        return JsonResponse({"id": id, "message": "Wasn't a Post"}, status=400)
+
+    form = user_edit_form(request.POST, request.FILES, instance=user)
 
     if not form.is_valid():
-        print("form is not valid")
-        print(form)
         return JsonResponse({"id": id, "message": "Form is not valid"}, status=400)
 
     form.save()
 
-    return JsonResponse({"id": id}, status=200)
+    return JsonResponse(
+        {
+            "username": user.username,
+            "email": user.email,
+            "profile_picture": user.profile_picture.url,
+        },
+        status=200,
+    )
 
 
 def recipes_view(request):
