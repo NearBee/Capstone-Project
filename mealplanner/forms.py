@@ -44,6 +44,39 @@ class user_registration_form(forms.ModelForm):
         }
 
 
+class user_edit_form(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = (
+            "profile_picture",
+            "username",
+            "email",
+        )
+        exclude = ("password",)
+        widgets = {
+            "profile_picture": ClearableFileInput(
+                attrs={
+                    "class": "form-control shadow-sm mb-1 forminputBox",
+                }
+            ),
+            "username": TextInput(
+                attrs={
+                    "class": "form-control shadow-sm mb-1 forminputBox",
+                }
+            ),
+            "email": EmailInput(
+                attrs={
+                    "class": "form-control shadow-sm mb-1 forminputBox",
+                }
+            ),
+        }
+        labels = {
+            "profile_picture": "New Profile Picture",
+            "username": "New Username",
+            "email": "New Email",
+        }
+
+
 class user_login_form(forms.ModelForm):
     class Meta:
         model = User
