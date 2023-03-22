@@ -23,8 +23,8 @@
     {% endblock %}
 </head>
 
-<body style="height: 100vh;">
-    <div class="vh-100 bg-body-secondary">
+<body>
+    <div>
         <nav class="navbar navbar-expand bg-danger bg-gradient text-white">
             <div class="container-fluid">
                 <a class="navbar-brand me-0" href="{% url 'index' %}">
@@ -73,27 +73,63 @@
                     </div>
                     <div class="modal-body bg-body-secondary py-5">
                         <div class="container-fluid w-75">
-                            <div class="row justify-content-center">
-                                <div class="col-auto profilePictureCol">
-                                    {{ user.profile_picture }}
+
+                            {# Full profile active display #}
+                            {# Profile Picture display #}
+                            <span class="activeView">
+                                <div class="row justify-content-center profilePictureCol">
+                                    <div class="col-auto ">
+                                        {{ user.profile_picture }}
+                                    </div>
+                                </div>
+                                {# Username display #}
+                                <div class="row justify-content-between my-4 usernameCol">
+                                    <div class="col-auto align-self-center">
+                                        Username:
+                                    </div>
+                                    <div class="col-auto align-self-center">
+                                        <span class="fw-light">{{ user }}</span>
+                                    </div>
+                                </div>
+                                {# Email display #}
+                                <div class="row justify-content-between my-4 emailCol">
+                                    <div class="col-auto align-self-center">
+                                        Email:
+                                    </div>
+                                    <div class="col-auto">
+                                        <span class="fw-light align-self-center">{{ user.email }}</span>
+                                    </div>
+                                </div>
+                            </span>
+
+                            {# Full profile edit display #}
+                            <div class="row justify-content-center editCol hidden">
+                                <div class="col-auto">
+                                    <form id="edit-form" data-id="{{user.id}}" action="{% url 'edit_profile' user.id %}"
+                                        method="post" enctype="multipart/form-data">
+                                        <div id="csrf" data-csrf="{{ csrf_token }}"></div>
+                                        {% for field in user_edit_form %}
+                                        <div class="fieldWrapper">
+                                            {{ field.errors }}
+                                            <div class="row justify-content-start">
+                                                <div class="col-auto">
+                                                    <label
+                                                        class="border border-bottom-0 rounded-top px-2 shadow-sm bg-body-secondary bg-gradient">
+                                                        {{ field.label }}
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    {{ field }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+                                    </form>
                                 </div>
                             </div>
-                            <div class="row justify-content-between my-4">
-                                <div class="col-auto align-self-center">
-                                    Username:
-                                </div>
-                                <div class="col-auto align-self-center usernameCol">
-                                    <span class="fw-light">{{ user }}</span>
-                                </div>
-                            </div>
-                            <div class="row justify-content-between my-4">
-                                <div class="col-auto align-self-center">
-                                    Email:
-                                </div>
-                                <div class="col-auto emailCol">
-                                    <span class="fw-light align-self-center">{{ user.email }}</span>
-                                </div>
-                            </div>
+
                             <div class="row justify-content-between my-4">
                                 <div class="col-auto">
                                     Date Joined:
@@ -127,12 +163,14 @@
                             </div>
                             <div class="row justify-content-between mt-2 confirmationCol" style="display: none;">
                                 <div class="col-auto">
-                                    <a href="{% url 'edit_profile' user.username %}"
-                                        class="nav-link bg-success bg-gradient text-white border rounded-pill mt-4 py-1 px-4 confirmEdit">Confirm
-                                        Edit</a>
+                                    <button type="submit"
+                                        class="nav-link bg-success bg-gradient text-white border rounded-pill mt-4 py-1 px-4 confirmEdit"
+                                        data-id="{{user.id}}">
+                                        Confirm Edit
+                                    </button>
                                 </div>
                                 <div class="col-auto">
-                                    <a href="{% url 'edit_profile' user.username %}"
+                                    <a href="#"
                                         class="nav-link bg-danger bg-gradient text-white border rounded-pill mt-4 py-1 px-3 cancelEdit">Cancel
                                         Changes</a>
                                 </div>
