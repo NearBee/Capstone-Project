@@ -1,19 +1,25 @@
-from django.shortcuts import render, redirect, get_object_or_404
+import datetime
+
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, JsonResponse
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
-import datetime
 
-from .forms import user_registration_form, user_login_form, planner_creation_form
+from .forms import (
+    planner_creation_form,
+    user_edit_form,
+    user_login_form,
+    user_registration_form,
+)
 from .models import (
-    User,
+    DaysOfWeek,
     Ingredient,
-    Recipe,
     Ingredient_List,
     Planner,
     PlannerDay,
-    DaysOfWeek,
+    Recipe,
+    User,
 )
 
 
@@ -99,14 +105,23 @@ def logout_view(request):
 
 
 @login_required(redirect_field_name="", login_url="login")
-def edit_profile(request, username):
+def edit_profile(request, id):
+    print(request.method)
     user = request.user
-    # TODO: finish edit_profile view
+    form = user_edit_form(request.POST, instance=user)
 
-    if not user.is_authenticated:
-        return redirect("login")
+    # if not request.method == "POST":
+    #     print("Wasn't a post")
+    #     return JsonResponse({"id": id, "message": "Wasn't a Post"}, status=400)
 
-    return JsonResponse({"username": username}, status=200)
+    if not form.is_valid():
+        print("form is not valid")
+        print(form)
+        return JsonResponse({"id": id, "message": "Form is not valid"}, status=400)
+
+    form.save()
+
+    return JsonResponse({"id": id}, status=200)
 
 
 def recipes_view(request):
@@ -162,7 +177,8 @@ def favorite_recipe(request, id):
     else:
         user.favorite_dishes.add(id)
 
-    return redirect("recipes")
+    # TODO: Change from a redirect to a JSONresponse to save a reload
+    return JsonResponse({"id": id}, status=200)
 
 
 @login_required(redirect_field_name="", login_url="login")
@@ -195,7 +211,8 @@ def add_to_planner(request, id):
         planner.not_saveable = False
         planner.save(update_fields=["not_saveable"])
 
-        return redirect("recipes")
+        # TODO: Change from a redirect to a JSONresponse to save a reload
+        return JsonResponse({"id": id}, status=200)
 
     if planner.not_saveable == False:
         planner.chosen_list.add(recipe)
@@ -204,8 +221,11 @@ def add_to_planner(request, id):
             planner.not_saveable = True
             planner.save(update_fields=["not_saveable"])
 
-            return redirect("recipes")
-    return redirect("recipes")
+            # TODO: Change from a redirect to a JSONresponse to save a reload
+            return JsonResponse({"id": id}, status=200)
+
+        # TODO: Change from a redirect to a JSONresponse to save a reload
+    return JsonResponse({"id": id}, status=200)
 
 
 @login_required(redirect_field_name="", login_url="login")
@@ -221,6 +241,7 @@ def remove_from_planner(request, id):
     if recipe in planner.chosen_list.all():
         planner.chosen_list.remove(recipe)
 
+    # TODO: Change from a redirect to a JSONresponse to save a reload
     return redirect("recipes")
 
 
