@@ -24,6 +24,16 @@ document.addEventListener('DOMContentLoaded', function () {
         })
     }
 
+    var submitEditForm = document.getElementById('edit-form');
+    if (submitEditForm) {
+        submitEditForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            let id = submitEditForm.getAttribute('data-id');
+
+            submitEdit(id);
+        })
+    }
+
     // Finding favorite buttons on a recipe and attaching the favoriteRecipe function to them
     var favoriteButton = document.getElementsByClassName('favStar');
     for (let button of favoriteButton) {
@@ -119,38 +129,46 @@ document.addEventListener('DOMContentLoaded', function () {
         console.log(form);
     }
 
-})
+});
 // Isotope JS+
 
 function editProfile(username) {
     // Get all components that need to be switched out
     let profileHeader = document.querySelector('.profileHeader');
-    let profilePicture = document.querySelector('.profilePictureCol');
-    let profileUsername = document.querySelector('.usernameCol');
-    let profileEmail = document.querySelector('.emailCol');
+    let activeCol = document.querySelector(".activeView");
+    let editCol = document.querySelector('.editCol');
     let logoutButtons = document.querySelector('.logoutCol');
     let confirmButtons = document.querySelector('.confirmationCol');
 
     // Make new changes to HTML
-    profileHeader.innerHTML = "Profile Edit";
-    profilePicture.innerHTML = "<input type='file' class='form-control'>";
-    profileUsername.innerHTML = "<input type='text' class='form-control' placeholder='New Username'>"
-    profileEmail.innerHTML = "<input type='text' class='form-control' placeholder='New Email'>"
+    profileHeader.innerHTML = "Profile Editing";
+    profileHeader.classList.add("inProgress");
+
+    // Remove "hidden" from editCol form
+    activeCol.classList.add("hidden");
+    editCol.classList.remove("hidden");
+
 
     // Hide logout button / Show confirmation buttons
     logoutButtons.style.display = 'none';
     confirmButtons.style.display = 'flex';
 
+    document.querySelector("#id_profile_picture")
+
 }
 
-function submitEdit(username) {
+function submitEdit(id) {
+    console.log("submitEdit triggered");
+
     let csrf = document.querySelector("#csrf").dataset.csrf;
 
-    fetch(`/edit_profile/${username}`, {
-        method: "POST",
-        body: JSON.stringify({
-            username: username,
-        }),
+    let form = document.getElementById('edit-form');
+    let formData = new FormData(form);
+
+    console.log(`/edit_profile/${id}`);
+    fetch(`/edit_profile/${id}`, {
+        method: "POST", // use POST method
+        body: formData,
         headers: { "X-CSRFTOKEN": csrf },
         credentials: 'same-origin',
     })
