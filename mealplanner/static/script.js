@@ -18,9 +18,9 @@ document.addEventListener('DOMContentLoaded', function () {
     var editProfileButton = document.querySelector('.editWrapper');
     if (editProfileButton) {
         editProfileButton.addEventListener('click', function () {
-            let username = editProfileButton.getAttribute('data-user');
+            let id = editProfileButton.getAttribute('data-id');
 
-            editProfile(username);
+            editProfile(id);
         })
     }
 
@@ -132,7 +132,7 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 // Isotope JS+
 
-function editProfile(username) {
+function editProfile(id) {
     // Get all components that need to be switched out
     let profileHeader = document.querySelector('.profileHeader');
     let activeCol = document.querySelector(".activeView");
@@ -140,32 +140,45 @@ function editProfile(username) {
     let logoutButtons = document.querySelector('.logoutCol');
     let confirmButtons = document.querySelector('.confirmationCol');
 
-    // Make new changes to HTML
-    profileHeader.innerHTML = "Profile Editing";
-    profileHeader.classList.add("inProgress");
+    if (!profileHeader.classList.contains("inProgress")) {
 
-    // Remove "hidden" from editCol form
-    activeCol.classList.add("hidden");
-    editCol.classList.remove("hidden");
+        // Change profile header to reflect that the user is currently editing
+        profileHeader.innerHTML = "Profile Editing";
+        profileHeader.classList.add("inProgress");
+
+        // Remove "hidden" from editCol form
+        activeCol.classList.add("hidden");
+        editCol.classList.remove("hidden");
 
 
-    // Hide logout button / Show confirmation buttons
-    logoutButtons.style.display = 'none';
-    confirmButtons.style.display = 'flex';
+        // Hide logout button / Show confirmation buttons
+        logoutButtons.style.display = 'none';
+        confirmButtons.style.display = 'flex';
+    } else {
 
-    document.querySelector("#id_profile_picture")
+        // Change profile header to reflect being back to normal profile view
+        profileHeader.innerHTML = "Profile information";
+        profileHeader.classList.remove("inProgress");
+
+        // Add "hidden" from editCol form
+        activeCol.classList.remove("hidden");
+        editCol.classList.add("hidden");
+
+
+        // Show logout button / Hide confirmation buttons
+        logoutButtons.style.display = 'flex';
+        confirmButtons.style.display = 'none';
+    }
 
 }
 
 function submitEdit(id) {
-    console.log("submitEdit triggered");
 
     let csrf = document.querySelector("#csrf").dataset.csrf;
 
     let form = document.getElementById('edit-form');
     let formData = new FormData(form);
 
-    console.log(`/edit_profile/${id}`);
     fetch(`/edit_profile/${id}`, {
         method: "POST", // use POST method
         body: formData,
@@ -174,11 +187,30 @@ function submitEdit(id) {
     })
         .then((response) => response.json())
         .then((result) => {
-            console.log(result);
-            // TODO: Access elements of profile modal for editing
-            // Elements to touch: "Profile Information">"Profile Pic">"Username">"Email"
+
+            editProfile(id);
+
+            // Get the elements that need to be updated
+            let profilePicture = document.getElementsByClassName('profilePicture');
+            let profileUsername = document.getElementsByClassName('profileUsername');
+            let profileEmail = document.getElementsByClassName('profileEmail');
+
+            // Due to getElementsByClassName returning an HTMLcollection
+            // A for loop is required to assign the updates where they are needed
+            for (let profilePictures of profilePicture) {
+                profilePictures.src = result.profile_picture;
+            }
+            for (let usernames of profileUsername) {
+                usernames.innerHTML = result.username;
+            }
+            for (let emails of profileEmail) {
+                emails.innerHTML = result.email;
+            }
+
+
 
         })
+
         .catch(error => {
             console.log(`${error}`);
         })
