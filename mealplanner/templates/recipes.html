@@ -92,16 +92,18 @@
     <div class="row justify-content-center">
         <div class="grid">
             {% for recipe in recipes %}
-            <button type="button" class="grid-item mb-2 {{ recipe.dietary_preference }}" data-bs-toggle="modal"
-                data-bs-target="#gridItemModal{{ recipe.id }}">
-                <img class="object-fit-cover recipePicture" src="{{ recipe.recipe_photo.url }}" alt="{{recipe.name}}">
-                <div class="row justify-content-center">
-                    <div class="col-auto gridItemText">
-                        <span class="recipeBoxText px-1">{{ recipe.name }}</span>
+            <span class="draggableBoxes" data-id="{{recipe.id}}">
+                <button type="button" class="grid-item mb-2 {{ recipe.dietary_preference }}" data-bs-toggle="modal"
+                    data-bs-target="#gridItemModal{{ recipe.id }}">
+                    <img class="object-fit-cover recipePicture" src="{{ recipe.recipe_photo.url }}"
+                        alt="{{recipe.name}}" data-id="{{recipe.id}}">
+                    <div class="row justify-content-center">
+                        <div class="col-auto gridItemText">
+                            <span class="recipeBoxText px-1">{{ recipe.name }}</span>
+                        </div>
                     </div>
-                </div>
-
-            </button>
+                </button>
+            </span>
 
             <div class="modal fade" id="gridItemModal{{ recipe.id }}" data-bs-backdrop="static" data-bs-keyword="false"
                 tabindex="-1" aria-labelledby="gridItemLabel{{ recipe.id }}" aria-hidden="true">
