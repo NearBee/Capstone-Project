@@ -106,6 +106,29 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    // Start Drag & Drop
+    // TODO: Need to just switch this to a add to/ remove from function
+    // Due to incompatibility with mobile uses
+    var draggableElement = document.getElementsByClassName('recipePicture');
+    if (draggableElement) {
+        for (let boxes of draggableElement) {
+            boxes.addEventListener('dragstart', startDrag);
+        }
+    }
+
+    var dropZones = document.getElementsByClassName('dropBoxes');
+    if (dropZones) {
+        for (let zone of dropZones) {
+            zone.addEventListener('drop', endDrag);
+
+            // Prevents default behavior of a dragover() event
+            zone.addEventListener('dragover', (event) => {
+                event.preventDefault();
+            })
+        }
+    }
+    // End Drag & Drop
+
     // Find the button with the class "#finalizePlannerButton", then attach a click event to it
     var finalizePlannerButton = document.querySelector('.finalizePlannerButton')
     if (finalizePlannerButton) {
@@ -247,6 +270,41 @@ function favoriteRecipe(id) {
             console.log(`${error}`);
         })
 }
+
+// Functions for Drag & Drop
+function startDrag(event) {
+    // Set data to be transferred
+    var id = event.target;
+    var dataId = id.getAttribute('data-id');
+
+    // Attach data-id to the element being transferred
+    event.datatransfer.setData("text/plain", dataId);
+}
+
+function endDrag(event) {
+    event.preventDefault();
+
+    // Obtain the data being transferred from the startDrag event
+    let dataId = event.datatransfer.getData('text/plain');
+    let droppedBox = event.target;
+
+    // Set the recieved data to the dropbox
+    droppedBox.setAttribute('data-id', dataId);
+
+    // Check using console.log to see if the attribute was correctly moved
+    console.log(droppedBox.getAttribute('data-id'));
+}
+
+
+// WIP addToPlanner function
+// function addToPlanner(id) {
+//     let csrf = document.querySelector("#csrf").dataset.csrf;
+
+//     fetch(`recipes/add_to_planner/${id}`, {
+//         method: "POST",
+//         body: JSON.stringify()
+//     })
+// }
 
 function finalizePlanner(id) {
     let csrf = document.querySelector("#csrf").dataset.csrf;
