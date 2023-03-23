@@ -94,10 +94,10 @@
             {% for recipe in recipes %}
             <button type="button" class="grid-item mb-2 {{ recipe.dietary_preference }}" data-bs-toggle="modal"
                 data-bs-target="#gridItemModal{{ recipe.id }}">
-                <div class="backgroundStuff"></div>
+                <img class="object-fit-cover recipePicture" src="{{ recipe.recipe_photo.url }}" alt="{{recipe.name}}">
                 <div class="row justify-content-center">
                     <div class="col-auto gridItemText">
-                        <span class="recipeBoxText">{{ recipe.name }}</span>
+                        <span class="recipeBoxText px-1">{{ recipe.name }}</span>
                     </div>
                 </div>
 
