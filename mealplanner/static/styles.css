@@ -12,23 +12,21 @@ body {
 
 .grid-item {
     float: left;
-    width: 240px;
-    height: 120px;
+    width: 239px;
+    height: 119px;
     z-index: 1;
     position: relative;
+    border-radius: 10px;
 }
 
-.backgroundStuff {
+.recipePicture {
     position: absolute;
     width: 240px;
     height: 120px;
     z-index: -1;
     top: -2px;
     left: -2px;
-    background-image: url(/images/Food_placeholder.jpg);
-    background-size: 240px 180px;
-    background-repeat: no-repeat;
-    background-position: center;
+    border-radius: 9px;
 }
 
 .backgroundStuff {
@@ -38,10 +36,15 @@ body {
 
 .recipeBoxText {
     position: relative;
+    display: flex;
+    white-space: break-spaces;
+    border-radius: 4px;
     top: 0px;
     opacity: 0;
-    background-color: rgba(182, 173, 176, 0.7);
-    box-shadow: 3px 2px 2px;
+    color: white;
+    font-weight: 100;
+    background-color: rgba(0, 0, 0, 0.7);
+    box-shadow: 0 5px 4px rgba(43, 43, 43, 0.7);
     transition: opacity 0.3s ease-out;
 }
 
