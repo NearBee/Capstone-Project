@@ -29,6 +29,7 @@ body {
     border-radius: 9px;
 }
 
+/* Scale down animation to be added */
 .plannerRecipePhoto {
     position: absolute;
     width: 148px;
