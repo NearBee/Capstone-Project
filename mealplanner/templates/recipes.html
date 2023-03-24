@@ -7,8 +7,8 @@
 
 {# Planner section #}
 
-{% if planner.finished == False %}
-<div class="planner container-fluid align-content-center my-3" style="display: grid;">
+<!-- Older style -->
+<!-- <div class="planner container-fluid align-content-center my-3" style="display: grid;">
     <div class="row justify-content-center">
         {% if planner.chosen_list.count == 0 %}
         <div class="col-auto">
@@ -33,7 +33,18 @@
         {% endfor %}
         {% endif %}
     </div>
+</div> -->
+{% if planner.finished == False %}
+
+<div class="planner container-fluid align-content-center my-3" style="display: grid;">
+    <div class="row justify-content-center">
+        {% for i in ""|center:planner.days %}
+        <div class="col-2 plannerBoxes box{{forloop.counter}} border mx-2 shadow-sm position-relative">
+        </div>
+        {% endfor %}
+    </div>
 </div>
+
 {% if planner.chosen_list.count == planner.days %}
 <div class="row justify-content-center">
     <div class="col-6">
@@ -48,7 +59,7 @@
 <div class="row justify-content-center">
     <div class="col-6">
         <i class="btn btn-success bg-gradient text-white w-100 finalizePlannerButton disabled"
-            data-id="{{planner.id}}">Finalize Planner</button></i>
+            data-id="{{planner.id}}">Finalize Planner</i>
     </div>
 </div>
 {% endif %}
@@ -56,7 +67,6 @@
 <div class="stockPlanner container-fluid align-content-center my-3" style="display: grid;">
     <div class="stockPlannerImage"></div>
     <div class="row justify-content-center">
-        {# <!-- Maybe do a modal right here for creating a planner on the recipe page --> #}
         <div class="col-6 stockPlannerBoxes border">
             <a class="createPlannerLink text-white text-decoration-none fs-3 fw-light" href="{% url 'index' %}">
                 <span>Create a planner now!</span>
@@ -92,18 +102,16 @@
     <div class="row justify-content-center">
         <div class="grid">
             {% for recipe in recipes %}
-            <span class="draggableBoxes" data-id="{{recipe.id}}">
-                <button type="button" class="grid-item mb-2 {{ recipe.dietary_preference }}" data-bs-toggle="modal"
-                    data-bs-target="#gridItemModal{{ recipe.id }}">
-                    <img class="object-fit-cover recipePicture" src="{{ recipe.recipe_photo.url }}"
-                        alt="{{recipe.name}}" data-id="{{recipe.id}}">
-                    <div class="row justify-content-center">
-                        <div class="col-auto gridItemText">
-                            <span class="recipeBoxText px-1">{{ recipe.name }}</span>
-                        </div>
+            <button type="button" class="grid-item mb-2 {{ recipe.dietary_preference }}" data-bs-toggle="modal"
+                data-bs-target="#gridItemModal{{ recipe.id }}">
+                <img class="object-fit-cover recipePicture" src="{{ recipe.recipe_photo.url }}" alt="{{recipe.name}}"
+                    data-id="{{recipe.id}}">
+                <div class="row justify-content-center">
+                    <div class="col-auto gridItemText">
+                        <span class="recipeBoxText px-1">{{ recipe.name }}</span>
                     </div>
-                </button>
-            </span>
+                </div>
+            </button>
 
             <div class="modal fade" id="gridItemModal{{ recipe.id }}" data-bs-backdrop="static" data-bs-keyword="false"
                 tabindex="-1" aria-labelledby="gridItemLabel{{ recipe.id }}" aria-hidden="true">
@@ -161,7 +169,9 @@
                         <div class="modal-footer">
                             {% if user.is_authenticated %}
                             {% csrf_token %}
-                            <button class="btn btn-primary addButton">Add to Planner</button>
+                            <button class="btn btn-primary addButton" data-id="{{recipe.id}}"
+                                data-url="{% url 'add_to_planner' recipe.id %}">Add to Planner</button>
+                            <!-- Right here ^-->
                             {% else %}
                             <button type="button" class="btn btn-primary disabledAddButton" disabled>Add to
                                 Planner</button>
