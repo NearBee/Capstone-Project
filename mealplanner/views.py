@@ -201,35 +201,45 @@ def add_planner(request):
     return render(request, "index.html", {"planner_form": planner_creation_form()})
 
 
-@login_required(redirect_field_name="", login_url="login")
 def add_to_planner(request, id):
     user = request.user
+    recipe = get_object_or_404(Recipe, id=id)
 
     if not user.is_authenticated:
         return redirect("login")
 
     planner = Planner.objects.filter(owner=user).latest("id")
-    recipe = get_object_or_404(Recipe, id=id)
 
+    # This is used incase the user wants to make edits to the planner
     if planner.not_saveable == True and planner.chosen_list.count() != planner.days:
         planner.not_saveable = False
         planner.save(update_fields=["not_saveable"])
 
-        # TODO: Change from a redirect to a JSONresponse to save a reload
-        return JsonResponse({"id": id}, status=200)
+        return JsonResponse(
+            {
+                "photo": recipe.recipe_photo,
+                "name": recipe.name,
+                "id": recipe.pk,
+            },
+            status=200,
+        )
 
+    # Add a recipe to the planner's chosen list
     if planner.not_saveable == False:
         planner.chosen_list.add(recipe)
 
+        # If all the recipes have been added to the planner, redirect to finalize_planner view
         if planner.chosen_list.count() == planner.days:
-            planner.not_saveable = True
-            planner.save(update_fields=["not_saveable"])
+            return redirect("finalize_planner")
 
-            # TODO: Change from a redirect to a JSONresponse to save a reload
-            return JsonResponse({"id": id}, status=200)
-
-        # TODO: Change from a redirect to a JSONresponse to save a reload
-    return JsonResponse({"id": id}, status=200)
+    return JsonResponse(
+        {
+            "photo": recipe.recipe_photo.url,
+            "name": recipe.name,
+            "id": recipe.pk,
+        },
+        status=200,
+    )
 
 
 @login_required(redirect_field_name="", login_url="login")
@@ -252,20 +262,17 @@ def remove_from_planner(request, id):
 @login_required(redirect_field_name="", login_url="login")
 def finalize_planner(request, id):
     user = request.user
-    if not user.is_authenticated:
-        return redirect("login")
+    planner = Planner.objects.get(id=id)
+
+    # Finalize the planner
+    planner.not_saveable = True
+    planner.finished = True
+    planner.save(update_fields=["not_saveable", "finished"])
 
     if not request.method == "POST":
         return JsonResponse({"error": "Something went wrong"}, status=404)
 
-    planner = Planner.objects.get(id=id)
-
-    planner.finished = True
-    planner.save(update_fields=["finished"])
-
-    # Return should actually go to a page that would show ALL
-    # finished/sharable planners
-    return JsonResponse({"message": "Planner liked!"}, status=200)
+    return redirect("planner_page")
 
 
 def planner_page_view(request):
