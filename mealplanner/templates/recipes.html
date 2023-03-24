@@ -170,7 +170,8 @@
                             {% if user.is_authenticated %}
                             {% csrf_token %}
                             <button class="btn btn-primary addButton" data-id="{{recipe.id}}"
-                                data-url="{% url 'add_to_planner' recipe.id %}">Add to Planner</button>
+                                data-url="{% url 'add_to_planner' recipe.id %}" data-bs-dismiss="modal">Add to
+                                Planner</button>
                             <!-- Right here ^-->
                             {% else %}
                             <button type="button" class="btn btn-primary disabledAddButton" disabled>Add to
