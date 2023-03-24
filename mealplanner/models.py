@@ -82,7 +82,7 @@ class Ingredient_List(models.Model):
     quantity = models.FloatField()
 
     def __str__(self):
-        return f"{self.quantity} {self.ingredient.unit_of_measurement} {self.ingredient.name}"
+        return f"{self.quantity:.{0 if self.quantity.is_integer() else 2}f} {self.ingredient.unit_of_measurement} {self.ingredient.name}"
 
 
 class DaysOfWeek(Enum):
