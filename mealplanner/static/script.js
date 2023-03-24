@@ -77,22 +77,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Allows for use of the recipes in the grid using isotope, also re-sorts them after each content load
-    if (grid) {
-        grid.addEventListener('click', function (event) {
-            var target = event.target;
-
-            iso.layout();
-            let content = target.querySelector('.content-row');
-            if (!content.style.display.includes('none')) {
-                content.style.display = 'none';
-            } else {
-                content.style.display = 'block';
-            }
-
-        });
-    }
-
     // filter items on button click
     let filterButtonGroup = document.querySelector('.filter-button-group');
     if (filterButtonGroup) {
@@ -109,10 +93,11 @@ document.addEventListener('DOMContentLoaded', function () {
     // Start Drag & Drop
     // TODO: Need to just switch this to a add to/ remove from function
     // Due to incompatibility with mobile uses
-    var draggableElement = document.getElementsByClassName('recipePicture');
-    if (draggableElement) {
-        for (let boxes of draggableElement) {
-            boxes.addEventListener('dragstart', startDrag);
+
+    var addButton = document.getElementsByClassName('addButton');
+    if (addButton) {
+        for (let button of addButton) {
+            button.addEventListener('click', addToPlanner);
         }
     }
 
@@ -272,13 +257,48 @@ function favoriteRecipe(id) {
 }
 
 // Functions for Drag & Drop
-function startDrag(event) {
+function addToPlanner(event) {
+    // Prevents default form submission event
+    event.preventDefault()
+
     // Set data to be transferred
     var id = event.target;
     var dataId = id.getAttribute('data-id');
 
-    // Attach data-id to the element being transferred
-    event.datatransfer.setData("text/plain", dataId);
+    let csrf = document.querySelector("#csrf").dataset.csrf;
+
+    fetch(`recipes/add_to_planner/${dataId}`, {
+        method: "POST",
+        body: JSON.stringify({ id: dataId }),
+        headers: { "X-CSRFTOKEN": csrf },
+        credentials: 'same-origin',
+    })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data.photo);
+            // Construct HTML for recipe box
+            plannerBoxRecipe = `
+                    <img class="object-fit-cover plannerRecipePhoto" src="${data.photo}" alt="${data.name}"
+                    data-id="${data.id}">
+                    <div class="row justify-content-center">
+                    <div class="col-auto gridItemText">
+                        <span class="recipeBoxText px-1">${data.name}</span>
+                    </div>
+                    </div>
+                    `;
+
+            // Attach data-id to the element being transferred
+            let boxes = document.querySelectorAll('.plannerBoxes');
+            for (let i = 0; i < boxes.length; i++) {
+                console.log(boxes[i].innerHTML);
+                if (boxes[i].innerHTML.trim() === "") {
+                    // Attach html of a recipe to innerhtml
+                    boxes[i].innerHTML += plannerBoxRecipe;
+                    break;
+                }
+            }
+        })
+        .then(error => console.error(error));
 }
 
 function endDrag(event) {
@@ -295,16 +315,6 @@ function endDrag(event) {
     console.log(droppedBox.getAttribute('data-id'));
 }
 
-
-// WIP addToPlanner function
-// function addToPlanner(id) {
-//     let csrf = document.querySelector("#csrf").dataset.csrf;
-
-//     fetch(`recipes/add_to_planner/${id}`, {
-//         method: "POST",
-//         body: JSON.stringify()
-//     })
-// }
 
 function finalizePlanner(id) {
     let csrf = document.querySelector("#csrf").dataset.csrf;
@@ -373,7 +383,6 @@ function addToCart(id) {
     })
         .then((response) => response.json())
         .then((result) => {
-            console.log(result.shopping_list)
             let newFormat = "";
 
 
