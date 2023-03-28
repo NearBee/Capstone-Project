@@ -106,10 +106,6 @@ def logout_view(request):
 @login_required(redirect_field_name="", login_url="login")
 def edit_profile(request, id):
     user = request.user
-
-    if not request.method == "POST":
-        return JsonResponse({"id": id, "message": "Wasn't a Post"}, status=400)
-
     form = user_edit_form(request.POST, request.FILES, instance=user)
 
     if not form.is_valid():
@@ -254,7 +250,6 @@ def add_to_planner(request, id):
 @login_required(redirect_field_name="", login_url="login")
 def remove_from_planner(request, id):
     user = request.user
-
     planner = Planner.objects.filter(owner=user).latest("id")
     recipe = get_object_or_404(Recipe, id=id)
 
@@ -294,8 +289,6 @@ def planner_page_view(request):
 @login_required(redirect_field_name="", login_url="login")
 def like_planner(request, id):
     planner = Planner.objects.get(id=id)
-    if not request.user.is_authenticated:
-        return redirect("login")
 
     if not request.method == "POST":
         return JsonResponse({"error": "Something went wrong"}, status=404)
@@ -352,9 +345,6 @@ def edit_planner(request, id):
     planner = Planner.objects.get(id=id)
     old_planner_dishes = planner.chosen_list.all()
 
-    if not user.is_authenticated:
-        return redirect("login")
-
     if not user == planner.owner:
         planner.pk = None
         planner.owner = User.objects.get(id=user.id)
@@ -369,7 +359,3 @@ def edit_planner(request, id):
     planner.chosen_list.set(old_planner_dishes)
 
     return redirect("recipes")
-
-
-def calendar_view(request):
-    return render(request, "calendar.html")
