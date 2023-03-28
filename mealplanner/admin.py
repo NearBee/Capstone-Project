@@ -53,7 +53,7 @@ admin.site.register(Planner, PlannerAdmin)
 
 
 class PlannerDayAdmin(admin.ModelAdmin):
-    list_display = ("id", "day_of_week", "meal", "planner")
+    list_display = ("id", "day_number", "planner")
 
 
 admin.site.register(PlannerDay, PlannerDayAdmin)
