@@ -38,6 +38,33 @@ body {
     border-radius: 7px;
 }
 
+.plannerRecipeText {
+    width: 148px;
+    font-size: 12px;
+    position: absolute;
+    display: flex;
+    white-space: break-spaces;
+    border-radius: 4px;
+    bottom: 0px;
+    right: 0px;
+    opacity: 1;
+    z-index: 2;
+    color: white;
+    font-weight: 100;
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+.removeButton {
+    z-index: 10;
+    height: 20px;
+    width: 20px;
+}
+
+.removeButton:hover {
+    cursor: pointer;
+    scale: 1.1;
+}
+
 .backgroundStuff {
     opacity: 1;
     transition: filter 0.3s ease-out;
@@ -326,6 +353,15 @@ body {
 
 .fa-user-pen:hover {
     color: #381115;
+}
+
+.fa-xmark {
+    height: 10px;
+    width: 10px;
+    right: 20%;
+    bottom: 20%;
+    position: absolute;
+    translate: inherit;
 }
 
 /* Effects using CSS on classnames */
