@@ -6,34 +6,6 @@
 {% block body %}
 
 {# Planner section #}
-
-<!-- Older style -->
-<!-- <div class="planner container-fluid align-content-center my-3" style="display: grid;">
-    <div class="row justify-content-center">
-        {% if planner.chosen_list.count == 0 %}
-        <div class="col-auto">
-            <h3 class="fw-light fst-italic">Add a recipe to the planner!</h3>
-        </div>
-        {% else %}
-        <div class="row justify-content-center">
-            <div class="col-auto">
-                <h4>{{planner.name}}</h4>
-            </div>
-        </div>
-        {% for choice in planner.chosen_list.all %}
-        <div class="col-2 plannerBoxes border mx-2  shadow-sm position-relative" data-id="{{choice.id}}">
-            <div class="col-auto">{{choice}}</div>
-            <div class="col-auto">
-                {% csrf_token %}
-                <a href="{% url 'remove_from_planner' choice.pk %}"
-                    class="bi bi-x removeItem position-absolute top-0 start-100 translate-middle border border-danger rounded-circle bg-danger text-white"
-                    aria-label="Remove this meal"></a>
-            </div>
-        </div>
-        {% endfor %}
-        {% endif %}
-    </div>
-</div> -->
 {% if planner.finished == False %}
 
 <div class="planner container-fluid align-content-center my-3" style="display: grid;">
@@ -206,7 +178,6 @@
                             <button class="btn btn-primary addButton" data-id="{{recipe.id}}"
                                 data-url="{% url 'add_to_planner' recipe.id %}" data-bs-dismiss="modal">Add to
                                 Planner</button>
-                            <!-- Right here ^-->
                             {% else %}
                             <button type="button" class="btn btn-primary disabledAddButton" disabled>Add to
                                 Planner</button>
