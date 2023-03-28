@@ -38,20 +38,52 @@
 
 <div class="planner container-fluid align-content-center my-3" style="display: grid;">
     <div class="row justify-content-center">
+        {% if chosen_list %}
+
+        <!-- If there are items in the chosen_list this will show -->
+        {% for item in chosen_list %}
+        <div class="col-2 plannerBoxes box{{forloop.counter}} border mx-2 shadow-sm position-relative">
+            <img class="object-fit-cover plannerRecipePhoto" src="{{ item.recipe_photo.url }}" alt="{{ item.name }}"
+                data-id="{{ item.id}}">
+            <span
+                class="position-absolute top-0 start-100 translate-middle badge border border-light rounded-circle bg-danger removeButton"
+                data-id="{{ item.id }}"><i class="fa-solid fa-xmark" data-id="{{ item.id }}"></i></span>
+            <div class="row justify-content-center">
+                <div class="col-auto gridItemText">
+                    <span class="plannerRecipeText px-1">{{ item.name }}</span>
+                </div>
+            </div>
+        </div>
+
+        {% endfor %}
+
+        <!-- These are the boxes for the remainder that is left for the amount of days left in the planner -->
+        {% if remainder %}
+        {% for i in ""|center:remainder %}
+        <div class="col-2 plannerBoxes box{{forloop.counter}} border mx-2 shadow-sm position-relative">
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% else %}
+
+        <!-- This html shows for an empty chosen_list -->
         {% for i in ""|center:planner.days %}
         <div class="col-2 plannerBoxes box{{forloop.counter}} border mx-2 shadow-sm position-relative">
         </div>
         {% endfor %}
+
+        {% endif %}
     </div>
 </div>
 
-{% if planner.chosen_list.count == planner.days %}
+<!-- Finalize Button Section -->
+{% if planner.chosen_list.count >= planner.days %}
 <div class="row justify-content-center">
     <div class="col-6">
         <a href="{% url 'planner_page' %}">
             <div id="csrf" data-csrf="{{ csrf_token }}"></div>
-            <button class="btn btn-success bg-gradient text-white w-100 finalizePlannerButton"
-                data-id="{{planner.id}}">Finalize Planner</button>
+            <button class="btn btn-success bg-gradient text-white w-100 finalizePlannerButton" data-id="{{planner.id}}"
+                data-url="{% url 'finalize_planner' planner.id %}"><span>Save Planner</span></button>
         </a>
     </div>
 </div>
@@ -59,10 +91,12 @@
 <div class="row justify-content-center">
     <div class="col-6">
         <i class="btn btn-success bg-gradient text-white w-100 finalizePlannerButton disabled"
-            data-id="{{planner.id}}">Finalize Planner</i>
+            data-id="{{planner.id}}"><span>Save Planner</span></i>
     </div>
 </div>
 {% endif %}
+<!-- End of Finalize Button Section -->
+
 {% else %}
 <div class="stockPlanner container-fluid align-content-center my-3" style="display: grid;">
     <div class="stockPlannerImage"></div>
