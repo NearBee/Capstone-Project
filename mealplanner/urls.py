@@ -31,5 +31,4 @@ urlpatterns = [
     path("get_likes/<int:id>", views.get_likes, name="get_likes"),
     path("add_to_cart/<int:id>", views.add_to_cart, name="add_to_cart"),
     path("edit_planner/<int:id>", views.edit_planner, name="edit_planner"),
-    path("calendar", views.calendar_view, name="calendar"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

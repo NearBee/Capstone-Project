@@ -24,13 +24,6 @@ from .models import (
 
 def index(request):
     user = request.user
-
-    if not user.is_authenticated:
-        return render(
-            request,
-            "index.html",
-        )
-
     return render(
         request,
         "index.html",
