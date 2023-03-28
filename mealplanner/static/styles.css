@@ -200,6 +200,7 @@ body {
 }
 
 .plannerButton {
+    height: 33.33%;
     transform: scale(1);
     transition: all 0.3s;
 }
@@ -261,18 +262,31 @@ body {
     border-bottom-right-radius: 6px;
 }
 
-.plannerItemSquares {
+.plannerItemsCol {
+    height: 90px;
+}
+
+.plannerItemSquares,
+.plannerPageRecipePhoto {
     height: 90px;
     width: 90px;
-    background-image: url(images/Food_placeholder.jpg);
-    background-size: 120px 120px;
-    background-repeat: no-repeat;
-    background-position: center;
+    border-radius: 4px;
+    z-index: 1;
 }
+
+
+/* .plannerPageRecipePhoto {
+    height: 90px;
+    width: 90px;
+} */
 
 .dietaryIcons {
     border-top-left-radius: 4px;
+    border-bottom-right-radius: 2px;
     background-color: white;
+    z-index: 2;
+    top: 61px !important;
+    left: 61px !important;
     /* opacity: .7; */
 }
 

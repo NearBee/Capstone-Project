@@ -17,7 +17,12 @@
                     </div>
                     <div class="row justify-content-center border-bottom border-top">
                         <div class="col-auto mt-2 mb-3">
-                            This is where the profile picture will go
+                            <div class="row justify-content-center profilePictureCol">
+                                <div class="col-auto px-0">
+                                    <img class="object-fit-cover profilePicture"
+                                        src="{{planner.owner.profile_picture.url}}" alt="Profile Picture">
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="row justify-content-center mt-2">
@@ -28,32 +33,34 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-9 border-end border-start" style="display: grid;">
+                <div class="col-md-9 border-end border-start align-content-center" style="display: grid;">
                     <div class="row justify-content-center">
                         <!-- Recipes Section -->
                         {% for item in planner.chosen_list.all %}
-                        <div class="col-auto align-self-center">
-                            <div class="border plannerItemSquares" data-bs-html="true" data-bs-toggle="tooltip"
-                                data-bs-placement="bottom"
+                        <div class="col-2 my-2 plannerItemsCol">
+                            <div class="border position-absolute plannerItemSquares" data-bs-html="true"
+                                data-bs-toggle="tooltip" data-bs-placement="bottom"
                                 data-bs-title='Meal: {{item.name}} <br> Dietary Preference: {{ item.get_dietary_preference_display }}'>
+                                <img class="object-fit-cover position-absolute plannerPageRecipePhoto"
+                                    src="{{ item.recipe_photo.url }}" alt="{{ item.name }}" data-id="{{ item.id}}">
                                 {% if item.dietary_preference == 'pescetarian' %}
                                 <i
-                                    class="position-sticky top-100 start-100 fa-solid fa-fish-fins fa-lg border-start border-top px-1 py-1 dietaryIcons"></i>
+                                    class="position-relative fa-solid fa-fish-fins fa-lg border-start border-top px-1 py-1 dietaryIcons"></i>
                                 {% elif item.dietary_preference == 'vegan' %}
                                 <i
-                                    class="position-sticky top-100 start-100 fa-solid fa-seedling fa-lg border-start border-top px-1 py-1 dietaryIcons"></i>
+                                    class="position-relative fa-solid fa-seedling fa-lg border-start border-top px-1 py-1 dietaryIcons"></i>
                                 {% elif item.dietary_preference == 'vegetarian' %}
                                 <i
-                                    class="position-sticky top-100 start-100 fa-solid fa-leaf fa-lg border-start border-top px-1 py-1 dietaryIcons"></i>
+                                    class="position-relative fa-solid fa-leaf fa-lg border-start border-top px-1 py-1 dietaryIcons"></i>
                                 {% elif item.dietary_preference == 'dairyfree' %}
                                 <i
-                                    class="position-sticky top-100 start-100 fa-solid fa-cow fa-lg border-start border-top px-1 py-1 dietaryIcons"></i>
+                                    class="position-relative fa-solid fa-cow fa-lg border-start border-top px-1 py-1 dietaryIcons"></i>
                                 {% elif item.dietary_preference == 'glutenfree' %}
                                 <i
-                                    class="position-sticky top-100 start-100 fa-solid fa-wheat-awn fa-lg border-start border-top px-1 py-1 dietaryIcons"></i>
+                                    class="position-relative fa-solid fa-wheat-awn fa-lg border-start border-top px-1 py-1 dietaryIcons"></i>
                                 {% else %}
                                 <i
-                                    class="position-sticky top-100 start-100 fa-solid fa-drumstick-bite fa-lg border-start border-top px-1 py-1 dietaryIcons"></i>
+                                    class="position-relative fa-solid fa-drumstick-bite fa-lg border-start border-top px-1 py-1 dietaryIcons"></i>
                                 {% endif %}
                             </div>
                         </div>
