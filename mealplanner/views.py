@@ -13,7 +13,6 @@ from .forms import (
     user_registration_form,
 )
 from .models import (
-    DaysOfWeek,
     Ingredient,
     Ingredient_List,
     Planner,
@@ -158,6 +157,20 @@ def recipes_view(request):
         )
 
     planner = Planner.objects.filter(owner=user).latest("id")
+    if planner.chosen_list.count() > 0:
+        remainder = planner.days - planner.chosen_list.count()
+        return render(
+            request,
+            "recipes.html",
+            {
+                "recipes": recipes,
+                "quantities": quantities,
+                "favorite_dishes": favorite_dishes,
+                "planner": planner,
+                "chosen_list": planner.chosen_list.all(),
+                "remainder": remainder,
+            },
+        )
 
     return render(
         request,
@@ -225,12 +238,8 @@ def add_to_planner(request, id):
         )
 
     # Add a recipe to the planner's chosen list
-    if planner.not_saveable == False:
+    if planner.not_saveable == False and planner.chosen_list.count() < planner.days:
         planner.chosen_list.add(recipe)
-
-        # If all the recipes have been added to the planner, redirect to finalize_planner view
-        if planner.chosen_list.count() == planner.days:
-            return redirect("finalize_planner")
 
     return JsonResponse(
         {
@@ -246,27 +255,24 @@ def add_to_planner(request, id):
 def remove_from_planner(request, id):
     user = request.user
 
-    if not user.is_authenticated:
-        return redirect("login")
-
     planner = Planner.objects.filter(owner=user).latest("id")
-    recipe = Recipe.objects.filter(id=id)[0]
+    recipe = get_object_or_404(Recipe, id=id)
 
     if recipe in planner.chosen_list.all():
         planner.chosen_list.remove(recipe)
 
-    # TODO: Change from a redirect to a JSONresponse to save a reload
-    return redirect("recipes")
+    return JsonResponse({"id": recipe.pk}, status=200)
 
 
 @login_required(redirect_field_name="", login_url="login")
 def finalize_planner(request, id):
     user = request.user
-    planner = Planner.objects.get(id=id)
+    planner = get_object_or_404(Planner, id=id)
 
     # Finalize the planner
+    if planner.chosen_list.count() >= planner.days:
+        planner.finished = True
     planner.not_saveable = True
-    planner.finished = True
     planner.save(update_fields=["not_saveable", "finished"])
 
     if not request.method == "POST":
