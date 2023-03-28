@@ -90,10 +90,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Start Drag & Drop
-    // TODO: Need to just switch this to a add to/ remove from function
-    // Due to incompatibility with mobile uses
-
+    // Add an event listener to "add" a recipe to the planner
     var addButton = document.getElementsByClassName('addButton');
     if (addButton) {
         for (let button of addButton) {
@@ -101,27 +98,18 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    var dropZones = document.getElementsByClassName('dropBoxes');
-    if (dropZones) {
-        for (let zone of dropZones) {
-            zone.addEventListener('drop', endDrag);
-
-            // Prevents default behavior of a dragover() event
-            zone.addEventListener('dragover', (event) => {
-                event.preventDefault();
-            })
+    // Add an event listener to "remove" a recipe from the planner
+    var removeButton = document.getElementsByClassName('removeButton');
+    if (removeButton) {
+        for (let button of removeButton) {
+            button.addEventListener('click', removeFromPlanner);
         }
     }
-    // End Drag & Drop
 
     // Find the button with the class "#finalizePlannerButton", then attach a click event to it
     var finalizePlannerButton = document.querySelector('.finalizePlannerButton')
     if (finalizePlannerButton) {
-        finalizePlannerButton.addEventListener('click', function () {
-            let id = finalizePlannerButton.getAttribute('data-id');
-
-            finalizePlanner(id);
-        });
+        finalizePlannerButton.addEventListener('click', finalizePlanner);
     }
 
 
@@ -275,66 +263,107 @@ function addToPlanner(event) {
     })
         .then(response => response.json())
         .then(data => {
-            console.log(data.photo);
             // Construct HTML for recipe box
             plannerBoxRecipe = `
                     <img class="object-fit-cover plannerRecipePhoto" src="${data.photo}" alt="${data.name}"
                     data-id="${data.id}">
+                    <span class="position-absolute top-0 start-100 translate-middle badge border border-light rounded-circle bg-danger removeButton"
+                    data-id="${data.id}"><i class="fa-solid fa-xmark" data-id="${data.id}"></i></span>
                     <div class="row justify-content-center">
                     <div class="col-auto gridItemText">
-                        <span class="recipeBoxText px-1">${data.name}</span>
+                        <span class="plannerRecipeText px-1">${data.name}</span>
                     </div>
                     </div>
                     `;
 
             // Attach data-id to the element being transferred
             let boxes = document.querySelectorAll('.plannerBoxes');
+            var removeButton = document.getElementsByClassName('removeButton');
             for (let i = 0; i < boxes.length; i++) {
-                console.log(boxes[i].innerHTML);
                 if (boxes[i].innerHTML.trim() === "") {
+                    console.log(i);
                     // Attach html of a recipe to innerhtml
                     boxes[i].innerHTML += plannerBoxRecipe;
+                    if (removeButton) {
+                        for (let button of removeButton) {
+                            button.addEventListener('click', removeFromPlanner);
+                        }
+                    }
                     break;
+                }
+
+                //Check to see if the boxes are full
+                if (i === boxes.length - 2) {
+                    console.log("Boxes full!");
+
+                    // Code to be executed if the condition is met
+                    let finalizeButton = document.querySelector('.finalizePlannerButton');
+                    finalizeButton.classList.remove('disabled');
                 }
             }
         })
         .then(error => console.error(error));
 }
 
-function endDrag(event) {
-    event.preventDefault();
 
-    // Obtain the data being transferred from the startDrag event
-    let dataId = event.datatransfer.getData('text/plain');
-    let droppedBox = event.target;
+function removeFromPlanner(event) {
+    // Functionality to remove from planner will be added here
+    // Prevents default form submission event
+    event.preventDefault()
 
-    // Set the recieved data to the dropbox
-    droppedBox.setAttribute('data-id', dataId);
+    // Set data to be transferred
+    var id = event.target;
+    var dataId = id.getAttribute('data-id');
 
-    // Check using console.log to see if the attribute was correctly moved
-    console.log(droppedBox.getAttribute('data-id'));
+    let csrf = document.querySelector("#csrf").dataset.csrf;
+
+    fetch(`recipes/remove_from_planner/${dataId}`, {
+        method: "POST",
+        body: JSON.stringify({ id: dataId }),
+        headers: { "X-CSRFTOKEN": csrf },
+        credentials: 'same-origin',
+    })
+        .then(response => response.json())
+        .then(data => {
+            // Construct HTML for recipe box
+            let box = document.querySelector(`[data-id="${data.id}"]`).closest(`.plannerBoxes`);
+            box.innerHTML = '';
+
+            // Disable the finalize planner button if not already disabled
+            let finalizeButton = document.querySelector('.finalizePlannerButton');
+            if (!finalizeButton.classList.contains('disabled')) {
+                finalizeButton.classList.add('disabled');
+            }
+        })
+        .catch(error => {
+            console.log(`${error}`);
+        });
 }
 
 
-function finalizePlanner(id) {
+
+function finalizePlanner(event) {
     let csrf = document.querySelector("#csrf").dataset.csrf;
 
-    fetch(`/finalize_planner/${id}`, {
+
+    // Set data to be transferred
+    var id = event.target;
+    var dataId = id.getAttribute('data-id');
+
+    // Add recipe to planner
+    fetch(`/finalize_planner/${dataId}`, {
         method: "POST",
-        body: JSON.stringify({
-            id: id
-        }),
-        headers: { "X-CSRFToken": csrf },
+        body: JSON.stringify({ id: dataId }),
+        headers: { "X-CSRFTOKEN": csrf },
         credentials: 'same-origin',
     })
-
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+        })
         .catch(error => {
             console.log(`${error}`);
-        })
-
-        .then((response => {
-            // TODO: Might do something more here but for the time being it works
-        }))
+        });
 }
 
 function likePlanner(id) {
