@@ -85,14 +85,14 @@ class Ingredient_List(models.Model):
         return f"{self.quantity:.{0 if self.quantity.is_integer() else 2}f} {self.ingredient.unit_of_measurement} {self.ingredient.name}"
 
 
-class DaysOfWeek(Enum):
-    SUNDAY = "Sunday"
-    MONDAY = "Monday"
-    TUESDAY = "Tuesday"
-    WEDNESDAY = "Wednesday"
-    THURSDAY = "Thursday"
-    FRIDAY = "Friday"
-    SATURDAY = "Saturday"
+# class DaysOfWeek(Enum):
+#     SUNDAY = "Sunday"
+#     MONDAY = "Monday"
+#     TUESDAY = "Tuesday"
+#     WEDNESDAY = "Wednesday"
+#     THURSDAY = "Thursday"
+#     FRIDAY = "Friday"
+#     SATURDAY = "Saturday"
 
 
 class NumberOfDays(IntEnum):
@@ -132,7 +132,5 @@ class Planner(models.Model):
 
 class PlannerDay(models.Model):
     planner = models.ForeignKey(Planner, on_delete=models.CASCADE)
-    meal = models.ForeignKey(Recipe, on_delete=models.CASCADE)
-    day_of_week = models.CharField(
-        choices=[(day.name, day.value) for day in DaysOfWeek], max_length=10
-    )
+    meal = models.ManyToManyField(Recipe, related_name="boxes")
+    day_number = models.IntegerField(null=True, blank=True)
