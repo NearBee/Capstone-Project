@@ -6,6 +6,49 @@ body {
     border-radius: 0px 6px 6px 6px;
 }
 
+/* Index Page Section */
+
+.createPlannerText,
+.indexRecipeBoxText {
+    font-family: 'Josefin Sans', sans-serif;
+}
+
+.indexRecipeCol {
+    position: relative;
+    border-radius: 4px 4px 4px 4px;
+}
+
+.indexRecipeItem,
+.indexRecipePicture {
+    width: 100%;
+    max-width: 320px;
+    height: 100%;
+    max-height: 320px;
+    border-bottom-left-radius: 4px;
+    border-top-left-radius: 4px;
+}
+
+h1.text-center {
+    font-family: 'Josefin Sans', sans-serif;
+    /* Use a custom font */
+    background-color: #f7c69f;
+    /* Add a background color */
+    padding: 20px;
+    /* Add some padding */
+    color: #fff;
+    /* Set the text color */
+    text-shadow: 2px 2px #333;
+    /* Add a text shadow */
+    background: linear-gradient(0deg, rgba(222, 226, 230, 1) 22%, rgba(222, 63, 78, 1) 84%);
+    /* Apply a gradient effect */
+    border-radius: 4px 4px 0 0;
+    display: inline-block;
+    /* Set display to inline-block to wrap text around the element */
+    position: relative;
+    /* Set position to relative to allow absolute positioning of the icon */
+}
+
+/* Recipes Page Section */
 .grid {
     max-width: 100%;
 }
@@ -29,6 +72,8 @@ body {
     border-radius: 9px;
 }
 
+
+/* Planner Page Section */
 /* Scale down animation to be added */
 .plannerRecipePhoto {
     position: absolute;
@@ -275,19 +320,13 @@ body {
 }
 
 
-/* .plannerPageRecipePhoto {
-    height: 90px;
-    width: 90px;
-} */
-
 .dietaryIcons {
     border-top-left-radius: 4px;
-    border-bottom-right-radius: 2px;
-    background-color: white;
+    border-bottom-right-radius: 3px;
+    background-color: #DEE2E6;
     z-index: 2;
     top: 61px !important;
     left: 61px !important;
-    /* opacity: .7; */
 }
 
 .dietaryIconsCancel {
@@ -331,6 +370,8 @@ body {
 
 .fa-fish-fins {
     color: #92d6dc;
+    height: 20px;
+    width: 20px;
 }
 
 .fa-wheat-awn {
@@ -351,8 +392,8 @@ body {
 
 .fa-cow {
     color: brown;
-    height: 20.57px;
-    width: 20.57px;
+    height: 20px;
+    width: 20px;
 }
 
 .editLink {
@@ -377,6 +418,15 @@ body {
     position: absolute;
     translate: inherit;
 }
+
+.favoritedRecipeStar {
+    position: absolute;
+    left: 5px;
+    top: 0px;
+    z-index: 10;
+    scale: 1.2;
+}
+
 
 /* Effects using CSS on classnames */
 
