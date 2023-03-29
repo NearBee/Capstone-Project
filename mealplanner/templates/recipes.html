@@ -109,10 +109,13 @@
         <div class="grid">
             {% for recipe in recipes %}
             <button type="button" class="grid-item mb-2 {{ recipe.dietary_preference }}" data-bs-toggle="modal"
-                data-bs-target="#gridItemModal{{ recipe.id }}">
+                data-bs-target="#gridItemModal{{ recipe.id }}" data-id="{{recipe.id}}">
                 <img class="object-fit-cover recipePicture" src="{{ recipe.recipe_photo.url }}" alt="{{recipe.name}}"
                     data-id="{{recipe.id}}">
-                <div class="row justify-content-center">
+                {% if recipe.name in favorite_dishes %}
+                <i class="favoritedRecipeStar bi-star-fill" id="favoritedRecipeStar{{recipe.id}}"></i>
+                {% endif %}
+                <div class=" row justify-content-center">
                     <div class="col-auto gridItemText">
                         <span class="recipeBoxText px-1">{{ recipe.name }}</span>
                     </div>
@@ -128,9 +131,13 @@
                             <div class="col-auto me-2 mb-1 favStarBox">
                                 <div id="csrf" data-csrf="{{ csrf_token }}"></div>
                                 {% if recipe.name in favorite_dishes %}
-                                <i class="favStar bi-star-fill" data-id="{{ recipe.id }}"></i>
+                                <i class="favStar bi-star-fill {{recipe.id}}" data-id="{{ recipe.id }}"
+                                    data-bs-toggle="tooltip" data-bs-placement="top"
+                                    data-bs-title='Favorite/Unfavorite this recipe!'></i>
                                 {% else %}
-                                <i class="favStar bi-star" data-id="{{ recipe.id }}"></i>
+                                <i class="favStar bi-star {{recipe.id}}" data-id="{{ recipe.id }}"
+                                    data-bs-toggle="tooltip" data-bs-placement="top"
+                                    data-bs-title='Favorite/Unfavorite this recipe!'></i>
                                 {% endif %}
                             </div>
                             {% endif %}
@@ -145,11 +152,8 @@
                             </div>
                         </div>
                         <div class="modal-body">
-                            {{ recipe.formatted_instructions|safe }}
 
-                            <hr>
-
-                            <h1 class="fs-5 mb-3">Recipe Ingredients</h1>
+                            <h1 class="fs-5 mb-3 text-decoration-underline">Recipe Ingredients</h1>
                             <ul>
                                 {% for ingredient in recipe.ingredient_details.all %}
 
@@ -165,7 +169,12 @@
 
                             <hr>
 
-                            <h1 class="fs-5 mb-3">Nutritional Information</h1>
+                            <h1 class="fs-5 mb-3 text-decoration-underline">Recipe Instructions</h1>
+                            {{ recipe.formatted_instructions|safe }}
+
+                            <hr>
+
+                            <h1 class="fs-5 mb-3 text-decoration-underline">Nutritional Information</h1>
                             <div class="row justify-content-start">
                                 <div class="col-auto">
                                     {{ recipe.formatted_nutrition|safe }}
