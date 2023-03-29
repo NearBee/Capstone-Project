@@ -37,7 +37,7 @@ h1.text-center {
     /* Add a background color */
     padding: 20px;
     /* Add some padding */
-    color: #fff;
+    color: #ffffff;
     /* Set the text color */
     text-shadow: 2px 2px #333;
     /* Add a text shadow */
@@ -49,6 +49,8 @@ h1.text-center {
     position: relative;
     /* Set position to relative to allow absolute positioning of the icon */
 }
+
+/* End of Index Page CSS */
 
 /* Recipes Page Section */
 .grid {
@@ -74,8 +76,6 @@ h1.text-center {
     border-radius: 9px;
 }
 
-
-/* Planner Page Section */
 /* Scale down animation to be added */
 .plannerRecipePhoto {
     position: absolute;
@@ -110,11 +110,6 @@ h1.text-center {
 .removeButton:hover {
     cursor: pointer;
     scale: 1.1;
-}
-
-.backgroundStuff {
-    opacity: 1;
-    transition: filter 0.3s ease-out;
 }
 
 .recipeBoxText {
@@ -221,25 +216,7 @@ h1.text-center {
     border-radius: 7px;
 }
 
-.removeItem {
-    height: 18px;
-    width: 17px;
-}
-
-/* top-left top-right bottom-right bottom-left */
-.removeItem:hover {
-    width: 28px;
-    border-radius: 8px 2px 2px 8px;
-    text-align: center;
-}
-
-/* TODO: on hover do a width transform to the left and reveal "REMOVE?" */
-
-.bi::before,
-[class^="bi-x"]::before,
-[class*=" bi-x"]::before {
-    vertical-align: 0.875em;
-}
+/* All planners page CSS */
 
 .plannerIcons {
     height: 24px;
@@ -331,23 +308,12 @@ h1.text-center {
     left: 61px !important;
 }
 
-.dietaryIconsCancel {
-    color: red;
-    height: 28.57px;
-    width: 28.57px;
-    opacity: .55;
-}
-
 .plannerInfoFonts {
     font-size: small;
 }
 
 .shoppingModalContent>.modal-body {
     max-height: 500px;
-}
-
-.fa-stack.small {
-    font-size: 15px;
 }
 
 .fa-layers-counter {
@@ -358,15 +324,7 @@ h1.text-center {
     --fa-top: -11px;
 }
 
-
-.confirmEdit:hover {
-    background-color: #22724d !important;
-}
-
-.cancelEdit:hover,
-.logoutButton:hover {
-    background-color: #cd2333 !important;
-}
+/* End of All Planners CSS */
 
 /* Custom CSS for specific icons */
 
@@ -440,6 +398,8 @@ h1.text-center {
     opacity: .9;
 }
 
+/* Profile CSS */
+
 .profileHeader.inProgress {
     animation: inProgress infinite ease-in-out 1.5s;
     scale: 1;
@@ -462,11 +422,19 @@ h1.text-center {
     }
 }
 
-/* Profile CSS */
 
 .profilePicture {
     border-radius: 50%;
     height: 150px;
     width: 150px;
     vertical-align: middle;
+}
+
+.confirmEdit:hover {
+    background-color: #22724d !important;
+}
+
+.cancelEdit:hover,
+.logoutButton:hover {
+    background-color: #cd2333 !important;
 }
