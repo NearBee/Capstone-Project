@@ -204,7 +204,6 @@ def favorite_recipe(request, id):
     else:
         user.favorite_dishes.add(id)
 
-    # TODO: Change from a redirect to a JSONresponse to save a reload
     return JsonResponse({"id": id}, status=200)
 
 
