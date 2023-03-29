@@ -26,13 +26,15 @@ admin.site.register(Ingredient, IngredientAdmin)
 
 
 class RecipeAdmin(admin.ModelAdmin):
-    list_display = (
+    list_display = [
         "id",
         "name",
-        "instructions",
+        "short_instructions",
         "nutritional_values",
         "dietary_preference",
-    )
+        "short_description",
+        "recipe_photo",
+    ]
 
 
 admin.site.register(Recipe, RecipeAdmin)
