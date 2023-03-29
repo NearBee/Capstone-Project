@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.template.defaultfilters import truncatechars
 from enum import Enum, IntEnum
 
 # Create your models here.
@@ -61,6 +62,9 @@ class Recipe(models.Model):
         choices=[(diet.name, diet.value) for diet in Diets], max_length=14
     )
     recipe_photo = models.ImageField(default="Food_placeholder.jpg")
+    recipe_description = models.TextField(
+        default="Nothing Here",
+    )
 
     def __str__(self):
         return self.name
@@ -70,6 +74,15 @@ class Recipe(models.Model):
 
     def formatted_nutrition(self):
         return self.nutritional_values.replace("\n", "<br>")
+
+    @property
+    def short_instructions(self):
+        return truncatechars(self.instructions, 50)
+
+    @property
+    def short_description(self):
+        if not None:
+            return truncatechars(self.recipe_description, 50)
 
 
 class Ingredient_List(models.Model):
