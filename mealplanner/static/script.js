@@ -224,18 +224,25 @@ function favoriteRecipe(id) {
         headers: { "X-CSRFToken": csrf },
         credentials: 'same-origin',
     })
-        .catch(error => {
-            console.log(`${error}`);
-        })
 
         .then((response => {
             let selectedBox = document.querySelector(`#gridItemModal${id} > div > div > div.modal-header > div.col-auto.me-2.mb-1.favStarBox > i`)
-            console.log(selectedBox);
 
             if (selectedBox.classList.contains('bi-star-fill')) {
                 selectedBox.classList.replace('bi-star-fill', 'bi-star');
             } else {
                 selectedBox.classList.replace('bi-star', 'bi-star-fill');
+            }
+
+            // Target the star in the recipe grid and toggle hidden class
+            var favoritedRecipeStar = document.getElementById(`favoritedRecipeStar${id}`);
+            if (favoritedRecipeStar) {
+                if (favoritedRecipeStar.classList.contains('hidden')) {
+                    favoritedRecipeStar.classList.remove('hidden');
+                } else {
+                    favoritedRecipeStar.classList.add('hidden');
+                }
+
             }
         }))
 
