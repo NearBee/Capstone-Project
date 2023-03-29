@@ -4,61 +4,95 @@
 {% block title %}Homepage{% endblock %}
 
 {% block body %}
-<div class="container pt-2">
-    <div class="row justify-content-center pt-3">
-        <div class="col-auto border rounded-pill px-5 py-1 titleClass">
-            <p class="h4 fw-light mb-0">Homepage</p>
+<div class="stockPlanner container-fluid align-content-center my-3" style="display: grid;">
+    <div class="stockPlannerImage"></div>
+    <div class="row justify-content-center">
+        <div class="col-6 stockPlannerBoxes border">
+            <a class="createPlannerLink text-white text-decoration-none fs-3 fw-light" href="{% url 'index' %}">
+                <span class="createPlannerText">Create a planner now!</span>
+            </a>
         </div>
+
     </div>
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-auto">
-                New content
-            </div>
-        </div>
-        <div class="container">
-            <div class="row justify-content-end row-col-2">
-                <div class="col-8 me-auto">
-                    <div class="card">
-                        <div class="card-header bg-dark-subtle">
-                            This is the header
+</div>
+<div class="container pt-2">
+
+    <div class="row justify-content-center">
+        <h1 class="text-center">Some of our signature recipes</h1>
+        <div class="col-12">
+            {% for recipe in recipes %}
+            <div
+                class="row justify-content-between my-4 {% if forloop.counter|divisibleby:2 %}flex-row-reverse{% endif %}">
+                <div class="col-4 border border-secondary px-0 indexRecipeCol">
+                    <span class="indexRecipeItem mb-2 {{ recipe.dietary_preference }}">
+                        <img class="object-fit-cover indexRecipePicture" src="{{ recipe.recipe_photo.url }}"
+                            alt="{{recipe.name}}" data-id="{{recipe.id}}">
+                        {% if recipe.name in favorite_dishes %}
+                        <i class="favoritedRecipeStar bi-star-fill"></i>
+                        {% endif %}
+                </div>
+                <div class="col-7 indexRecipeItemText">
+                    <div class="row justify-content-center mb-1">
+                        <div class="col-auto">
+                            <h1 class="indexRecipeBoxText text-decoration-underline fs-4">{{ recipe.name }}</h1>
                         </div>
-                        <div class="card-body">
-                            <blockquote class="blockquote mb-0">
-                                <p>This is the best Meal Planner I could ever ask for!</p>
-                                <footer class="blockquote-footer">Mom Bear of the <cite class="text-muted"
-                                        title="Personal Trainer Extraordinaires">Personal Trainer
-                                        Extraordinaires</cite>
-                                </footer>
-                            </blockquote>
+                    </div>
+                    <div class="row">
+                        <div class="col-auto">
+                            <p class="text-muted">{{ recipe.recipe_description }}</p>
                         </div>
                     </div>
                 </div>
-                <div class="col-3 border border-success">
-                    <form action="{% url 'add_planner' %}" method="post">
-                        {% csrf_token %}
-                        <div class="row justify-content-center">
-                            <input type="submit"
-                                class="button border rounded-pill px-5 py-2 text-white bg-success bg-gradient"
-                                value="Get a meal plan!"></input>
-                        </div>
-                        <div class="plannerForm">
-                            {% for field in planner_form %}
-                            {{field.errors}}
-                            <div class="row">
-                                <div class="col-auto my-2">
-                                    {{ field.label }}
-                                </div>
-                                <div class="col-auto my-2 mb-2">
-                                    {{ field }}
-                                </div>
-                            </div>
-                            {% endfor %}
-                        </div>
-                    </form>
-                </div>
+
+                </span>
             </div>
+            <hr>
+            {% endfor %}
         </div>
+
     </div>
+
 </div>
 {% endblock %}
+
+
+
+<!-- Original footer that wasn't needed in index view -->
+
+<!-- <div class="modal-footer">
+    {% if user.is_authenticated %}
+    {% csrf_token %}
+    <button class="btn btn-primary addButton" data-id="{{recipe.id}}"
+        data-url="{% url 'add_to_planner' recipe.id %}" data-bs-dismiss="modal">Add to
+        Planner</button>
+    {% else %}
+    <button type="button" class="btn btn-primary disabledAddButton" disabled>Add to
+        Planner</button>
+    {% endif %}
+    <button type="button" class="btn btn-secondary ms-auto"
+        data-bs-dismiss="modal">Close</button>
+</div> -->
+
+<!-- Section for planner creation form -->
+
+<!-- <form action="{% url 'add_planner' %}" method="post">
+    {% csrf_token %}
+    <div class="row justify-content-center">
+        <input type="submit"
+            class="button border rounded-pill px-5 py-2 text-white bg-success bg-gradient"
+            value="Get a meal plan!"></input>
+    </div>
+     <div class="plannerForm">
+        {% for field in planner_form %}
+        {{field.errors}}
+        <div class="row">
+            <div class="col-auto my-2">
+                {{ field.label }}
+            </div>
+            <div class="col-auto my-2 mb-2">
+                {{ field }}
+            </div>
+        </div>
+        {% endfor %}
+    </div> 
+</form> -->
