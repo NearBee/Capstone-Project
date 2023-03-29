@@ -24,9 +24,30 @@ from .models import (
 
 def index(request):
     user = request.user
+    recipes = Recipe.objects.all()
+    quantities = Ingredient_List.objects.all()
+
+    if not user.is_authenticated:
+        return render(
+            request,
+            "index.html",
+            {
+                "recipes": recipes,
+                "quantities": quantities,
+            },
+        )
+
+    user_favorites = user.favorite_dishes.all()
+    favorite_dishes = [recipe.name for recipe in user_favorites]
+
     return render(
         request,
         "index.html",
+        {
+            "recipes": recipes,
+            "quantities": quantities,
+            "favorite_dishes": favorite_dishes,
+        },
     )
 
 
