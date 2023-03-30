@@ -32,22 +32,14 @@ body {
 
 h1.text-center {
     font-family: 'Josefin Sans', sans-serif;
-    /* Use a custom font */
     background-color: #f7c69f;
-    /* Add a background color */
     padding: 20px;
-    /* Add some padding */
     color: #ffffff;
-    /* Set the text color */
     text-shadow: 2px 2px #333;
-    /* Add a text shadow */
     background: linear-gradient(0deg, rgba(222, 226, 230, 1) 22%, rgba(222, 63, 78, 1) 84%);
-    /* Apply a gradient effect */
     border-radius: 4px 4px 0 0;
     display: inline-block;
-    /* Set display to inline-block to wrap text around the element */
     position: relative;
-    /* Set position to relative to allow absolute positioning of the icon */
 }
 
 /* End of Index Page CSS */
@@ -83,6 +75,17 @@ h1.text-center {
     height: 98px;
     z-index: 1;
     border-radius: 7px;
+    animation: chosen .3s ease-out;
+}
+
+@keyframes chosen {
+    0% {
+        transform: scale(1.5);
+    }
+
+    100% {
+        transform: scale(1);
+    }
 }
 
 .plannerRecipeText {
@@ -94,22 +97,57 @@ h1.text-center {
     border-radius: 4px;
     bottom: 0px;
     right: 0px;
-    opacity: 1;
     z-index: 2;
     color: white;
     font-weight: 100;
     background-color: rgba(0, 0, 0, 0.7);
+    opacity: 0;
 }
 
 .removeButton {
     z-index: 10;
     height: 20px;
     width: 20px;
+    opacity: 0;
+}
+
+.removeX {
+    opacity: 0;
 }
 
 .removeButton:hover {
     cursor: pointer;
-    scale: 1.1;
+}
+
+.plannerRecipeText,
+.removeButton,
+.removeX {
+    animation: fadeIn .5s forwards ease-in;
+    animation-delay: .4s;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+.fadeOut {
+    animation: fadeOut .5s forwards ease-out;
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
 }
 
 .recipeBoxText {
@@ -302,10 +340,13 @@ h1.text-center {
 .dietaryIcons {
     border-top-left-radius: 4px;
     border-bottom-right-radius: 3px;
-    background-color: #DEE2E6;
+    background-color: #ffffff;
     z-index: 2;
     top: 61px !important;
     left: 61px !important;
+    -webkit-box-shadow: -3px -3px 5px 0px rgba(110, 111, 109, 0.8);
+    -moz-box-shadow: -3px -3px 5px 0px rgba(110, 111, 109, 0.8);
+    box-shadow: -3px -3px 5px 0px rgba(110, 111, 109, 0.8);
 }
 
 .plannerInfoFonts {
@@ -335,7 +376,7 @@ h1.text-center {
 }
 
 .fa-wheat-awn {
-    color: gold;
+    color: #ccac00;
 }
 
 .fa-leaf {
@@ -343,7 +384,7 @@ h1.text-center {
 }
 
 .fa-seedling {
-    color: #92f200;
+    color: #75c200;
 }
 
 .fa-drumstick-bite {
