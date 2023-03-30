@@ -268,8 +268,9 @@ def remove_from_planner(request, id):
 
     if recipe in planner.chosen_list.all():
         planner.chosen_list.remove(recipe)
+        return JsonResponse({"success": True, "id": recipe.pk}, status=200)
 
-    return JsonResponse({"id": recipe.pk}, status=200)
+    return JsonResponse({"success": False, "id": recipe.pk}, status=400)
 
 
 @login_required(redirect_field_name="", login_url="login")
