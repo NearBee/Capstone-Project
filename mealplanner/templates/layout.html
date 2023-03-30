@@ -36,6 +36,38 @@
                     <a class="nav-link text-white" href="{% url 'recipes' %}">Recipes</a>
                     <a class="nav-link text-white" href="{% url 'planner_page' %}">Planners</a>
                 </div>
+                <div class="nav-item dropdown-center">
+                    <button class="btn btn-danger-subtle droptown-toggle text-white" type="button"
+                        id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true"
+                        aria-expanded="false">Create
+                        a Planner</button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <form class="mx-5" method="POST" action="{% url 'create_planner' %}">
+                            {% csrf_token %}
+                            <div class="form-group mx-5 createPlannerGroup">
+                                {% for field in planner_form %}
+                                <div class="fieldWrapper">
+                                    {{ field.errors }}
+                                    <div class="row justify-content-start">
+                                        <div class="col-12">
+                                            <label
+                                                class="border border-bottom-0 rounded-top px-2 shadow-sm bg-body-secondary bg-gradient">
+                                                {{ field.label }}
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            {{ field }}
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            <button type="submit" class="btn btn-primary">Create Planner</button>
+                        </form>
+                    </div>
+                </div>
                 <div class="navbar-nav">
                     {% if user.is_authenticated %}
                     <button type="button" class="btn btn-danger border border-0 bg-transparent ms-auto"
