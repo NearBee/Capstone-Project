@@ -91,6 +91,8 @@
         <div class="col-auto">
             <div class="btn-group filter-button-group">
                 <button class="filter-item btn btn-sm btn-outline-secondary" data-filter="*">No Preference</button>
+                <button class="filter-item btn btn-sm btn-outline-secondary youfavorite" data-filter=".favorited">Your
+                    Favorites</button>
                 <button class="filter-item btn btn-sm btn-outline-secondary vegetarian"
                     data-filter=".vegetarian">Vegetarian</button>
                 <button class="filter-item btn btn-sm btn-outline-secondary vegan" data-filter=".vegan">Vegan</button>
@@ -110,8 +112,9 @@
     <div class="row justify-content-center">
         <div class="grid">
             {% for recipe in recipes %}
-            <button type="button" class="grid-item mb-2 {{ recipe.dietary_preference }}" data-bs-toggle="modal"
-                data-bs-target="#gridItemModal{{ recipe.id }}" data-id="{{recipe.id}}">
+            <button type="button"
+                class="grid-item mb-2 {{ recipe.dietary_preference }} {% if recipe.name in favorite_dishes %}favorited{%endif%}"
+                data-bs-toggle="modal" data-bs-target="#gridItemModal{{ recipe.id }}" data-id="{{recipe.id}}">
                 <img class="object-fit-cover recipePicture" src="{{ recipe.recipe_photo.url }}" alt="{{recipe.name}}"
                     data-id="{{recipe.id}}">
                 {% if recipe.name in favorite_dishes %}
