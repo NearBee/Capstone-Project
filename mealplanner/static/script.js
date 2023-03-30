@@ -30,6 +30,11 @@ document.addEventListener('DOMContentLoaded', function () {
         })
     }
 
+    var cancelEditButton = document.querySelector('.cancelEdit');
+    if (cancelEditButton) {
+        cancelEditButton.addEventListener('click', cancelEdit);
+    }
+
     // Finding favorite buttons on a recipe and attaching the favoriteRecipe function to them
     var favoriteButton = document.getElementsByClassName('favStar');
     for (let button of favoriteButton) {
@@ -207,6 +212,50 @@ function submitEdit(id) {
         })
 }
 
+function cancelEdit(event) {
+    // Prevent the form from submitting
+    event.preventDefault();
+
+    // Get all components that need to be switched out
+    let profileHeader = document.querySelector('.profileHeader');
+    let activeCol = document.querySelector(".activeView");
+    let editCol = document.querySelector('.editCol');
+    let logoutButtons = document.querySelector('.logoutCol');
+    let confirmButtons = document.querySelector('.confirmationCol');
+
+    // Check to see if the user is currently editing
+    if (!profileHeader.classList.contains("inProgress")) {
+
+        // Change profile header to reflect that the user is currently editing
+        profileHeader.innerHTML = "Profile Editing";
+        profileHeader.classList.add("inProgress");
+
+        // Remove "hidden" from editCol form
+        activeCol.classList.add("hidden");
+        editCol.classList.remove("hidden");
+
+
+        // Hide logout button / Show confirmation buttons
+        logoutButtons.style.display = 'none';
+        confirmButtons.style.display = 'flex';
+
+    } else {
+
+        // Change profile header to reflect being back to normal profile view
+        profileHeader.innerHTML = "Profile information";
+        profileHeader.classList.remove("inProgress");
+
+        // Add "hidden" from editCol form
+        activeCol.classList.remove("hidden");
+        editCol.classList.add("hidden");
+
+
+        // Show logout button / Hide confirmation buttons
+        logoutButtons.style.display = 'flex';
+        confirmButtons.style.display = 'none';
+        d
+    }
+}
 
 function favoriteRecipe(id) {
     let csrf = document.querySelector("#csrf").dataset.csrf;
