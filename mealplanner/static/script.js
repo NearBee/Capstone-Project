@@ -281,12 +281,32 @@ function favoriteRecipe(id) {
             // Target the star in the recipe grid and toggle hidden class
             var favoritedRecipeStar = document.getElementById(`favoritedRecipeStar${id}`);
             if (favoritedRecipeStar) {
+
                 if (favoritedRecipeStar.classList.contains('hidden')) {
                     favoritedRecipeStar.classList.remove('hidden');
                 } else {
                     favoritedRecipeStar.classList.add('hidden');
                 }
 
+            } else {
+
+                // If the favoritedStar doesn't exist create it
+                let newFavoritedRecipeStar = `<i class="favoritedRecipeStar bi-star-fill favorited" id="favoritedRecipeStar${id}"></i>`;
+                let favoritedRecipeButton = document.querySelector(`.grid-item[data-id="${id}"]`);
+
+                // Inserts a new star inside of the parent element
+                favoritedRecipeButton.insertAdjacentHTML('beforeend', newFavoritedRecipeStar);
+
+            }
+
+            // Target the button in the recipe grid and add/remove "favorited" class
+            var favoritedRecipeButton = document.querySelector(`.grid-item[data-id="${id}"]`);
+            if (favoritedRecipeButton) {
+                if (!favoritedRecipeButton.classList.contains('favorited')) {
+                    favoritedRecipeButton.classList.add('favorited');
+                } else {
+                    favoritedRecipeButton.classList.remove('favorited');
+                }
             }
         }))
 
