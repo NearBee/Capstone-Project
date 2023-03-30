@@ -14,15 +14,16 @@
 
         <!-- If there are items in the chosen_list this will show -->
         {% for item in chosen_list %}
-        <div class="col-2 plannerBoxes box{{forloop.counter}} border mx-2 shadow-sm position-relative">
+        <div class="col-2 plannerBoxes box{{forloop.counter}} border mx-2 shadow-sm position-relative"
+            data-id="{{item.id}}">
             <img class="object-fit-cover plannerRecipePhoto" src="{{ item.recipe_photo.url }}" alt="{{ item.name }}"
                 data-id="{{ item.id}}">
             <span
                 class="position-absolute top-0 start-100 translate-middle badge border border-light rounded-circle bg-danger removeButton"
-                data-id="{{ item.id }}"><i class="fa-solid fa-xmark" data-id="{{ item.id }}"></i></span>
+                data-id="{{ item.id }}"><i class="fa-solid fa-xmark removeX" data-id="{{ item.id }}"></i></span>
             <div class="row justify-content-center">
                 <div class="col-auto gridItemText">
-                    <span class="plannerRecipeText px-1">{{ item.name }}</span>
+                    <span class="plannerRecipeText px-1" data-id="{{ item.id }}">{{ item.name }}</span>
                 </div>
             </div>
         </div>
@@ -40,7 +41,8 @@
 
         <!-- This html shows for an empty chosen_list -->
         {% for i in ""|center:planner.days %}
-        <div class="col-2 plannerBoxes box{{forloop.counter}} border mx-2 shadow-sm position-relative">
+        <div class="col-2 plannerBoxes box{{forloop.counter}} border mx-2 shadow-sm position-relative"
+            data-id="{% if item %}{{item.id}}{% else %}null{% endif %}">
         </div>
         {% endfor %}
 
