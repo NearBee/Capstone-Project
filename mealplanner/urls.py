@@ -11,7 +11,7 @@ urlpatterns = [
     path("logout", views.logout_view, name="logout"),
     path("edit_profile/<int:id>", views.edit_profile, name="edit_profile"),
     path("recipes", views.recipes_view, name="recipes"),
-    path("recipes/add_planner", views.add_planner, name="add_planner"),
+    path("create_planner", views.create_planner, name="create_planner"),
     path("favorite/<int:id>", views.favorite_recipe, name="fav_recipe"),
     path(
         "recipes/add_to_planner/<int:id>", views.add_to_planner, name="add_to_planner"

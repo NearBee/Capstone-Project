@@ -208,7 +208,7 @@ def favorite_recipe(request, id):
 
 
 @login_required(redirect_field_name="", login_url="login")
-def add_planner(request):
+def create_planner(request):
     user = request.user
     if request.method == "POST":
         planner_form = planner_creation_form(request.POST)
