@@ -108,7 +108,6 @@ class planner_creation_form(forms.ModelForm):
         field = (
             "name",
             "days",
-            "is_private",
         )
         exclude = (
             "owner",
@@ -117,14 +116,20 @@ class planner_creation_form(forms.ModelForm):
             "finished",
             "likes",
             "created_at",
+            "is_private",
         )
         widgets = {
-            "name": TextInput(attrs={"class": "form control"}),
-            "days": Select(attrs={"class": "form-select form-select-sm"}),
-            "is_private": CheckboxInput(attrs={"class": "form-check-input"}),
+            "name": TextInput(
+                attrs={
+                    "class": "form-control mb-4 mx-2 shadow-sm forminputBox",
+                    "placeholder": "Planner name",
+                }
+            ),
+            "days": Select(
+                attrs={"class": "form-select mb-4 mx-2 shadow-sm form-select-sm"}
+            ),
         }
         labels = {
             "name": "Planner name:",
             "days": "How many days?",
-            "is_private": "Will this plan be private?",
         }
