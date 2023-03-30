@@ -113,7 +113,6 @@ document.addEventListener('DOMContentLoaded', function () {
     // Form Errors
 
     var form = document.getElementById('register-form');
-
     if (form) {
         if (Object.keys(errors).length > 0) {
             form.classList.add('has-error');
@@ -271,10 +270,10 @@ function addToPlanner(event) {
                     <img class="object-fit-cover plannerRecipePhoto" src="${data.photo}" alt="${data.name}"
                     data-id="${data.id}">
                     <span class="position-absolute top-0 start-100 translate-middle badge border border-light rounded-circle bg-danger removeButton"
-                    data-id="${data.id}"><i class="fa-solid fa-xmark" data-id="${data.id}"></i></span>
+                    data-id="${data.id}"><i class="fa-solid fa-xmark removeX" data-id="${data.id}"></i></span>
                     <div class="row justify-content-center">
                     <div class="col-auto gridItemText">
-                        <span class="plannerRecipeText px-1">${data.name}</span>
+                        <span class="plannerRecipeText px-1" data-id="${data.id}">${data.name}</span>
                     </div>
                     </div>
                     `;
@@ -310,7 +309,6 @@ function addToPlanner(event) {
 
 
 function removeFromPlanner(event) {
-    // Functionality to remove from planner will be added here
     // Prevents default form submission event
     event.preventDefault()
 
@@ -328,16 +326,47 @@ function removeFromPlanner(event) {
     })
         .then(response => response.json())
         .then(data => {
-            // Construct HTML for recipe box
-            let box = document.querySelector(`[data-id="${data.id}"]`).closest(`.plannerBoxes`);
-            box.innerHTML = '';
+            // Successful removal of recipe from planner
+            if (data.success) {
 
-            // Disable the finalize planner button if not already disabled
-            let finalizeButton = document.querySelector('.finalizePlannerButton');
-            if (!finalizeButton.classList.contains('disabled')) {
-                finalizeButton.classList.add('disabled');
+                // Add the 'fadeOut' class to the removeButton and removeX elements
+                const removeButton = document.querySelector(`.removeButton[data-id="${data.id}"]`);
+                removeButton.classList.add('fadeOut');
+                const removeX = document.querySelector(`.removeX[data-id="${data.id}"]`);
+                removeX.classList.add('fadeOut');
+                const plannerRecipePhoto = document.querySelector(`.plannerRecipePhoto[data-id="${data.id}"]`);
+                plannerRecipePhoto.classList.add('fadeOut');
+                const plannerRecipeText = document.querySelector(`.plannerRecipeText[data-id="${data.id}"]`);
+                plannerRecipeText.classList.add('fadeOut');
+
+                // After the animation completes, remove the elements from the page
+                setTimeout(function () {
+                    removeButton.remove();
+                    removeX.remove();
+                    plannerRecipePhoto.remove();
+                    plannerRecipeText.remove();
+                }, 500);
+
+                // Disable the finalize planner button if not already disabled
+                let finalizeButton = document.querySelector('.finalizePlannerButton');
+                if (!finalizeButton.classList.contains('disabled')) {
+                    finalizeButton.classList.add('disabled');
+                }
+
+            } else {
+                // Unsuccesful removal of recipe from planner
+                console.log("Error removing recipe from planner");
             }
+
         })
+
+        .then(data => {
+            // Construct HTML for recipe box
+            let box = document.querySelector(`.plannerBoxes[data-id="${data.id}"]`);
+            console.log(box);
+            box.remove();
+        })
+
         .catch(error => {
             console.log(`${error}`);
         });
