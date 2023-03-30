@@ -295,158 +295,6 @@ function favoriteRecipe(id) {
         })
 }
 
-// Functions for Drag & Drop
-function addToPlanner(event) {
-    // Prevents default form submission event
-    event.preventDefault()
-
-    // Set data to be transferred
-    var id = event.target;
-    var dataId = id.getAttribute('data-id');
-
-    let csrf = document.querySelector("#csrf").dataset.csrf;
-
-    fetch(`recipes/add_to_planner/${dataId}`, {
-        method: "POST",
-        body: JSON.stringify({ id: dataId }),
-        headers: { "X-CSRFTOKEN": csrf },
-        credentials: 'same-origin',
-    })
-        .then(response => response.json())
-        .then(data => {
-            // Construct HTML for recipe box
-            plannerBoxRecipe = `
-                    <img class="object-fit-cover plannerRecipePhoto" src="${data.photo}" alt="${data.name}"
-                    data-id="${data.id}">
-                    <span class="position-absolute top-0 start-100 translate-middle badge border border-light rounded-circle bg-danger removeButton"
-                    data-id="${data.id}"><i class="fa-solid fa-xmark removeX" data-id="${data.id}"></i></span>
-                    <div class="row justify-content-center">
-                    <div class="col-auto gridItemText">
-                        <span class="plannerRecipeText px-1" data-id="${data.id}">${data.name}</span>
-                    </div>
-                    </div>
-                    `;
-
-            // Attach data-id to the element being transferred
-            let boxes = document.querySelectorAll('.plannerBoxes');
-            var removeButton = document.getElementsByClassName('removeButton');
-            for (let i = 0; i < boxes.length; i++) {
-                if (boxes[i].innerHTML.trim() === "") {
-                    console.log(i);
-                    // Attach html of a recipe to innerhtml
-                    boxes[i].innerHTML += plannerBoxRecipe;
-                    if (removeButton) {
-                        for (let button of removeButton) {
-                            button.addEventListener('click', removeFromPlanner);
-                        }
-                    }
-                    break;
-                }
-
-                //Check to see if the boxes are full
-                if (i === boxes.length - 2) {
-                    console.log("Boxes full!");
-
-                    // Code to be executed if the condition is met
-                    let finalizeButton = document.querySelector('.finalizePlannerButton');
-                    finalizeButton.classList.remove('disabled');
-                }
-            }
-        })
-        .then(error => console.error(error));
-}
-
-
-function removeFromPlanner(event) {
-    // Prevents default form submission event
-    event.preventDefault()
-
-    // Set data to be transferred
-    var id = event.target;
-    var dataId = id.getAttribute('data-id');
-
-    let csrf = document.querySelector("#csrf").dataset.csrf;
-
-    fetch(`recipes/remove_from_planner/${dataId}`, {
-        method: "POST",
-        body: JSON.stringify({ id: dataId }),
-        headers: { "X-CSRFTOKEN": csrf },
-        credentials: 'same-origin',
-    })
-        .then(response => response.json())
-        .then(data => {
-            // Successful removal of recipe from planner
-            if (data.success) {
-
-                // Add the 'fadeOut' class to the removeButton and removeX elements
-                const removeButton = document.querySelector(`.removeButton[data-id="${data.id}"]`);
-                removeButton.classList.add('fadeOut');
-                const removeX = document.querySelector(`.removeX[data-id="${data.id}"]`);
-                removeX.classList.add('fadeOut');
-                const plannerRecipePhoto = document.querySelector(`.plannerRecipePhoto[data-id="${data.id}"]`);
-                plannerRecipePhoto.classList.add('fadeOut');
-                const plannerRecipeText = document.querySelector(`.plannerRecipeText[data-id="${data.id}"]`);
-                plannerRecipeText.classList.add('fadeOut');
-
-                // After the animation completes, remove the elements from the page
-                setTimeout(function () {
-                    removeButton.remove();
-                    removeX.remove();
-                    plannerRecipePhoto.remove();
-                    plannerRecipeText.remove();
-                }, 500);
-
-                // Disable the finalize planner button if not already disabled
-                let finalizeButton = document.querySelector('.finalizePlannerButton');
-                if (!finalizeButton.classList.contains('disabled')) {
-                    finalizeButton.classList.add('disabled');
-                }
-
-            } else {
-                // Unsuccesful removal of recipe from planner
-                console.log("Error removing recipe from planner");
-            }
-
-        })
-
-        .then(data => {
-            // Construct HTML for recipe box
-            let box = document.querySelector(`.plannerBoxes[data-id="${data.id}"]`);
-            console.log(box);
-            box.remove();
-        })
-
-        .catch(error => {
-            console.log(`${error}`);
-        });
-}
-
-
-
-function finalizePlanner(event) {
-    let csrf = document.querySelector("#csrf").dataset.csrf;
-
-
-    // Set data to be transferred
-    var id = event.target;
-    var dataId = id.getAttribute('data-id');
-
-    // Add recipe to planner
-    fetch(`/finalize_planner/${dataId}`, {
-        method: "POST",
-        body: JSON.stringify({ id: dataId }),
-        headers: { "X-CSRFTOKEN": csrf },
-        credentials: 'same-origin',
-    })
-        .then(response => response.json())
-        .then(data => {
-            console.log(data);
-        })
-        .catch(error => {
-            console.log(`${error}`);
-        });
-}
-
 function likePlanner(id) {
     let csrf = document.querySelector("#csrf").dataset.csrf;
 
@@ -522,4 +370,152 @@ function addToCart(id) {
             console.log(`${error}`);
         });
 
+}
+
+function addToPlanner(event) {
+    // Prevents default form submission event
+    event.preventDefault()
+
+    // Set data to be transferred
+    var id = event.target;
+    var dataId = id.getAttribute('data-id');
+
+    let csrf = document.querySelector("#csrf").dataset.csrf;
+
+    fetch(`recipes/add_to_planner/${dataId}`, {
+        method: "POST",
+        body: JSON.stringify({ id: dataId }),
+        headers: { "X-CSRFTOKEN": csrf },
+        credentials: 'same-origin',
+    })
+        .then(response => response.json())
+        .then(data => {
+            // Construct HTML for recipe box
+            plannerBoxRecipe = `
+                    <img class="object-fit-cover plannerRecipePhoto" src="${data.photo}" alt="${data.name}"
+                    data-id="${data.id}">
+                    <span class="position-absolute top-0 start-100 translate-middle badge border border-light rounded-circle bg-danger removeButton"
+                    data-id="${data.id}"><i class="fa-solid fa-xmark removeX" data-id="${data.id}"></i></span>
+                    <div class="row justify-content-center">
+                    <div class="col-auto gridItemText">
+                        <span class="plannerRecipeText px-1" data-id="${data.id}">${data.name}</span>
+                    </div>
+                    </div>
+                    `;
+
+            // Attach data-id to the element being transferred
+            let boxes = document.querySelectorAll('.plannerBoxes');
+            var removeButton = document.getElementsByClassName('removeButton');
+            for (let i = 0; i < boxes.length; i++) {
+                if (boxes[i].innerHTML.trim() === "") {
+                    console.log(i);
+                    // Attach html of a recipe to innerhtml
+                    boxes[i].innerHTML += plannerBoxRecipe;
+                    if (removeButton) {
+                        for (let button of removeButton) {
+                            button.addEventListener('click', removeFromPlanner);
+                        }
+                    }
+                    break;
+                }
+
+                //Check to see if the boxes are full
+                if (i === boxes.length - 2) {
+                    console.log("Boxes full!");
+
+                    // Code to be executed if the condition is met
+                    let finalizeButton = document.querySelector('.finalizePlannerButton');
+                    finalizeButton.classList.remove('disabled');
+                }
+            }
+        })
+        .then(error => console.error(error));
+}
+
+function removeFromPlanner(event) {
+    // Prevents default form submission event
+    event.preventDefault()
+
+    // Set data to be transferred
+    var id = event.target;
+    var dataId = id.getAttribute('data-id');
+
+    let csrf = document.querySelector("#csrf").dataset.csrf;
+
+    fetch(`recipes/remove_from_planner/${dataId}`, {
+        method: "POST",
+        body: JSON.stringify({ id: dataId }),
+        headers: { "X-CSRFTOKEN": csrf },
+        credentials: 'same-origin',
+    })
+        .then(response => response.json())
+        .then(data => {
+            // Successful removal of recipe from planner
+            if (data.success) {
+
+                // Add the 'fadeOut' class to the removeButton and removeX elements
+                const removeButton = document.querySelector(`.removeButton[data-id="${data.id}"]`);
+                removeButton.classList.add('fadeOut');
+                const removeX = document.querySelector(`.removeX[data-id="${data.id}"]`);
+                removeX.classList.add('fadeOut');
+                const plannerRecipePhoto = document.querySelector(`.plannerRecipePhoto[data-id="${data.id}"]`);
+                plannerRecipePhoto.classList.add('fadeOut');
+                const plannerRecipeText = document.querySelector(`.plannerRecipeText[data-id="${data.id}"]`);
+                plannerRecipeText.classList.add('fadeOut');
+
+                // After the animation completes, remove the elements from the page
+                setTimeout(function () {
+                    removeButton.remove();
+                    removeX.remove();
+                    plannerRecipePhoto.remove();
+                    plannerRecipeText.remove();
+                }, 500);
+
+                // Disable the finalize planner button if not already disabled
+                let finalizeButton = document.querySelector('.finalizePlannerButton');
+                if (!finalizeButton.classList.contains('disabled')) {
+                    finalizeButton.classList.add('disabled');
+                }
+
+            } else {
+                // Unsuccesful removal of recipe from planner
+                console.log("Error removing recipe from planner");
+            }
+
+        })
+
+        .then(data => {
+            // Construct HTML for recipe box
+            let box = document.querySelector(`.plannerBoxes[data-id="${data.id}"]`);
+            console.log(box);
+            box.remove();
+        })
+
+        .catch(error => {
+            console.log(`${error}`);
+        });
+}
+
+function finalizePlanner(event) {
+    let csrf = document.querySelector("#csrf").dataset.csrf;
+
+
+    // Set data to be transferred
+    var id = event.target;
+    var dataId = id.getAttribute('data-id');
+
+    // Add recipe to planner
+    fetch(`/finalize_planner/${dataId}`, {
+        method: "POST",
+        body: JSON.stringify({ id: dataId }),
+        headers: { "X-CSRFTOKEN": csrf },
+        credentials: 'same-origin',
+    })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+        })
+        .catch(error => {
+            console.log(`${error}`);
+        });
 }
