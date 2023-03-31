@@ -121,15 +121,15 @@ class planner_creation_form(forms.ModelForm):
         widgets = {
             "name": TextInput(
                 attrs={
-                    "class": "form-control mb-4 mx-2 shadow-sm forminputBox",
-                    "placeholder": "Planner name",
+                    "class": "form-control mb-4 me-5 shadow-sm forminputBox",
+                    "placeholder": "Planner name here!",
                 }
             ),
             "days": Select(
-                attrs={"class": "form-select mb-4 mx-2 shadow-sm form-select-sm"}
+                attrs={"class": "form-select mb-4 me-5 shadow-sm form-select-sm"}
             ),
         }
         labels = {
             "name": "Planner name:",
-            "days": "How many days?",
+            "days": "How many days in this planner?",
         }
