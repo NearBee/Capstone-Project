@@ -24,16 +24,19 @@ class user_registration_form(forms.ModelForm):
             "username": TextInput(
                 attrs={
                     "class": "form-control mb-4 shadow-sm forminputBox",
+                    "id": "register_username",
                 }
             ),
             "email": EmailInput(
                 attrs={
                     "class": "form-control mb-4 shadow-sm forminputBox",
+                    "id": "register_email",
                 }
             ),
             "password": PasswordInput(
                 attrs={
                     "class": "form-control mb-4 shadow-sm forminputBox",
+                    "id": "register_password",
                 }
             ),
         }
