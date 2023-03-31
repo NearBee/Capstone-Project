@@ -6,6 +6,16 @@ body {
     border-radius: 0px 6px 6px 6px;
 }
 
+.dropdownPlannerButton {
+    font-family: 'Josefin Sans', sans-serif;
+}
+
+.dropdown-menu.show {
+    width: 300px;
+    position: absolute;
+    left: -58%;
+}
+
 /* Index Page Section */
 
 .createPlannerText,
