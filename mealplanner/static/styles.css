@@ -78,7 +78,6 @@ h1.text-center {
     border-radius: 9px;
 }
 
-/* Scale down animation to be added */
 .plannerRecipePhoto {
     position: absolute;
     width: 148px;
@@ -213,8 +212,6 @@ h1.text-center {
     -webkit-text-stroke: 1px black;
 }
 
-/* Try to possibly blur background image instead on hover */
-
 .stockPlanner {
     height: 125px;
     width: auto;
@@ -336,6 +333,7 @@ h1.text-center {
 
 .plannerItemsCol {
     height: 90px;
+    width: 115px;
 }
 
 .plannerItemSquares,
@@ -374,6 +372,10 @@ h1.text-center {
     --fa-right: -14px !important;
     --fa-top: -11px;
 }
+
+/* .plannersUserSection {
+    min-width: 195px;
+} */
 
 /* End of All Planners CSS */
 
