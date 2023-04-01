@@ -17,6 +17,7 @@ class user_registration_form(forms.ModelForm):
         fields = (
             "username",
             "email",
+            "timezone",
             "password",
         )
         exclude = ("profile_picture",)
@@ -39,10 +40,16 @@ class user_registration_form(forms.ModelForm):
                     "id": "register_password",
                 }
             ),
+            "timezone": Select(
+                attrs={
+                    "class": "form-select mb-4 shadow-sm form-select-sm",
+                }
+            ),
         }
         labels = {
             "username": "Username",
             "email": "Email",
+            "timezone": "Timezone",
             "password": "Password",
         }
 

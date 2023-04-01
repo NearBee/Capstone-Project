@@ -1,4 +1,5 @@
 from django.db import models
+import pytz
 from django.contrib.auth.models import AbstractUser
 from django.template.defaultfilters import truncatechars
 from enum import Enum, IntEnum
@@ -9,9 +10,12 @@ from enum import Enum, IntEnum
 class User(AbstractUser):
     pass
 
+    TIMEZONES = tuple(zip(pytz.common_timezones, pytz.common_timezones))
+
     username = models.CharField(blank=False, unique=True, max_length=25)
     email = models.EmailField(blank=False, unique=True)
     password = models.CharField(blank=False, max_length=128)
+    timezone = models.CharField(max_length=100, choices=TIMEZONES, default="UTC")
     favorite_dishes = models.ManyToManyField("Recipe", related_name="Fav_dishes")
     profile_picture = models.ImageField(default="headshot_placeholder.png")
 

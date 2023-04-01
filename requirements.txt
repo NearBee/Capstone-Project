@@ -5,4 +5,5 @@ Pillow==9.4.0
 pydot==1.4.2
 pygraphviz==1.10
 pyparsing==3.0.9
+pytz==2023.3
 sqlparse==0.4.3
