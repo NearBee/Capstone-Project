@@ -9,7 +9,7 @@
     <div class="row justify-content-center">
         <div class="card my-2 w-75">
             <div class="row">
-                <div class="col-xl-2 border border-bottom">
+                <div class="col-xl-2 border border-bottom userPlannerInformation">
                     <div class="row justify-content-center">
                         <div class="col-auto my-2 plannersUserSection">
                             {{planner.owner}}
@@ -28,17 +28,17 @@
                     <div class="row justify-content-center mt-2">
                         <div class="col-auto">
                             <p class="plannerInfoFonts">Date Created: <b class="fw-lighter">
-                                    {{ planner.created_at|date:"D m/d/Y" }}</b>
+                                    {{ planner.created_at|date:"D m/d/Y" }}
+                                </b>
                             </p>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-9 border-end border-start border border-bottom align-content-center"
-                    style="display: grid;">
+                <div class="col-xl-9 border px-0 align-content-center plannerItemsCol" style="display: grid;">
                     <div class="row justify-content-center">
                         <!-- Recipes Section -->
                         {% for item in planner.chosen_list.all %}
-                        <div class="col-2 my-2 plannerItemsCol">
+                        <div class="col-auto my-2 plannerItems">
                             <div class="border position-absolute plannerItemSquares" data-bs-html="true"
                                 data-bs-toggle="tooltip" data-bs-placement="bottom"
                                 data-bs-title='Meal: {{item.name}} <br> Dietary Preference: {{ item.get_dietary_preference_display }}'>
@@ -68,7 +68,7 @@
                         {% endfor %}
                     </div>
                 </div>
-                <div class="col-lg-1 buttonsCol">
+                <div class="col-xl-1 buttonsCol">
 
                     <a href="{% url 'edit_planner' planner.id %}" class="editLink">
                         <div class="row justify-content-center pb-4 pt-4 border-bottom editRow plannerButton">
