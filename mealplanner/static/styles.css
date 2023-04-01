@@ -6,7 +6,8 @@ body {
     border-radius: 0px 6px 6px 6px;
 }
 
-.dropdownPlannerButton {
+.dropdownPlannerButton,
+.emptyPlannerText {
     font-family: 'Josefin Sans', sans-serif;
 }
 
@@ -263,6 +264,22 @@ h1.text-center {
 
 /* All planners page CSS */
 
+h1.profile-text-center {
+    font-family: 'Josefin Sans', sans-serif;
+    background-color: #f7c69f;
+    padding: 20px;
+    color: #ffffff;
+    text-shadow: 2px 2px #333;
+    background: linear-gradient(270deg, rgba(222, 226, 230, 1) 0%, rgba(222, 63, 78, 1) 50%);
+    border-radius: 4px 4px 0 0;
+    display: inline-block;
+    position: relative;
+}
+
+.activePlannerUser {
+    border-top-left-radius: 0px !important;
+}
+
 .plannerIcons {
     height: 24px;
     font-size: x-large;
@@ -274,7 +291,14 @@ h1.text-center {
     transition: all 0.3s;
 }
 
-.plannerButton.pulse {
+.activePlannerButton {
+    height: 50%;
+    transform: scale(1);
+    transition: all 0.3s;
+}
+
+.plannerButton.pulse,
+.activePlannerButton.pulse {
     animation: pulse 1s forwards ease-out;
     box-shadow: 0px 15px 28px -11px rgba(255, 79, 93, 0.9);
 }
@@ -373,9 +397,12 @@ h1.text-center {
     --fa-top: -11px;
 }
 
-/* .plannersUserSection {
-    min-width: 195px;
-} */
+.plannerProfilePicture {
+    border-radius: 50%;
+    height: 100px;
+    width: 100px;
+    vertical-align: middle;
+}
 
 /* End of All Planners CSS */
 

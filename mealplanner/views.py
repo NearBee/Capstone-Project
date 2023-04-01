@@ -291,6 +291,15 @@ def planner_page_view(request):
     if not user.is_authenticated:
         return render(request, "planner_page.html", {"planners": planners})
 
+    active_planner = Planner.objects.filter(owner=user).latest("id")
+    created_date = active_planner.created_at.date() - datetime.datetime.now().date()
+    if not created_date.days >= 7:
+        return render(
+            request,
+            "planner_page.html",
+            {"planners": planners, "active_planner": active_planner},
+        )
+
     return render(request, "planner_page.html", {"planners": planners})
 
 
