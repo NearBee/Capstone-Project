@@ -5,11 +5,120 @@
 
 {% block body %}
 <div class="container-fluid mt-3">
+    <div class="row justify-content-center">
+        <div class="col-lg-9 ps-0 w-75">
+            <h1 class="profile-text-center my-0 pb-0 w-75 h2">Your active planner</h1>
+        </div>
+    </div>
+    {% if active_planner %}
+    <div class="row justify-content-center">
+        <div class="card mb-2 w-75 activePlannerUser">
+            <div class="row">
+                <div class="col-lg-2 border border-bottom userPlannerInformation">
+                    <div class="row justify-content-center">
+                        <div class="col-auto my-2 plannersUserSection">
+                            {{active_planner.owner}}
+                        </div>
+                    </div>
+                    <div class="row justify-content-center border-bottom border-top">
+                        <div class="col-auto mt-2 mb-3">
+                            <div class="row justify-content-center profilePictureCol">
+                                <div class="col-auto px-0">
+                                    <img class="object-fit-cover circle plannerProfilePicture"
+                                        src="{{active_planner.owner.profile_picture.url}}" alt="Profile Picture">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center mt-2">
+                        <div class="col-auto">
+                            <p class="plannerInfoFonts">Date Created: <b class="fw-lighter">
+                                    {{ active_planner.created_at|date:"D m/d/Y" }}
+                                </b>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-9 border px-0 align-content-center plannerItemsCol" style="display: grid;">
+                    <div class="row justify-content-center">
+                        <!-- Recipes Section -->
+                        {% if active_planner.chosen_list.count == active_planner.days %}
+                        {% for item in active_planner.chosen_list.all %}
+                        <div class="col-auto my-2 plannerItems">
+                            <div class="border position-absolute plannerItemSquares" data-bs-html="true"
+                                data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                data-bs-title='Meal: {{item.name}} <br> Dietary Preference: {{ item.get_dietary_preference_display }}'>
+                                <img class="object-fit-cover position-absolute plannerPageRecipePhoto"
+                                    src="{{ item.recipe_photo.url }}" alt="{{ item.name }}" data-id="{{ item.id}}">
+                                {% if item.dietary_preference == 'pescetarian' %}
+                                <i
+                                    class="position-relative fa-solid fa-fish-fins fa-lg border-start border-top px-1 py-1 dietaryIcons"></i>
+                                {% elif item.dietary_preference == 'vegan' %}
+                                <i
+                                    class="position-relative fa-solid fa-seedling fa-lg border-start border-top px-1 py-1 dietaryIcons"></i>
+                                {% elif item.dietary_preference == 'vegetarian' %}
+                                <i
+                                    class="position-relative fa-solid fa-leaf fa-lg border-start border-top px-1 py-1 dietaryIcons"></i>
+                                {% elif item.dietary_preference == 'dairyfree' %}
+                                <i
+                                    class="position-relative fa-solid fa-cow fa-lg border-start border-top px-1 py-1 dietaryIcons"></i>
+                                {% elif item.dietary_preference == 'glutenfree' %}
+                                <i
+                                    class="position-relative fa-solid fa-wheat-awn fa-lg border-start border-top px-1 py-1 dietaryIcons"></i>
+                                {% else %}
+                                <i
+                                    class="position-relative fa-solid fa-drumstick-bite fa-lg border-start border-top px-1 py-1 dietaryIcons"></i>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% endfor %}
+                        {% else %}
+                        <div class="row justify-content-center">
+                            <div class="col-auto">
+                                <p class="h3 emptyPlannerText">Fill out your planner!</p>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-lg-1 buttonsCol">
+
+                    <a href="{% url 'edit_planner' active_planner.id %}" class="editLink">
+                        <div class="row justify-content-center pb-4 pt-4 border-bottom editRow activePlannerButton">
+                            <div class="d-flex col-auto align-items-center" data-bs-toggle="tooltip"
+                                data-bs-placement="right" data-bs-title="Make edits">
+                                <i class="fa-regular fa-pen-to-square plannerIcons"></i>
+                            </div>
+                        </div>
+                    </a>
+
+                    <span data-bs-toggle="modal" data-bs-target="#shoppingModal">
+                        <div class="row justify-content-center py-4 listRow activePlannerButton"
+                            data-id="{{active_planner.id}}">
+                            <div class="d-flex col-auto align-items-center" data-bs-toggle="tooltip"
+                                data-bs-placement="right" data-bs-title="Add to shopping list">
+                                <i class="fa-solid fa-cart-plus plannerIcons"></i>
+                            </div>
+                        </div>
+                    </span>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    No current active Planner
+    {% endif %}
+    <div class="row justify-content-center">
+        <div class="col-6">
+            <hr class="text-secondary opacity-50">
+        </div>
+    </div>
     {% for planner in planners %}
     <div class="row justify-content-center">
         <div class="card my-2 w-75">
             <div class="row">
-                <div class="col-xl-2 border border-bottom userPlannerInformation">
+                <div class="col-lg-2 border border-bottom userPlannerInformation">
                     <div class="row justify-content-center">
                         <div class="col-auto my-2 plannersUserSection">
                             {{planner.owner}}
@@ -19,7 +128,7 @@
                         <div class="col-auto mt-2 mb-3">
                             <div class="row justify-content-center profilePictureCol">
                                 <div class="col-auto px-0">
-                                    <img class="object-fit-cover profilePicture"
+                                    <img class="object-fit-cover circle plannerProfilePicture"
                                         src="{{planner.owner.profile_picture.url}}" alt="Profile Picture">
                                 </div>
                             </div>
@@ -34,7 +143,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-xl-9 border px-0 align-content-center plannerItemsCol" style="display: grid;">
+                <div class="col-lg-9 border px-0 align-content-center plannerItemsCol" style="display: grid;">
                     <div class="row justify-content-center">
                         <!-- Recipes Section -->
                         {% for item in planner.chosen_list.all %}
@@ -68,7 +177,7 @@
                         {% endfor %}
                     </div>
                 </div>
-                <div class="col-xl-1 buttonsCol">
+                <div class="col-lg-1 buttonsCol">
 
                     <a href="{% url 'edit_planner' planner.id %}" class="editLink">
                         <div class="row justify-content-center pb-4 pt-4 border-bottom editRow plannerButton">
