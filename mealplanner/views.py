@@ -293,7 +293,7 @@ def planner_page_view(request):
 
     active_planner = Planner.objects.filter(owner=user).latest("id")
     created_date = active_planner.created_at.date() - datetime.datetime.now().date()
-    if not created_date.days >= 7:
+    if not created_date.days >= active_planner.days:
         return render(
             request,
             "planner_page.html",
