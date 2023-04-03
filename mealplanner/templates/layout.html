@@ -28,57 +28,58 @@
 <body>
     <div>
         <nav class="navbar navbar-expand bg-danger bg-gradient text-white">
-            <div class="container-fluid">
+            <div class="container-fluid flex-wrap">
                 <a class="navbar-brand me-0" href="{% url 'index' %}">
                     <p class="mb-0 fw-light fst-italic text-white brandText">Meal Planner</p>
                 </a>
-                <div class="navbar-nav justify-content-center">
+                <div class="navbar-nav justify-content-center align-items-center">
                     <a class="nav-link active text-white" aria-current="page" href="{% url 'index' %}">Home</a>
                     <a class="nav-link text-white" href="{% url 'recipes' %}">Recipes</a>
                     <a class="nav-link text-white" href="{% url 'planner_page' %}">Planners</a>
-                </div>
-                <div class="nav-item dropdown-center">
-                    <button class="btn btn-danger-subtle droptown-toggle text-white dropdownPlannerButton" type="button"
-                        id="dropdownMenuButton" data-bs-toggle="dropdown" data-bs-auto-close="outside"
-                        aria-haspopup="true" aria-expanded="false">Create
-                        a Planner</button>
-                    <div class="dropdown-menu py-4 px-4" aria-labelledby="dropdownMenuButton">
-                        <form method="POST" action="{% url 'create_planner' %}">
-                            {% csrf_token %}
-                            <div class="form-group createPlannerGroup">
-                                {% for field in planner_form %}
-                                <div class="fieldWrapper">
-                                    {{ field.errors }}
-                                    <div class="row justify-content-start">
-                                        <div class="col-12">
-                                            <label
-                                                class="border border-bottom-0 rounded-top mt-1 px-2 shadow-sm bg-body-secondary bg-gradient">
-                                                {{ field.label }}
-                                            </label>
+                    <div class="nav-item dropdown-center ms-5">
+                        <button class="btn btn-danger-subtle droptown-toggle text-white dropdownPlannerButton"
+                            type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" data-bs-auto-close="outside"
+                            aria-haspopup="true" aria-expanded="false">Create
+                            a Planner</button>
+                        <div class="dropdown-menu py-4 px-4" aria-labelledby="dropdownMenuButton">
+                            <form method="POST" action="{% url 'create_planner' %}">
+                                {% csrf_token %}
+                                <div class="form-group createPlannerGroup">
+                                    {% for field in planner_form %}
+                                    <div class="fieldWrapper">
+                                        {{ field.errors }}
+                                        <div class="row justify-content-start">
+                                            <div class="col-12">
+                                                <label
+                                                    class="border border-bottom-0 rounded-top mt-1 px-2 shadow-sm bg-body-secondary bg-gradient">
+                                                    {{ field.label }}
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12">
+                                                {{ field }}
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="row">
-                                        <div class="col-12">
-                                            {{ field }}
-                                        </div>
+                                    {% endfor %}
+                                </div>
+                                <div class="row justify-content-center">
+                                    <div class="col-auto">
+                                        <button type="submit"
+                                            class="btn btn-primary bg-gradient rounded-pill px-4">Create
+                                            Planner</button>
                                     </div>
                                 </div>
-                                {% endfor %}
-                            </div>
-                            <div class="row justify-content-center">
-                                <div class="col-auto">
-                                    <button type="submit" class="btn btn-primary bg-gradient rounded-pill px-4">Create
-                                        Planner</button>
-                                </div>
-                            </div>
-                        </form>
+                            </form>
+                        </div>
                     </div>
                 </div>
                 <div class="navbar-nav">
                     {% if user.is_authenticated %}
                     <button type="button" class="btn btn-danger border border-0 bg-transparent ms-auto"
                         data-bs-toggle="modal" data-bs-target="#profileModal">
-                        <span class="fw-light profileUsername">{{ user }}</span>
+                        <span class="fw-light profileUsername navProfileUsername">{{ user }}</span>
                     </button>
                     {% else %}
                     <button type="button" class="btn btn-danger border border-0 bg-transparent ms-auto"
