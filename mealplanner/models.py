@@ -37,6 +37,8 @@ class Ingredient(models.Model):
         ("Pounds", "pound"),
         ("Quantity", "quantity"),
         ("Whole", "whole"),
+        ("Pinch", "pinch"),
+        ("Slice", "slice"),
     ]
     name = models.CharField(max_length=100)
     unit_of_measurement = models.CharField(
@@ -50,6 +52,7 @@ class Ingredient(models.Model):
 
 
 class Diets(Enum):
+    nopreference = "No Preference"
     vegetarian = "Vegetarian"
     vegan = "Vegan"
     pescetarian = "Pescetarian"
