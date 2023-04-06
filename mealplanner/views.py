@@ -138,13 +138,19 @@ def edit_profile(request, id):
     if not form.is_valid():
         return JsonResponse({"id": id, "message": "Form is not valid"}, status=400)
 
-    # TODO: Work in progress - tinify image
-    updated_image = tinify.from_file(form.cleaned_data["profile_picture"])
-    updated_image.to_file(
-        f"mealplanner/images/{user.username}.{form.cleaned_data['profile_picture'].name.split('.')[-1]}"
-    )
-    form.cleaned_data["profile_picture"] = updated_image
     form.save()
+
+    # Try to send the image to tinify API to optimize it
+    try:
+        # If successful the image will come back optimized and will be set as the new image
+        updated_image = tinify.from_file(user.profile_picture.path)
+        updated_image.to_file(user.profile_picture.path)
+
+    except tinify.AccountError:
+        # If the limit of images optimized this month is exceeded the image will not be optimized
+        print(
+            "Unfortunately exceeded the limit of images optimized this month, the image is still used but is not optimized, please try again next month"
+        )
 
     return JsonResponse(
         {
