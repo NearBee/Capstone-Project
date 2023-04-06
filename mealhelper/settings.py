@@ -11,6 +11,9 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
+from dotenv import load_dotenv
+import tinify
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -24,6 +27,13 @@ MEDIA_ROOT = BASE_DIR / "mealplanner/images/"
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = "django-insecure-0@ky41wjppv=8d*08$nu75lyo3&f6h%7p$(-4-(i9%t_okwc^n"
+
+# Load the environment variables from the .env file
+load_dotenv()
+
+# Setting a contant variable for the Tinify API key to allow for use in compressing images
+TINIFY_API_KEY = os.getenv("TINIFY_API_KEY")
+tinify.key = TINIFY_API_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
