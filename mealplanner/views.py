@@ -1,6 +1,7 @@
 import datetime
 
 import pytz
+import tinify
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, JsonResponse
@@ -14,6 +15,23 @@ from .forms import (
     user_registration_form,
 )
 from .models import Ingredient_List, Planner, Recipe, User
+
+
+def timer(func):
+    """Decorator to time a function.
+
+    Args:
+        func (function): Function to be timed.
+    """
+
+    def wrapper(*args, **kwargs):
+        start = datetime.datetime.now()
+        result = func(*args, **kwargs)
+        end = datetime.datetime.now()
+        print(f"Time taken: {end - start}")
+        return result
+
+    return wrapper
 
 
 def index(request):
@@ -111,6 +129,7 @@ def logout_view(request):
     return HttpResponseRedirect(reverse("index"))
 
 
+@timer
 @login_required(redirect_field_name="", login_url="login")
 def edit_profile(request, id):
     user = request.user
@@ -119,6 +138,12 @@ def edit_profile(request, id):
     if not form.is_valid():
         return JsonResponse({"id": id, "message": "Form is not valid"}, status=400)
 
+    # TODO: Work in progress - tinify image
+    updated_image = tinify.from_file(form.cleaned_data["profile_picture"])
+    updated_image.to_file(
+        f"mealplanner/images/{user.username}.{form.cleaned_data['profile_picture'].name.split('.')[-1]}"
+    )
+    form.cleaned_data["profile_picture"] = updated_image
     form.save()
 
     return JsonResponse(
