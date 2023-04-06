@@ -35,6 +35,15 @@ def timer(func):
 
 
 def index(request):
+    """Index page view.
+
+    Args:
+        request (GET): GET request to index page.
+
+    Returns:
+        HttpResponse: Renders index page with quanities for use in profile information.
+    """
+
     user = request.user
     recipes = Recipe.objects.all()
     quantities = Ingredient_List.objects.all()
@@ -64,6 +73,15 @@ def index(request):
 
 
 def register(request):
+    """Register page view.
+
+    Args:
+        request (POST): POST request to register page.
+
+    Returns:
+        HttpResponse: Submits a form to register a new user and redirects to index page.
+    """
+
     if request.method == "POST":
         form = user_registration_form(request.POST)
 
@@ -100,6 +118,15 @@ def register(request):
 
 
 def login_view(request):
+    """Login page view.
+
+    Args:
+        request (POST): POST request to login page.
+
+    Returns:
+        HttpResponse: Submits a form to login a user and redirects to index page.
+    """
+
     if request.method == "POST":
         form = user_login_form(request.POST)
 
@@ -125,6 +152,15 @@ def login_view(request):
 
 
 def logout_view(request):
+    """Logout page view.
+
+    Args:
+        request (GET): GET request to logout page.
+
+    Returns:
+        HttpResponse: Logs out user and redirects to index page.
+    """
+
     logout(request)
     return HttpResponseRedirect(reverse("index"))
 
@@ -132,6 +168,21 @@ def logout_view(request):
 @timer
 @login_required(redirect_field_name="", login_url="login")
 def edit_profile(request, id):
+    """Edit profile page view.
+
+    Args:
+        request (POST): POST request to edit profile page through AJAX.
+        id (int): ID of user.
+
+    Returns:
+        JsonResponse: Returns JSON response with user information.
+
+        If the form is not valid it returns a JSON response with the id and a message regarding the error.
+
+        The submission of the form will also be sent to the Tinify API for optimization,
+        if the limit of images optimized this month is exceeded the image will not be optimized.
+    """
+
     user = request.user
     form = user_edit_form(request.POST, request.FILES, instance=user)
 
@@ -163,6 +214,16 @@ def edit_profile(request, id):
 
 
 def recipes_view(request):
+    """Recipes page view.
+
+    Args:
+        request (GET): GET request to recipes page.
+
+    Returns:
+        HttpResponse: Renders recipes page with recipes and quantities.
+        Also shows the current athenticated user's favorite recipes.
+    """
+
     recipes = Recipe.objects.all()
     quantities = Ingredient_List.objects.all()
     user = request.user
@@ -221,6 +282,18 @@ def recipes_view(request):
 
 @login_required
 def favorite_recipe(request, id):
+    """View for favoring a recipe.
+
+    Args:
+        request (POST): Post request to favorite a recipe using AJAX.
+        id (int): ID of recipe.
+
+    Returns:
+        JsonResponse: Returns JSON response with id of recipe.
+
+        if the recipe is already within the authenticated user's favorites the function will instead remove the favorite
+    """
+
     user = request.user
     dish = Recipe.objects.get(id=id)
 
@@ -234,6 +307,15 @@ def favorite_recipe(request, id):
 
 @login_required(redirect_field_name="", login_url="login")
 def create_planner(request):
+    """View for creating a planner.
+
+    Args:
+        request (POST): Post request using the planner_creation_form to create a planner.
+
+    Returns:
+        HttpResponse: Renders the index page with the planner_creation_form.
+    """
+
     user = request.user
     if request.method == "POST":
         planner_form = planner_creation_form(request.POST)
@@ -249,6 +331,22 @@ def create_planner(request):
 
 
 def add_to_planner(request, id):
+    """View for adding a recipe to the planner.
+
+    Args:
+        request (POST): Post request to add a recipe to the planner using AJAX.
+        id (int): ID of recipe.
+
+    Returns:
+        JsonResponse: Returns JSON response with recipe information.
+
+        If the planner.not_saveable == True and the planner.chosen_list.count() != planner.days
+        not_saveable is then changed to False for the option to add more recipes to the planner.
+
+        If the planner.not_saveable == False and the planner.chosen_list.count() < planner.days
+        then the recipe is added to the planner.
+    """
+
     user = request.user
     recipe = get_object_or_404(Recipe, id=id)
 
@@ -287,6 +385,18 @@ def add_to_planner(request, id):
 
 @login_required(redirect_field_name="", login_url="login")
 def remove_from_planner(request, id):
+    """View for removing a recipe from the planner.
+
+    Args:
+        request (POST): Post request to remove a recipe from the planner using AJAX.
+        id (int): ID of recipe.
+
+    Returns:
+        JsonResponse: Returns JSON response with recipe information.
+
+        If the recipe is in the planner's chosen list then it is removed.
+    """
+
     user = request.user
     planner = Planner.objects.filter(owner=user).latest("id")
     recipe = get_object_or_404(Recipe, id=id)
@@ -300,6 +410,16 @@ def remove_from_planner(request, id):
 
 @login_required(redirect_field_name="", login_url="login")
 def finalize_planner(request, id):
+    """View for finalizing the planner.
+
+    Args:
+        request (POST): Post request to finalize the planner using AJAX.
+        id (int): ID of planner.
+
+    Returns:
+        HttpResponse: After the planner is finalized the user is redirected to the planner page.
+    """
+
     user = request.user
     planner = get_object_or_404(Planner, id=id)
 
@@ -316,6 +436,17 @@ def finalize_planner(request, id):
 
 
 def planner_page_view(request):
+    """View for the planner page.
+
+    Args:
+        request (GET): Get request to render the planner page.
+
+    Returns:
+        HttpResponse: Renders the planner page with all the planners and the active planner.
+
+        If the user currently has an "active planner" then the active planner is rendered at the top of the page.
+    """
+
     user = request.user
     planners = Planner.objects.all().filter(finished=True)
 
@@ -336,6 +467,19 @@ def planner_page_view(request):
 
 @login_required(redirect_field_name="", login_url="login")
 def like_planner(request, id):
+    """View for liking a planner.
+
+    Args:
+        request (POST): Post request to like a planner using AJAX.
+        id (int): ID of planner.
+
+    Returns:
+        JsonResponse: Returns JSON response with message.
+
+        If the user has already liked the planner then the user is removed from the planner's likes.
+        Else the user is added to the planner's likes.
+    """
+
     planner = Planner.objects.get(id=id)
 
     if not request.method == "POST":
@@ -350,12 +494,34 @@ def like_planner(request, id):
 
 
 def get_likes(request, id):
+    """View for getting the number of likes a planner has.
+
+    Args:
+        request (GET): Get request to get the number of likes a planner has using AJAX.
+        id (int): ID of planner.
+
+    Returns:
+        JsonResponse: Returns JSON response with the number of likes of the target_planner.
+    """
+
     target_planner = Planner.objects.get(id=id)
     return JsonResponse({"likes": target_planner.likes.count()})
 
 
 @login_required(redirect_field_name="", login_url="login")
 def add_to_cart(request, id):
+    """View for adding the planner's chosen list to the shopping list.
+
+    Args:
+        request (POST): Request to add the planner's chosen list to the shopping list using AJAX.
+        id (int): id of planner.
+
+    Returns:
+        JsonResponse: Returns JSON response with message and shopping list.
+
+        The planner's chosen list is added to the shopping list.
+    """
+
     planner = Planner.objects.get(id=id)
     shopping_list = {}
 
@@ -389,6 +555,20 @@ def add_to_cart(request, id):
 
 @login_required(redirect_field_name="", login_url="login")
 def edit_planner(request, id):
+    """View for editing a planner.
+
+    Args:
+        request (POST): Post request to edit a planner using AJAX.
+        id (int): id of planner.
+
+    Returns:
+        HttpReponse: After the planner is edited the user is redirected to the planner page.
+
+        If the user != the planner.owner they are presented with a copy of the planner with the chosen dishes.
+
+        If the user == the planner.owner they are presented with a version of the planner where th finished flag is set to False.
+    """
+
     user = request.user
     planner = Planner.objects.get(id=id)
     old_planner_dishes = planner.chosen_list.all()
