@@ -4,9 +4,10 @@ import pytz
 import tinify  # type: ignore
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect, JsonResponse
+from django.http import HttpResponseRedirect, JsonResponse, HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
+from typing import Callable, Any
 
 from .forms import (
     planner_creation_form,
@@ -17,11 +18,11 @@ from .forms import (
 from .models import Ingredient_List, Planner, Recipe, User
 
 
-def timer(func):
+def timer(func: Callable[..., Any]) -> Callable[..., Any]:
     """Decorator to time a function.
 
     Args:
-        func (function): Function to be timed.
+        func (Callable[..., Any]): Function to be timed.
     """
 
     def wrapper(*args, **kwargs):
@@ -34,7 +35,7 @@ def timer(func):
     return wrapper
 
 
-def index(request):
+def index(request: Any) -> Any:
     """Index page view.
 
     Args:
@@ -72,7 +73,7 @@ def index(request):
     )
 
 
-def register(request):
+def register(request: HttpRequest) -> HttpResponse:
     """Register page view.
 
     Args:
