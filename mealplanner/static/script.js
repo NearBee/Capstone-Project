@@ -68,7 +68,6 @@ document.addEventListener('DOMContentLoaded', function () {
     // nifty little animation for button click
     var clickableButtons = document.getElementsByClassName('plannerButton');
     for (var button of clickableButtons) {
-        console.log("setting button");
         button.addEventListener('click', function () {
             this.classList.add("pulse");
             var target = this;

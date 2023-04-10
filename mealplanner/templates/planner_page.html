@@ -107,7 +107,70 @@
         </div>
     </div>
     {% else %}
-    No current active Planner
+
+    <span class="unauthenticatedCover">
+        <div class="row justify-content-center">
+            <div class="card mb-2 w-75 activePlannerUser">
+                <div class="row">
+                    <div class="col-lg-2 border border-bottom userPlannerInformation">
+                        <div class="row justify-content-center">
+                            <div class="col-auto my-2 plannersUserSection">
+                                YOU
+                            </div>
+                        </div>
+                        <div class="row justify-content-center border-bottom border-top">
+                            <div class="col-auto mt-2 mb-3">
+                                <div class="row justify-content-center profilePictureCol">
+                                    <div class="col-auto px-0">
+                                        <img class="object-fit-cover circle plannerProfilePicture"
+                                            src="/images/headshot_placeholder.png" alt="Profile Picture">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row justify-content-center mt-2">
+                            <div class="col-auto">
+                                <p class="plannerInfoFonts">Date Created: <b class="fw-lighter">
+                                        Now
+                                    </b>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-9 border px-0 align-content-center plannerItemsCol" style="display: grid;">
+                        <div class="row justify-content-center">
+                            <!-- Recipes Section -->
+                            Potential Recipes to be chosen
+                        </div>
+                    </div>
+                    <div class="col-lg-1 buttonsCol">
+
+                        <div
+                            class="row justify-content-center pb-4 pt-4 border-bottom editButton unauthenticatedActivePlannerButton">
+                            <div class="d-flex col-auto align-items-center" data-bs-toggle="tooltip">
+                                <i class="fa-regular fa-pen-to-square plannerIcons"></i>
+                            </div>
+                        </div>
+
+                        <span>
+                            <div class="row justify-content-center py-4 likeButton unauthenticatedActivePlannerButton">
+                                <div class="d-flex col-auto align-items-center" data-bs-title="Add to shopping list">
+                                    <i class="fa-solid fa-cart-plus plannerIcons"></i>
+                                </div>
+                            </div>
+                        </span>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </span>
+    <div class="row justify-content-end activePlannerHeaderRow">
+        <a href="{% url 'login' %}" class="col-6 activePlannerHeaderCol border text-decoration-none">
+            <span class="fs-3 fw-light createPlannerText">Login to create your planner!</span>
+        </a>
+    </div>
+
     {% endif %}
     <div class="row justify-content-center">
         <div class="col-6 w-75">
