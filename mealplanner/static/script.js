@@ -77,6 +77,18 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    // Animation to show that the button is disabled
+    var deniedButtons = document.getElementsByClassName('notAuthenticated');
+    for (var button of deniedButtons) {
+        button.addEventListener('click', function () {
+            this.classList.add('denied');
+            var target = this;
+            setTimeout(function () {
+                target.classList.remove('denied');
+            }, 500);
+        });
+    }
+
     // filter items on button click
     let filterButtonGroup = document.querySelector('.filter-button-group');
     if (filterButtonGroup) {

@@ -310,7 +310,8 @@ h1.profile-text-center {
     font-size: x-large;
 }
 
-.plannerButton {
+.plannerButton,
+.notAuthenticated {
     height: 33.33%;
     transform: scale(1);
     transition: all 0.3s;
@@ -340,20 +341,20 @@ h1.profile-text-center {
 
 .plannerButton.pulse,
 .activePlannerButton.pulse {
-    animation: pulse 1s forwards ease-out;
-    box-shadow: 0px 15px 28px -11px rgba(255, 79, 93, 0.9);
+    animation: pulse .8s forwards ease-in-out;
+    box-shadow: 0 0 0 0 rgba(255, 79, 93, 0.9);
 }
 
 
 @keyframes pulse {
     0% {
         -moz-box-shadow: 0 0 0 0 rgba(255, 79, 93, 0.4);
-        box-shadow: 0 0 0 0 rgba(255, 79, 93, 0.4);
+        box-shadow: 3px -3px 3px 3px rgba(255, 79, 93, 0.4);
     }
 
-    70% {
+    50% {
         -moz-box-shadow: 0 0 0 30px rgba(255, 79, 93, 0);
-        box-shadow: 0 0 0 8px rgba(255, 79, 93, 0);
+        box-shadow: 3px -3px 3px 3px 8px rgba(255, 79, 93, 1);
     }
 
     100% {
@@ -376,6 +377,66 @@ h1.profile-text-center {
     border-bottom-right-radius: 6px;
 }
 
+.notAuthenticated {
+    background-color: #cccccc;
+    cursor: pointer;
+}
+
+.notAuthenticated.denied {
+    background-color: #D11507;
+    animation: denied .5s forwards ease-in-out;
+}
+
+@keyframes denied {
+    0% {
+        background-color: #cccccc;
+        transform: translate(.5px, .5px) rotate(0deg);
+    }
+
+    10% {
+        transform: translate(-.5px, -1px) rotate(-1deg);
+    }
+
+    20% {
+        transform: translate(-2px, 0px) rotate(1deg);
+    }
+
+    30% {
+        transform: translate(2px, 1px) rotate(0deg);
+    }
+
+    40% {
+        transform: translate(.5px, -.5px) rotate(1deg);
+    }
+
+    50% {
+        background-color: #D11507;
+        transform: translate(-.5px, 1px) rotate(-1deg);
+    }
+
+    60% {
+        transform: translate(-2px, .5px) rotate(0deg);
+    }
+
+    70% {
+        transform: translate(2px, .5px) rotate(-1deg);
+    }
+
+    80% {
+        transform: translate(-.5px, -.5px) rotate(1deg);
+    }
+
+    90% {
+        transform: translate(.5px, 1px) rotate(0deg);
+    }
+
+    100% {
+        background-color: #cccccc;
+        transform: translate(.5px, -1px) rotate(-1deg);
+    }
+
+}
+
 .editRow:hover,
 .listRow:hover,
 .likeRow:hover {
@@ -385,8 +446,9 @@ h1.profile-text-center {
 
 .editRow:active,
 .listRow:active,
-.likeRow:active {
-    transform: translateY(1px);
+.likeRow:active,
+.notAuthenticated:active {
+    transform: translateY(.5px);
     background-color: #adafaf;
 }
 
