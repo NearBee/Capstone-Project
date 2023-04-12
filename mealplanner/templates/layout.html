@@ -30,12 +30,20 @@
         <nav class="navbar navbar-expand bg-danger bg-gradient text-white">
             <div class="container-fluid flex-wrap">
                 <a class="navbar-brand me-0" href="{% url 'index' %}">
-                    <p class="mb-0 fw-light fst-italic text-white brandText">Meal Planner</p>
+                    <p class="mb-0 fw-light fst-italic text-white brandText">Meal Mapper</p>
                 </a>
                 <div class="navbar-nav justify-content-center align-items-center">
                     <a class="nav-link active text-white" aria-current="page" href="{% url 'index' %}">Home</a>
                     <a class="nav-link text-white" href="{% url 'recipes' %}">Recipes</a>
                     <a class="nav-link text-white" href="{% url 'planner_page' %}">Planners</a>
+
+                    <!-- Get the url for recipes page so that the 'create a planner' button doesn't show twice -->
+                    {% url 'recipes' as the_url %}
+
+                    {% if request.get_full_path == the_url %}
+                    <!-- Nothing here as long the page is the "recipes" page -->
+                    {% else %}
+                    {% if user.is_authenticated %}
                     <div class="nav-item dropdown-center ms-5">
                         <button class="btn btn-danger-subtle droptown-toggle text-white dropdownPlannerButton"
                             type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" data-bs-auto-close="outside"
@@ -74,6 +82,12 @@
                             </form>
                         </div>
                     </div>
+                    {% else %}
+                    <div class="nav-item ms-5 dropdownPlannerButton">
+                        <a class="nav-link text-white" href="{% url 'login' %}">Create a Planner</a>
+                    </div>
+                    {% endif %}
+                    {% endif %}
                 </div>
                 <div class="navbar-nav">
                     {% if user.is_authenticated %}
