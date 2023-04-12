@@ -11,6 +11,39 @@ body {
 .nav-link,
 .navProfileUsername {
     font-family: 'Josefin Sans', sans-serif;
+    animation: scaleDown 0.3s forwards ease-out;
+}
+
+.dropdownPlannerButton:hover,
+.nav-link:hover,
+.navProfileUsername:hover,
+.emptyPlannerText:hover {
+    /* Animation to ease in the scaling */
+    animation: scaleUp 0.3s forwards ease-in;
+}
+
+.dropdownPlannerButton:focus {
+    scale: 1.1;
+}
+
+@keyframes scaleUp {
+    to {
+        transform: scale(1.1);
+    }
+
+    from {
+        transform: scale(1);
+    }
+}
+
+@keyframes scaleDown {
+    to {
+        transform: scale(1);
+    }
+
+    from {
+        transform: scale(1.1);
+    }
 }
 
 .dropdown-menu.show {
@@ -316,6 +349,11 @@ h1.profile-text-center {
     transform: scale(1);
     transition: all 0.3s;
 }
+
+.notAuthenticated.likeButton {
+    border-bottom-right-radius: 6px;
+}
+
 
 .activePlannerButton {
     height: 50%;
