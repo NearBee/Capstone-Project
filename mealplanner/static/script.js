@@ -404,6 +404,7 @@ function addToCart(id) {
 }
 
 function addToPlanner(event) {
+
     // Prevents default form submission event
     event.preventDefault()
 
@@ -439,9 +440,9 @@ function addToPlanner(event) {
             var removeButton = document.getElementsByClassName('removeButton');
             for (let i = 0; i < boxes.length; i++) {
                 if (boxes[i].innerHTML.trim() === "") {
-                    console.log(i);
                     // Attach html of a recipe to innerhtml
                     boxes[i].innerHTML += plannerBoxRecipe;
+                    boxes[i].setAttribute('data-id', data.id);
                     if (removeButton) {
                         for (let button of removeButton) {
                             button.addEventListener('click', removeFromPlanner);
@@ -452,7 +453,6 @@ function addToPlanner(event) {
 
                 //Check to see if the boxes are full
                 if (i === boxes.length - 2) {
-                    console.log("Boxes full!");
 
                     // Code to be executed if the condition is met
                     let finalizeButton = document.querySelector('.finalizePlannerButton');
@@ -483,6 +483,7 @@ function removeFromPlanner(event) {
         .then(data => {
             // Successful removal of recipe from planner
             if (data.success) {
+                console.log(data);
 
                 // Add the 'fadeOut' class to the removeButton and removeX elements
                 const removeButton = document.querySelector(`.removeButton[data-id="${data.id}"]`);
@@ -501,6 +502,13 @@ function removeFromPlanner(event) {
                     plannerRecipePhoto.remove();
                     plannerRecipeText.remove();
                 }, 500);
+
+                // Set the plannerBoxes to be empty
+                let box = document.querySelector(`.plannerBoxes[data-id='${data.id}']`);
+                box.removeAttribute('data-id');
+                box.innerHTML = "";
+                console.log(box);
+
 
                 // Disable the finalize planner button if not already disabled
                 let finalizeButton = document.querySelector('.finalizePlannerButton');
