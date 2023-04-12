@@ -72,17 +72,73 @@
 <!-- End of Finalize Button Section -->
 
 {% else %}
+{% if user.is_authenticated %}
 <div class="stockPlanner container-fluid align-content-center my-3" style="display: grid;">
     <div class="stockPlannerImage"></div>
     <div class="row justify-content-center">
         <div class="col-6 stockPlannerBoxes border">
-            <a class="createPlannerLink text-white text-decoration-none fs-3 fw-light" href="{% url 'index' %}">
+
+
+            <!-- <a class="createPlannerLink text-white text-decoration-none fs-3 fw-light" href="{% url 'index' %}">
                 <span>Create a planner now!</span>
+            </a> -->
+
+            <div class="dropdown-center">
+                <button class="btn btn-danger-subtle droptown-toggle text-white dropdownPlannerButton border-0"
+                    type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" data-bs-auto-close="outside"
+                    aria-haspopup="true" aria-expanded="false">
+                    <h3 class="mb-0">Create a Planner</h3>
+                </button>
+                <div class="dropdown-menu py-4 px-4" aria-labelledby="dropdownMenuButton">
+                    <form method="POST" action="{% url 'create_planner' %}">
+                        {% csrf_token %}
+                        <div class="form-group createPlannerGroup">
+                            {% for field in planner_form %}
+                            <div class="fieldWrapper">
+                                {{ field.errors }}
+                                <div class="row justify-content-start">
+                                    <div class="col-12">
+                                        <label
+                                            class="border border-bottom-0 rounded-top fw-light mt-1 px-2 shadow-sm bg-body-secondary bg-gradient">
+                                            {{ field.label }}
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        {{ field }}
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <div class="row justify-content-center">
+                            <div class="col-auto">
+                                <button type="submit" class="btn btn-primary bg-gradient rounded-pill px-4">Create
+                                    Planner</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+{% else %}
+<div class="stockPlanner container-fluid align-content-center my-3" style="display: grid;">
+    <div class="stockPlannerImage"></div>
+    <div class="row justify-content-center">
+        <div class="col-6 stockPlannerBoxes border">
+            <a class="createPlannerLink text-white text-decoration-none fs-3 fw-light" href="{% url 'login' %}">
+                <span>Login to create a planner!</span>
             </a>
         </div>
 
     </div>
 </div>
+{% endif %}
 {% endif %}
 
 {# Filter group #}
