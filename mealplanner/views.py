@@ -195,7 +195,7 @@ def edit_profile(request, id):
     # Try to send the image to tinify API to optimize it
     try:
         # If successful the image will come back optimized and will be set as the new image
-        updated_image = tinify.from_file(user.profile_picture.path)
+        updated_image = tinify.from_file(user.profile_picture.path)  # type: ignore
         updated_image.to_file(user.profile_picture.path)
 
     except tinify.AccountError:
@@ -455,12 +455,17 @@ def planner_page_view(request):
         return render(request, "planner_page.html", {"planners": planners})
 
     active_planner = Planner.objects.filter(owner=user).latest("id")
-    created_date = active_planner.created_at.date() - datetime.datetime.now().date()
-    if not created_date.days >= active_planner.days:
+    created_date = datetime.datetime.now().date() - active_planner.created_at.date()
+    print(abs(created_date.days))
+
+    if not abs(created_date.days) >= active_planner.days:
         return render(
             request,
             "planner_page.html",
-            {"planners": planners, "active_planner": active_planner},
+            {
+                "planners": planners,
+                "active_planner": active_planner,
+            },
         )
 
     return render(request, "planner_page.html", {"planners": planners})
