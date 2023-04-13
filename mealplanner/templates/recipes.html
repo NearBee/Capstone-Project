@@ -51,24 +51,26 @@
 </div>
 
 <!-- Finalize Button Section -->
-{% if planner.chosen_list.count >= planner.days %}
+{% if chosen_list.count >= planner.days %}
 <div class="row justify-content-center">
     <div class="col-6">
-        <a href="{% url 'planner_page' %}">
-            <div id="csrf" data-csrf="{{ csrf_token }}"></div>
-            <button class="btn btn-success bg-gradient text-white w-100 finalizePlannerButton" data-id="{{planner.id}}"
-                data-url="{% url 'finalize_planner' planner.id %}"><span>Save Planner</span></button>
-        </a>
+        <div id="csrf" data-csrf="{{ csrf_token }}"></div>
+        <a class="btn btn-success bg-gradient text-white w-100 finalizePlannerButton" data-id="{{planner.id}}"
+            data-url="{% url 'finalize_planner' planner.id %}" href="{% url 'planner_page' %}"><span>Save
+                Planner</span></a>
     </div>
 </div>
 {% else %}
 <div class="row justify-content-center">
     <div class="col-6">
-        <i class="btn btn-success bg-gradient text-white w-100 finalizePlannerButton disabled"
-            data-id="{{planner.id}}"><span>Save Planner</span></i>
+        <div id="csrf" data-csrf="{{ csrf_token }}"></div>
+        <a class="btn btn-success bg-gradient text-white w-100 finalizePlannerButton disabled" data-id="{{planner.id}}"
+            data-url="{% url 'finalize_planner' planner.id %}"><span>Save
+                Planner</span></a>
     </div>
 </div>
 {% endif %}
+
 <!-- End of Finalize Button Section -->
 
 {% else %}

@@ -133,7 +133,6 @@ document.addEventListener('DOMContentLoaded', function () {
         if (Object.keys(errors).length > 0) {
             form.classList.add('has-error');
         }
-        console.log(form);
     }
 
 });
@@ -448,15 +447,14 @@ function addToPlanner(event) {
                             button.addEventListener('click', removeFromPlanner);
                         }
                     }
-                    break;
                 }
 
                 //Check to see if the boxes are full
                 if (i === boxes.length - 2) {
-
                     // Code to be executed if the condition is met
                     let finalizeButton = document.querySelector('.finalizePlannerButton');
                     finalizeButton.classList.remove('disabled');
+                    finalizeButton.setAttribute('href', "/planners")
                 }
             }
         })
@@ -483,7 +481,6 @@ function removeFromPlanner(event) {
         .then(data => {
             // Successful removal of recipe from planner
             if (data.success) {
-                console.log(data);
 
                 // Add the 'fadeOut' class to the removeButton and removeX elements
                 const removeButton = document.querySelector(`.removeButton[data-id="${data.id}"]`);
@@ -507,13 +504,13 @@ function removeFromPlanner(event) {
                 let box = document.querySelector(`.plannerBoxes[data-id='${data.id}']`);
                 box.removeAttribute('data-id');
                 box.innerHTML = "";
-                console.log(box);
 
 
                 // Disable the finalize planner button if not already disabled
                 let finalizeButton = document.querySelector('.finalizePlannerButton');
                 if (!finalizeButton.classList.contains('disabled')) {
                     finalizeButton.classList.add('disabled');
+                    finalizeButton.setAttribute('href', "#")
                 }
 
             } else {
@@ -526,7 +523,6 @@ function removeFromPlanner(event) {
         .then(data => {
             // Construct HTML for recipe box
             let box = document.querySelector(`.plannerBoxes[data-id="${data.id}"]`);
-            console.log(box);
             box.remove();
         })
 
@@ -552,7 +548,7 @@ function finalizePlanner(event) {
     })
         .then(response => response.json())
         .then(data => {
-            console.log(data);
+
         })
         .catch(error => {
             console.log(`${error}`);
