@@ -70,6 +70,9 @@
                                     class="position-relative fa-solid fa-drumstick-bite fa-lg border-start border-top px-1 py-1 dietaryIcons"></i>
                                 {% endif %}
                             </div>
+                            <div class="col-auto daysRemaining">
+                                <i class="daysRemainingText text-muted">Day {{ forloop.counter }}</i>
+                            </div>
                         </div>
                         {% endfor %}
                         {% else %}
@@ -108,6 +111,70 @@
     </div>
     {% else %}
 
+    {% if user.is_authenticated and not active_planner %}
+    <span class="unauthenticatedCover">
+        <div class="row justify-content-center">
+            <div class="card mb-2 w-75 activePlannerUser">
+                <div class="row">
+                    <div class="col-lg-2 border border-bottom userPlannerInformation">
+                        <div class="row justify-content-center">
+                            <div class="col-auto my-2 plannersUserSection">
+                                YOU
+                            </div>
+                        </div>
+                        <div class="row justify-content-center border-bottom border-top">
+                            <div class="col-auto mt-2 mb-3">
+                                <div class="row justify-content-center profilePictureCol">
+                                    <div class="col-auto px-0">
+                                        <img class="object-fit-cover circle plannerProfilePicture"
+                                            src="/images/headshot_placeholder.png" alt="Profile Picture">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row justify-content-center mt-2">
+                            <div class="col-auto">
+                                <p class="plannerInfoFonts">Date Created: <b class="fw-lighter">
+                                        Now
+                                    </b>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-9 border px-0 align-content-center plannerItemsCol" style="display: grid;">
+                        <div class="row justify-content-center">
+                            <!-- Recipes Section -->
+                            Potential Recipes to be chosen
+                        </div>
+                    </div>
+                    <div class="col-lg-1 buttonsCol">
+
+                        <div
+                            class="row justify-content-center pb-4 pt-4 border-bottom editButton unauthenticatedActivePlannerButton">
+                            <div class="d-flex col-auto align-items-center" data-bs-toggle="tooltip">
+                                <i class="fa-regular fa-pen-to-square plannerIcons"></i>
+                            </div>
+                        </div>
+
+                        <span>
+                            <div class="row justify-content-center py-4 likeButton unauthenticatedActivePlannerButton">
+                                <div class="d-flex col-auto align-items-center" data-bs-title="Add to shopping list">
+                                    <i class="fa-solid fa-cart-plus plannerIcons"></i>
+                                </div>
+                            </div>
+                        </span>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </span>
+    <div class="row justify-content-end activePlannerHeaderRow">
+        <a href="{% url 'recipes' %}" class="col-6 activePlannerHeaderCol border text-decoration-none">
+            <span class="fs-3 fw-light createPlannerText">Create a new planner!</span>
+        </a>
+    </div>
+    {% else %}
     <span class="unauthenticatedCover">
         <div class="row justify-content-center">
             <div class="card mb-2 w-75 activePlannerUser">
@@ -170,6 +237,7 @@
             <span class="fs-3 fw-light createPlannerText">Login to create your planner!</span>
         </a>
     </div>
+    {% endif %}
 
     {% endif %}
     <div class="row justify-content-center">
@@ -197,7 +265,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row justify-content-center mt-2">
+                    <div class="row justify-content-center align-items-center mt-2">
                         <div class="col-auto">
                             <p class="plannerInfoFonts">Date Created: <b class="fw-lighter">
                                     {{ planner.created_at|date:"D m/d/Y" }}
@@ -210,7 +278,7 @@
                     <div class="row justify-content-center">
                         <!-- Recipes Section -->
                         {% for item in planner.chosen_list.all %}
-                        <div class="col-auto my-2 plannerItems">
+                        <div class="col-auto mt-3 mb-4 plannerItems">
                             <div class="border position-absolute plannerItemSquares" data-bs-html="true"
                                 data-bs-toggle="tooltip" data-bs-placement="bottom"
                                 data-bs-title='Meal: {{item.name}} <br> Dietary Preference: {{ item.get_dietary_preference_display }}'>
@@ -235,6 +303,9 @@
                                 <i
                                     class="position-relative fa-solid fa-drumstick-bite fa-lg border-start border-top px-1 py-1 dietaryIcons"></i>
                                 {% endif %}
+                            </div>
+                            <div class="col-auto daysRemaining">
+                                <i class="daysRemainingText text-muted">Day {{ forloop.counter }}</i>
                             </div>
                         </div>
                         {% endfor %}
