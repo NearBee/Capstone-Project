@@ -408,14 +408,14 @@ function addToPlanner(event) {
     event.preventDefault()
 
     // Set data to be transferred
-    var id = event.target;
-    var dataId = id.getAttribute('data-id');
+    var id = event.target.getAttribute('data-id');
 
     let csrf = document.querySelector("#csrf").dataset.csrf;
 
-    fetch(`recipes/add_to_planner/${dataId}`, {
+
+    fetch(`recipes/add_to_planner/${id}`, {
         method: "POST",
-        body: JSON.stringify({ id: dataId }),
+        body: JSON.stringify({ id: id }),
         headers: { "X-CSRFTOKEN": csrf },
         credentials: 'same-origin',
     })
@@ -437,8 +437,10 @@ function addToPlanner(event) {
             // Attach data-id to the element being transferred
             let boxes = document.querySelectorAll('.plannerBoxes');
             var removeButton = document.getElementsByClassName('removeButton');
+
             for (let i = 0; i < boxes.length; i++) {
                 if (boxes[i].innerHTML.trim() === "") {
+                    console.log(`${i} | ${boxes.length}`);
                     // Attach html of a recipe to innerhtml
                     boxes[i].innerHTML += plannerBoxRecipe;
                     boxes[i].setAttribute('data-id', data.id);
@@ -446,20 +448,42 @@ function addToPlanner(event) {
                         for (let button of removeButton) {
                             button.addEventListener('click', removeFromPlanner);
                         }
+                        break; // Exit loop after adding recipe to planner
                     }
-                }
 
-                //Check to see if the boxes are full
-                if (i === boxes.length - 2) {
-                    // Code to be executed if the condition is met
+
+                }
+            }
+            setTimeout(() => {
+                console.log("we're here");
+                const isPlannerFull = [...boxes].every((boxes) => boxes.innerHTML.trim() !== "");
+                console.log(isPlannerFull);
+                if (isPlannerFull) {
                     let finalizeButton = document.querySelector('.finalizePlannerButton');
                     finalizeButton.classList.remove('disabled');
                     finalizeButton.setAttribute('href', "/planners")
+                    console.log("finalize button enabled");
                 }
-            }
+            }, 1);
+
+
         })
-        .then(error => console.error(error));
+
+        .then(error => console.error(`${error}`));
 }
+
+//Check to see if the boxes are full
+// Code from the first pass through
+
+// if (filledBoxes === boxes.length) {
+//     // Code to be executed if the condition is met
+//     let finalizeButton = document.querySelector('.finalizePlannerButton');
+//     finalizeButton.classList.remove('disabled');
+//     finalizeButton.setAttribute('href', "/planners")
+//     console.log("finalize button enabled");
+// }
+// console.log("about to break");
+
 
 function removeFromPlanner(event) {
     // Prevents default form submission event
