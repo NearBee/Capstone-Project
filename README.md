@@ -65,10 +65,10 @@ The shopping list is a feature that allows the user to create a list of ingredie
 git clone https://github.com/NearBee/Capstone-Project.git
 ```
 
-2. Create a virtual environment
+2. Create a virtual environment and activate it
 
 ```bash
-python3 -m venv venv
+python3 -m venv venv && source venv/bin/activate
 ```
 
 3. Install the requirements
@@ -77,13 +77,19 @@ python3 -m venv venv
 pip install -r requirements.txt
 ```
 
-4. Run the application
+4. Make migrations
+
+```bash
+python manage.py makemigrations mealplanner && python manage.py migrate
+```
+
+5. Run the application
 
 ```bash
 python manage.py runserver
 ```
 
-5. Open the application in your browser
+6. Open the application in your browser
 
 
 ## Additional Information
