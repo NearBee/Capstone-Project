@@ -472,19 +472,6 @@ function addToPlanner(event) {
         .then(error => console.error(`${error}`));
 }
 
-//Check to see if the boxes are full
-// Code from the first pass through
-
-// if (filledBoxes === boxes.length) {
-//     // Code to be executed if the condition is met
-//     let finalizeButton = document.querySelector('.finalizePlannerButton');
-//     finalizeButton.classList.remove('disabled');
-//     finalizeButton.setAttribute('href', "/planners")
-//     console.log("finalize button enabled");
-// }
-// console.log("about to break");
-
-
 function removeFromPlanner(event) {
     // Prevents default form submission event
     event.preventDefault()

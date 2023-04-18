@@ -105,16 +105,6 @@ class Ingredient_List(models.Model):
         return f"{self.quantity:.{0 if self.quantity.is_integer() else 2}f} {self.ingredient.unit_of_measurement} {self.ingredient.name}"
 
 
-# class DaysOfWeek(Enum):
-#     SUNDAY = "Sunday"
-#     MONDAY = "Monday"
-#     TUESDAY = "Tuesday"
-#     WEDNESDAY = "Wednesday"
-#     THURSDAY = "Thursday"
-#     FRIDAY = "Friday"
-#     SATURDAY = "Saturday"
-
-
 class NumberOfDays(IntEnum):
     One = 1
     Two = 2
@@ -126,7 +116,6 @@ class NumberOfDays(IntEnum):
 
 
 class Planner(models.Model):
-
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=24, blank=False, null=True)
     days = models.IntegerField(
